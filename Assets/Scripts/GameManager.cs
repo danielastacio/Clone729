@@ -4,16 +4,24 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager: MonoBehaviour
 {
-    public static GameManager Instance;
+    public static GameManager Instance { get; private set; }
     
     public CinemachineVirtualCamera cam2D;
     public CinemachineVirtualCamera cam3D;
 
     private void Awake()
     {
-        instance = this;
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+        
         cam2D.Priority = 1;
         cam3D.Priority = 0;
     }

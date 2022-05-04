@@ -68,6 +68,12 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag("WorldTransition"))
         {
+            if (_isIn3DSpace)
+            {
+                // Using this to center the player on the next 2D plane
+                transform.position =
+                    new Vector3(transform.position.x, transform.position.y, other.transform.position.z);
+            }
            _isIn3DSpace = !_isIn3DSpace;
         }
     }
