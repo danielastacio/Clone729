@@ -127,11 +127,11 @@ sysinfo.txt
 ## ---------------- ##
 
 # project stuff
-WWiseProject/.cache/
-WWiseProject/*.prof
-WwiseProject/*_WwiseProject.*.validationcache
-WwiseProject/*_WwiseProject.*.wsettings
-WwiseProject/**/*.akd
+metroidvaniajam_WWiseProject/.cache/
+metroidvaniajam_WWiseProject/*.prof
+metroidvaniajam_WwiseProject/*_WwiseProject.*.validationcache
+metroidvaniajam_WwiseProject/*_WwiseProject.*.wsettings
+metroidvaniajam_WwiseProject/**/*.akd
 
 # build stuff (unsure?)
 # Assets/Wwise/Deployment/Plugins/Windows/**/*.meta
