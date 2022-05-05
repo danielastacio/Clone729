@@ -1,14 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Cinemachine;
 using UnityEngine;
 
 public class CameraController: MonoBehaviour
 {
     public static CameraController Instance { get; private set; }
+    private PlayerController _playerController;
 
-    public enum CameraStates
+    private enum CameraStates
     {
         Disabled = 0,
         Active = 1
@@ -22,6 +24,12 @@ public class CameraController: MonoBehaviour
         CheckForCameraController();
     }
 
+    private void Start()
+    {
+        _playerController = PlayerController.Instance;
+        SetStartingCamera();
+    }
+
     private void CheckForCameraController()
     {
         if (Instance != null)
@@ -32,8 +40,18 @@ public class CameraController: MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
 
-        Set2DCam();
+    private void SetStartingCamera()
+    {
+        if (_playerController.isIn3DSpace)
+        {
+            Set3DCam();
+        }
+        else
+        {
+            Set2DCam();
+        }
     }
 
     public void Set2DCam()

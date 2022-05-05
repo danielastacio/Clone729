@@ -45,26 +45,34 @@ public class PlayerController : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-
-
+    
     void Move()
     {
-        // Set each input, with calculations for consistent movement
         _horizontal = Input.GetAxisRaw("Horizontal") * speed;
         _vertical = Input.GetAxisRaw("Vertical") * speed;
 
         if (!isIn3DSpace)
         {
-            var movement = new Vector3(_horizontal, 0, 0);
-            _rb.velocity = movement;
-            RotatePlayer(movement);
+            Move2D();
         }
         else
         {
-            Vector3 movement = new Vector3(_horizontal, 0, _vertical);
-            _rb.velocity = movement;
-            RotatePlayer(movement);
+            Move3D();
         }
+    }
+    
+    private void Move2D()
+    {
+        var movement = new Vector3(_horizontal, 0, 0);
+        _rb.velocity = movement;
+        RotatePlayer(movement);
+    }
+    
+    private void Move3D()
+    {
+        Vector3 movement = new Vector3(_horizontal, 0, _vertical);
+        _rb.velocity = movement;
+        RotatePlayer(movement);
     }
 
     private void RotatePlayer(Vector3 movement)

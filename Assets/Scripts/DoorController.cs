@@ -16,8 +16,8 @@ public class DoorController : MonoBehaviour
     {
         _playerController = PlayerController.Instance;
         _cameraController = CameraController.Instance;
-        _doorParent = this.transform.parent.gameObject;
         
+        _doorParent = transform.parent.gameObject;
         _closedPos = _doorParent.transform.position;
         _openPos = new Vector3(
             _closedPos.x,
