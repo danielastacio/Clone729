@@ -9,25 +9,27 @@ public class DoorController : MonoBehaviour
     private CameraController _cameraController;
     private Vector3 _closedPos;
     private Vector3 _openPos;
-    private float _transitionTime = 5f;
+    private float _transitionTime = 0f;
+    private GameObject _doorParent;
 
     private void Start()
     {
         _playerController = PlayerController.Instance;
         _cameraController = CameraController.Instance;
+        _doorParent = this.transform.parent.gameObject;
         
-        _closedPos = transform.position;
+        _closedPos = _doorParent.transform.position;
         _openPos = new Vector3(
-            transform.position.x,
+            _closedPos.x,
             -2f,
-            transform.position.z);
+            _closedPos.z);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            StartCoroutine(OpenDoor())
+            StartCoroutine(OpenDoor());
         }
     }
 
@@ -35,15 +37,13 @@ public class DoorController : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // TODO: Set up door to transition from open to closed instead of jumping
-            StartCoroutine(CloseDoor())
+            StartCoroutine(CloseDoor());
             
             // TODO: If player enters from a 2D space, and goes back, camera still transitions to 3D
             // TODO: Need to check where the player is coming from and if that change needs to happen.
             if (_playerController.isIn3DSpace)
             {
-                transform.position = 
-                    new Vector3(transform.position.x, transform.position.y, other.transform.position.z);
+                StartCoroutine(CenterPlayer2D(other));
                 _cameraController.Set2DCam();
             }
             else
@@ -55,21 +55,56 @@ public class DoorController : MonoBehaviour
         }
     }
 
+    private IEnumerator CenterPlayer2D(Collider other)
+    {
+        var playerPos = other.transform.position;
+
+        playerPos = other.transform.position;
+        playerPos =
+            new Vector3(playerPos.x, playerPos.y, 
+                Mathf.Lerp(playerPos.z, transform.position.z, _transitionTime));
+        other.transform.position = playerPos;
+        
+        yield return null;
+    }
+
     IEnumerator OpenDoor()
     {
-        transform.position = new Vector3(
-            transform.position.x,
-            Mathf.Lerp(_closedPos, _openPos, _transitionTime),
-            transform.position.z);
-        yield return null;
+        while (_doorParent.transform.position.y > _openPos.y)
+        {
+            var position = _doorParent.transform.position;
+            
+            position = new Vector3(
+                position.x,
+                Mathf.Lerp(_closedPos.y, _openPos.y, _transitionTime),
+                position.z);
+            
+            _doorParent.transform.position = position;
+            _transitionTime += 0.1f;
+            
+            yield return null;
+        }
+
+        _transitionTime = 0;
     }
 
     IEnumerator CloseDoor()
     {
-        transform.position = new Vector3(
-            transform.position.x,
-            Mathf.Lerp(_openPos, _closedPos, _transitionTime,
-            transform.position.z);
-        yield return null;
+        while (_doorParent.transform.position.y < _closedPos.y)
+        {
+            var position = _doorParent.transform.position;
+            
+            position = new Vector3(
+                position.x,
+                Mathf.Lerp(_openPos.y, _closedPos.y, _transitionTime),
+                position.z);
+            
+            _doorParent.transform.position = position;
+            _transitionTime += 0.1f;
+            
+            yield return null;
+        }
+
+        _transitionTime = 0;
     }
 }

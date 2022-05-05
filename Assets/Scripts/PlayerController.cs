@@ -55,8 +55,7 @@ public class PlayerController : MonoBehaviour
 
         if (!isIn3DSpace)
         {
-            Vector3 movement = new Vector3(_horizontal, 0, 0);
-            transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+            var movement = new Vector3(_horizontal, 0, 0);
             _rb.velocity = movement;
             RotatePlayer(movement);
         }
