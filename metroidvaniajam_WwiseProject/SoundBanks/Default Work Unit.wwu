@@ -4,7 +4,9 @@
 		<WorkUnit Name="Default Work Unit" ID="{3F449E01-E912-4CCF-B660-B05C5ABC0EBF}" PersistMode="Standalone">
 			<ChildrenList>
 				<SoundBank Name="Testing" ID="{7E07C48E-9EA4-46D2-8478-AE5A07C24021}">
-					<ObjectInclusionList/>
+					<ObjectInclusionList>
+						<ObjectRef Name="Play_Steam" ID="{25F2037B-A3DC-4CA1-A1E2-F21BBB9349BC}" WorkUnitID="{079C36E1-3C2A-4290-9003-102FF37A8863}" Origin="Manual" Filter="7"/>
+					</ObjectInclusionList>
 					<ObjectExclusionList/>
 					<GameSyncExclusionList/>
 				</SoundBank>

@@ -16,10 +16,20 @@
 			<ShortName>Init</ShortName>
 			<Path>Init.bnk</Path>
 		</SoundBank>
-		<SoundBank Id="1512859615" Language="SFX" Hash="2659286875">
+		<SoundBank Id="1512859615" Language="SFX" Hash="1337770186">
 			<ObjectPath>\SoundBanks\Default Work Unit\Testing</ObjectPath>
 			<ShortName>Testing</ShortName>
 			<Path>Testing.bnk</Path>
+			<IncludedEvents>
+				<Event Id="2885688842" Name="Play_Steam" ObjectPath="\Events\Default Work Unit\Play_Steam" DurationType="OneShot" DurationMin="17.830839" DurationMax="17.830839">
+					<IncludedMemoryFiles>
+						<File Id="740774714" Language="SFX">
+							<ShortName>Steam 2.wav</ShortName>
+							<Path>SFX\Steam 2_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+			</IncludedEvents>
 		</SoundBank>
 	</SoundBanks>
 </SoundBanksInfo>
