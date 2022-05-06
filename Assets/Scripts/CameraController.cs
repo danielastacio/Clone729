@@ -8,7 +8,6 @@ using UnityEngine;
 public class CameraController: MonoBehaviour
 {
     public static CameraController Instance { get; private set; }
-    private PlayerController _playerController;
 
     private enum CameraStates
     {
@@ -24,12 +23,6 @@ public class CameraController: MonoBehaviour
         CheckForCameraController();
     }
 
-    private void Start()
-    {
-        _playerController = PlayerController.Instance;
-        SetStartingCamera();
-    }
-
     private void CheckForCameraController()
     {
         if (Instance != null)
@@ -42,9 +35,9 @@ public class CameraController: MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    private void SetStartingCamera()
+    public void SetStartingCamera(bool isIn3DSpace)
     {
-        if (_playerController.isIn3DSpace)
+        if (isIn3DSpace)
         {
             Set3DCam();
         }

@@ -500,6 +500,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 574864691}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1003961263
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1003961264}
+  m_Layer: 0
+  m_Name: GroundCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1003961264
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1003961263}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1774174539}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1034450179
 GameObject:
   m_ObjectHideFlags: 0
@@ -949,6 +980,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Door
       objectReference: {fileID: 0}
+    - target: {fileID: 512642732740917562, guid: abb48c42043a8fa49824c7c71b843d73, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: abb48c42043a8fa49824c7c71b843d73, type: 3}
 --- !u!1001 &2421627742576958849
@@ -1070,6 +1105,26 @@ PrefabInstance:
     - target: {fileID: 4006526163059981883, guid: a6a2b51fc9fa72c499c6feb4ff4bc8ee, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4006526163059981884, guid: a6a2b51fc9fa72c499c6feb4ff4bc8ee, type: 3}
+      propertyPath: jumpForce
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 4006526163059981884, guid: a6a2b51fc9fa72c499c6feb4ff4bc8ee, type: 3}
+      propertyPath: groundCheckRadius
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4006526163059981884, guid: a6a2b51fc9fa72c499c6feb4ff4bc8ee, type: 3}
+      propertyPath: groundLayers.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4006526163059981884, guid: a6a2b51fc9fa72c499c6feb4ff4bc8ee, type: 3}
+      propertyPath: groundLayers.Array.data[0].m_Bits
+      value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 4006526163059981884, guid: a6a2b51fc9fa72c499c6feb4ff4bc8ee, type: 3}
+      propertyPath: groundLayers.Array.data[1].m_Bits
+      value: 128
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6a2b51fc9fa72c499c6feb4ff4bc8ee, type: 3}

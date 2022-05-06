@@ -5,18 +5,13 @@ using UnityEngine;
 
 public class DoorController : MonoBehaviour
 {
-    private PlayerController _playerController;
-    private CameraController _cameraController;
     private Vector3 _closedPos;
     private Vector3 _openPos;
-    private float _transitionTime = 0f;
+    private float _transitionTime;
     private GameObject _doorParent;
 
     private void Start()
     {
-        _playerController = PlayerController.Instance;
-        _cameraController = CameraController.Instance;
-        
         _doorParent = transform.parent.gameObject;
         _closedPos = _doorParent.transform.position;
         _openPos = new Vector3(
@@ -38,24 +33,10 @@ public class DoorController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             StartCoroutine(CloseDoor());
-            
-            // TODO: If player enters from a 2D space, and goes back, camera still transitions to 3D
-            // TODO: Need to check where the player is coming from and if that change needs to happen.
-            if (_playerController.isIn3DSpace)
-            {
-                StartCoroutine(CenterPlayer2D(other));
-                _cameraController.Set2DCam();
-            }
-            else
-            {
-                _cameraController.Set3DCam();
-            }
-
-            _playerController.isIn3DSpace = !_playerController.isIn3DSpace;
         }
     }
 
-    private IEnumerator CenterPlayer2D(Collider other)
+    /*private IEnumerator CenterPlayer2D(Collider other)
     {
         var playerPos = other.transform.position;
 
@@ -66,10 +47,12 @@ public class DoorController : MonoBehaviour
         other.transform.position = playerPos;
         
         yield return null;
-    }
+    }*/
 
     IEnumerator OpenDoor()
     {
+        _transitionTime = 0;
+        
         while (_doorParent.transform.position.y > _openPos.y)
         {
             var position = _doorParent.transform.position;
@@ -85,11 +68,13 @@ public class DoorController : MonoBehaviour
             yield return null;
         }
 
-        _transitionTime = 0;
+
     }
 
     IEnumerator CloseDoor()
     {
+        _transitionTime = 0;
+        
         while (_doorParent.transform.position.y < _closedPos.y)
         {
             var position = _doorParent.transform.position;
@@ -104,7 +89,5 @@ public class DoorController : MonoBehaviour
             
             yield return null;
         }
-
-        _transitionTime = 0;
     }
 }
