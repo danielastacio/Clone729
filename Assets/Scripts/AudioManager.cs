@@ -5,11 +5,42 @@ using AK;
 
 namespace Metroidvaniajam.Audio
 {
+
     public class AudioManager : MonoBehaviour
     {
         private static AudioManager instance;
 
         public static AudioManager Instance { get { return instance; } }
+
+        public WwiseEvents wwiseEvents;
+        public WwiseStates wwiseStates;
+        public WwiseSwitches wwiseSwitches;
+
+        [System.Serializable]
+        public struct WwiseEvents
+        {
+            
+            [Header("SFX")]
+            [Space]
+            public AK.Wwise.Event steamAudioEvent;
+
+            [Space]
+            [Header("Music")]
+            public AK.Wwise.Event levelOneMusicEvent;
+        }
+
+        [System.Serializable]
+        public struct WwiseStates
+        {
+            public AK.Wwise.State setFireAudioState;
+        }
+
+        [System.Serializable]
+        public struct WwiseSwitches
+        {
+            public AK.Wwise.Switch setFireAudioSwitch;
+        }
+
 
         private void Awake()
         {
@@ -22,36 +53,44 @@ namespace Metroidvaniajam.Audio
                 instance = this;
             }
         }
-        public virtual void WwiseAudio(AK.Wwise.Event wwiseEvent)
+
+        public void Play(AK.Wwise.Event wwiseEvent)
         {
             wwiseEvent.Post(this.gameObject);
         }
+        public void Stop(AK.Wwise.Event wwiseEvent)
+        {
+            wwiseEvent.Stop(this.gameObject);
+        }
+        public void Pause(AK.Wwise.Event wwiseEvent, int transitionDuration = 600)
+        {
+            wwiseEvent.ExecuteAction(this.gameObject,
+                AkActionOnEventType.AkActionOnEventType_Pause,
+                transitionDuration,
+                AkCurveInterpolation.AkCurveInterpolation_Linear);
+        }
 
-        public virtual void WwiseAudio(AK.Wwise.State wwiseState)
+        public void Resume(AK.Wwise.Event wwiseEvent, int transitionDuration = 200)
+        {
+            wwiseEvent.ExecuteAction(this.gameObject,
+                AkActionOnEventType.AkActionOnEventType_Resume,
+                transitionDuration,
+                AkCurveInterpolation.AkCurveInterpolation_Linear);
+        }
+
+        public void SetState(AK.Wwise.State wwiseState)
         {
             wwiseState.SetValue();
         }
 
-        public virtual void WwiseAudio(AK.Wwise.Switch wwiseSwitch, GameObject gameObject = null)
+        public void SetSwitch(AK.Wwise.Switch wwiseSwitch, GameObject gameObject)
         {
             wwiseSwitch.SetValue(gameObject);
         }
 
-        public virtual void WwiseAudio(AK.Wwise.RTPC wwiseRTPC, float value, GameObject gameObject = null)
+        public void SetRTPC(AK.Wwise.RTPC wwiseRTPC, float value, GameObject gameObject)
         {
             wwiseRTPC.SetValue(gameObject, value);
-        }
-
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
         }
     }
 }
