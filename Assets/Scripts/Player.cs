@@ -5,9 +5,10 @@ using System;
 
 public class Player : MonoBehaviour
 {
-    public GameEvent 
-        PlayerAttacked,
-        PlayerDefended;
+    [Header("Player Events")]
+    [Space]
+    public GameEvent PlayerAttacked;
+    public GameEvent PlayerDefended;
 
     void Update()
     {
