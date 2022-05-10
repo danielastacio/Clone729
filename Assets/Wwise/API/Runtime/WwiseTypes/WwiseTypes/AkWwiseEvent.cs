@@ -124,6 +124,18 @@ namespace AK.Wwise
 			ExecuteAction(gameObject, AkActionOnEventType.AkActionOnEventType_Stop, transitionDuration, curveInterpolation);
 		}
 
+		public void Pause(UnityEngine.GameObject gameObject, int transitionDuration = 0,
+			AkCurveInterpolation curveInterpolation = AkCurveInterpolation.AkCurveInterpolation_Linear)
+		{
+			ExecuteAction(gameObject, AkActionOnEventType.AkActionOnEventType_Pause, transitionDuration, curveInterpolation);
+		}
+
+		public void Resume(UnityEngine.GameObject gameObject, int transitionDuration = 0,
+			AkCurveInterpolation curveInterpolation = AkCurveInterpolation.AkCurveInterpolation_Linear)
+		{
+			ExecuteAction(gameObject, AkActionOnEventType.AkActionOnEventType_Resume, transitionDuration, curveInterpolation);
+		}
+
 		/// <summary>
 		///     Executes various actions on this event associated with a GameObject.
 		/// </summary>
