@@ -6,7 +6,7 @@ public class PlayerAudio : Player
     [Header("Player Audio")]
 
     public AK.Wwise.Event healing;
-    public void PlayHealing(GameObject gameObject) => healing.Post(gameObject);
+    public void PlayHealing() => healing.Post(gameObject);
 
     void OnEnable()
     {
