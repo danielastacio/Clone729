@@ -1,20 +1,26 @@
 using UnityEngine;
-public class PlayerAudio : Player
+public class PlayerAudio : MonoBehaviour
 {
     #region Player Audio
 
     [Header("Player Audio")]
-
     public AK.Wwise.Event healing;
-    public void PlayHealing() => healing.Post(gameObject);
+    public AK.Wwise.Event attack;
+    public void PlayHealing()
+    { 
+        healing.Post(gameObject); 
+        print("healed"); 
+    }
+
+    public void PlayAttack() => attack.Post(gameObject);
 
     void OnEnable()
     {
-        PlayerHealed += PlayHealing;
+        Player.PlayerHealed += PlayHealing;
     }
-    void OnDisable()
+    private void OnDisable()
     {
-        PlayerHealed -= PlayHealing;
+        Player.PlayerHealed -= PlayHealing;
     }
     #endregion
 }
