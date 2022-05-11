@@ -17,7 +17,7 @@ public class PlayerAudio : Player
     }
     void OnDisable()
     {
-        PlayerHealed += PlayHealing;
+        PlayerHealed -= PlayHealing;
     }
     #endregion
 }
