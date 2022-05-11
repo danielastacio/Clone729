@@ -5,16 +5,15 @@ using System;
 
 public class Player : MonoBehaviour
 {
-    [Header("Player Events")]
-    [Space]
-    public GameEvent PlayerAttacked;
-    public GameEvent PlayerDefended;
+    #region Player Events
+    public static event Action<GameObject> PlayerHealed;
 
+    #endregion
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.K))
-        {
-            PlayerAttacked?.Invoke();
-        }
+        if (Input.GetKeyDown(KeyCode.Space))
+            PlayerHealed?.Invoke(gameObject);        
     }
 }
+
+
