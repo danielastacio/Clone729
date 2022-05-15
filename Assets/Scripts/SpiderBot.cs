@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Cube : MonoBehaviour
+public class SpiderBot : MonoBehaviour
 {
     private enum EnemyState
     {
@@ -31,13 +31,13 @@ public class Cube : MonoBehaviour
 
     private EnemyState _currentState = EnemyState.Idle;
     
-    void Start()
+    private void Start()
     {
         _rb2d = GetComponent<Rigidbody2D>();
         _groundCheck = transform.GetChild(1).transform;
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         if (_currentState == EnemyState.Idle && _walkCycle == null)
         {
@@ -51,7 +51,7 @@ public class Cube : MonoBehaviour
         }
     }
 
-    IEnumerator WalkCycle()
+    private IEnumerator WalkCycle()
     {
         while (_currentState == EnemyState.Idle)
         {
@@ -100,7 +100,7 @@ public class Cube : MonoBehaviour
         speed *= -1;
     }
 
-    IEnumerator Stop()
+    private IEnumerator Stop()
     {
         var stopTime = Random.Range(minStopTime, maxStopTime);
         speed = 0;
