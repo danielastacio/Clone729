@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Interfaces;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class SpiderBot : MonoBehaviour
+// TODO: Set up ability for spider-bot to walk on walls
+// TODO: Set up die state
+
+public class SpiderBot : MonoBehaviour, IDamageable<float>
 {
     private enum EnemyState
     {
@@ -11,30 +15,43 @@ public class SpiderBot : MonoBehaviour
         Die
     };
     
+    private EnemyState _currentState = EnemyState.Idle;
+
+    [Header("Stats")] 
+    public float maxHp;
+    private float _currentHp;
+    
+    [Header("Movement")]
     public float speed;
+    public float gcRaycastDist;
     public bool facingRight = true;
+    public bool walkOnCeiling;
     
     // Controls for stopping and restarting movement
-    private float _timeSinceLastStop;
-    private float _timeBeforeNextStop;
+    [Header("Stop Movement")]
     public float minTimeBeforeNextStop;
     public float maxTimeBeforeNextStop;
     public float minStopTime;
     public float maxStopTime;
-
+    private float _timeSinceLastStop;
+    private float _timeBeforeNextStop;
+    
     // Cached references
     private Rigidbody2D _rb2d;
     private Transform _groundCheck;
     private IEnumerator _walkCycle;
-    public float gcRaycastDist;
-    public LayerMask whatIsGround;
-
-    private EnemyState _currentState = EnemyState.Idle;
     
     private void Start()
     {
+        _currentHp = maxHp;
         _rb2d = GetComponent<Rigidbody2D>();
         _groundCheck = transform.GetChild(1).transform;
+
+        if (!facingRight)
+        {
+            Flip(-180);
+            speed *= -1;
+        }
     }
 
     private void FixedUpdate()
@@ -59,11 +76,7 @@ public class SpiderBot : MonoBehaviour
             
             if (stopChance < 10 && _timeSinceLastStop > _timeBeforeNextStop)
             {
-                var currentSpeed = speed;
                 yield return StartCoroutine(Stop());
-                _timeSinceLastStop = 0f;
-                _timeBeforeNextStop = Random.Range(minTimeBeforeNextStop, maxTimeBeforeNextStop);
-                speed = currentSpeed;
             }
             else
             {
@@ -71,6 +84,7 @@ public class SpiderBot : MonoBehaviour
             }
             
             CheckForGround();
+            CheckForWall();
 
             _rb2d.velocity = new Vector2(speed, 0);
 
@@ -80,8 +94,10 @@ public class SpiderBot : MonoBehaviour
 
     private void CheckForGround()
     {
+        // If spider-bot is on ceiling, this sets raycast to shoot up instead of down.
+        var groundCheckDirection = walkOnCeiling ? Vector2.up : Vector2.down;
         var groundCheck = 
-            Physics2D.Raycast(_groundCheck.position, Vector2.down, gcRaycastDist, whatIsGround);
+            Physics2D.Raycast(_groundCheck.position, groundCheckDirection, gcRaycastDist);
 
         if (!groundCheck && facingRight)
         {
@@ -92,8 +108,24 @@ public class SpiderBot : MonoBehaviour
             Flip(0);
         }
     }
+
+    private void CheckForWall()
+    {
+        // Depending on facing direction, raycast will point forward
+        var wallCheckDirection = facingRight ? Vector2.right : Vector2.left;
+        var wallCheck =
+            Physics2D.Raycast(_groundCheck.position, wallCheckDirection, gcRaycastDist);
+        if (wallCheck && facingRight)
+        {
+            Flip(-180);
+        }
+        else if (wallCheck && !facingRight)
+        {
+            Flip(0);
+        }
+    }
     
-    public void Flip(int flipAmount)
+    private void Flip(int flipAmount)
     {
         transform.eulerAngles = new Vector3(0, -flipAmount, 0);
         facingRight = !facingRight;
@@ -103,7 +135,25 @@ public class SpiderBot : MonoBehaviour
     private IEnumerator Stop()
     {
         var stopTime = Random.Range(minStopTime, maxStopTime);
+        var currentSpeed = speed;
         speed = 0;
+        _rb2d.Sleep();
+       
+        _timeSinceLastStop = 0f;
+        _timeBeforeNextStop = Random.Range(minTimeBeforeNextStop, maxTimeBeforeNextStop);
+
         yield return new WaitForSeconds(stopTime);
+        
+        speed = currentSpeed;
+    }
+
+
+    public void TakeDamage(float damage)
+    {
+        _currentHp -= damage;
+        if (_currentHp <= 0)
+        {
+            _currentState = EnemyState.Die;
+        }
     }
 }
