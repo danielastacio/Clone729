@@ -9,11 +9,10 @@ using UnityEngine.SceneManagement;
 
 public class UI_MainMenu : MonoBehaviour
 {
-    [Header("Assignables")]
+    [Header("Main menu UI")]
     [SerializeField] private GameObject par_MainMenuContent;
     [SerializeField] private GameObject par_LoadContent;
     [SerializeField] private GameObject par_CreditsContent;
-    [SerializeField] private GameObject par_SaveListContent;
 
     [Header("Buttons")]
     [SerializeField] private Button btn_StartNewGame;
@@ -22,17 +21,19 @@ public class UI_MainMenu : MonoBehaviour
     [SerializeField] private Button btn_ShowCreditsUI;
     [SerializeField] private Button btn_QuitGame;
     [SerializeField] private Button btn_ReturnToMainMenu;
-    [SerializeField] private Button btn_SaveFileButtonTemplate;
 
-    [Header("Load data")]
+    [Header("Load menu UI")]
     [SerializeField] private TMP_Text txt_GameSaveName;
-
-    //public but hidden variables
-    [HideInInspector] public string path;
+    [SerializeField] private TMP_Text txt_SaveTime;
+    [SerializeField] private TMP_Text txt_SaveLoc;
+    [SerializeField] private Button btn_SaveFileButtonTemplate;
+    [SerializeField] private GameObject par_SaveListContent;
 
     //private variables
-    private readonly List<string> fileNames = new();
+    private string path;
     private readonly List<Button> saves = new();
+    private string saveTime;
+    private string saveLoc;
 
     private void Awake()
     {
@@ -53,13 +54,8 @@ public class UI_MainMenu : MonoBehaviour
             if (!Directory.Exists(path))
             {
                 DirectoryInfo di = Directory.CreateDirectory(path);
-
-                AddSaveDataToList();
             }
-            else
-            {
-                AddSaveDataToList();
-            }
+            AddSaveDataToList();
         }
         catch (Exception e)
         {
@@ -86,26 +82,50 @@ public class UI_MainMenu : MonoBehaviour
                 {
                     if (line.Contains("Save"))
                     {
-                        fileNames.Add(line);
+                        //create a new button
+                        Button btn_saveFileButton = Instantiate(btn_SaveFileButtonTemplate);
+                        //change new button parent
+                        btn_saveFileButton.transform.SetParent(par_SaveListContent.transform, false);
+
+                        //change button text
+                        btn_saveFileButton.GetComponentInChildren<TMP_Text>().text = line;
+                        //add event to button
+                        btn_saveFileButton.onClick.AddListener(delegate { ShowSaveData(line); });
+
+                        //save new button to list
+                        saves.Add(btn_saveFileButton);
                     }
                 }
             }
         }
+    }
+    private void GetSaveData(string saveName)
+    {
+        //get full path to save  file
+        string saveFilePath = path + @"\_" + saveName + ".txt";
 
-        foreach (string file in fileNames)
+        //read each line in save file
+        foreach (string line in File.ReadLines(saveFilePath))
         {
-            //create a new button
-            Button btn_saveFileButton = Instantiate(btn_SaveFileButtonTemplate);
-            //change new button parent
-            btn_saveFileButton.transform.SetParent(par_SaveListContent.transform, false);
+            //get all separators in line
+            char[] separators = new char[] { ' ', ',', '=', '(', ')', '_' };
+            //remove unwanted separators and split line into separate strings
+            string[] values = line.Split(separators, StringSplitOptions.RemoveEmptyEntries);
 
-            //change button text
-            btn_saveFileButton.GetComponentInChildren<TMP_Text>().text = file;
-            //add event to button
-            btn_saveFileButton.onClick.AddListener(delegate { ShowSaveData(file); });
-
-            //save new button to list
-            saves.Add(btn_saveFileButton);
+            //read global values
+            if (line.Contains("gv_"))
+            {
+                //find save time
+                if (line.Contains("saveTime"))
+                {
+                    saveTime = values[2] + " " + values[3];
+                }
+                //find save location
+                else if (line.Contains("saveLoc"))
+                {
+                    saveLoc = values[2];
+                }
+            }
         }
     }
 
@@ -145,22 +165,29 @@ public class UI_MainMenu : MonoBehaviour
     public void ShowSaveData(string saveName)
     {
         ClearSaveData();
+        GetSaveData(saveName);
 
-        //add save name
-        txt_GameSaveName.text = saveName;
         //add button event
         btn_LoadGame.onClick.AddListener(delegate { LoadGame(saveName); });
-        //add button text
-        btn_LoadGame.GetComponentInChildren<TMP_Text>().text = saveName;
+        //enable button interaction
+        btn_LoadGame.interactable = true;
+
+        //assign save info
+        txt_GameSaveName.text = saveName;
+        txt_SaveTime.text = saveTime;
+        txt_SaveLoc.text = saveLoc;
     }
     private void ClearSaveData()
     {
-        //clear save name
-        txt_GameSaveName.text = "";
         //remove button events
         btn_LoadGame.onClick.RemoveAllListeners();
-        //remove button text
-        btn_LoadGame.GetComponentInChildren<TMP_Text>().text = "";
+        //disable button interaction
+        btn_LoadGame.interactable = false;
+
+        //clear save info
+        txt_GameSaveName.text = "";
+        txt_SaveTime.text = "";
+        txt_SaveLoc.text = "";
     }
 
     public void QuitGame()
