@@ -217,6 +217,8 @@ public class UI_PauseMenu : MonoBehaviour
 
         try
         {
+            ClearSaveData();
+
             AddDataToList();
         }
         catch (Exception e)
@@ -226,16 +228,6 @@ public class UI_PauseMenu : MonoBehaviour
     }
     private void AddDataToList()
     {
-        //clear out previous buttons
-        if (saves.Count > 0)
-        {
-            foreach (Button btn in saves)
-            {
-                Destroy(btn);
-            }
-            saves.Clear();
-        }
-
         //list all files in path into new array
         string[] files = Directory.GetFiles(path);
         //check if new array actually found any files
@@ -316,6 +308,12 @@ public class UI_PauseMenu : MonoBehaviour
     }
     private void ClearSaveData()
     {
+        //clear out previous buttons
+        foreach (Transform child in par_SaveListContent.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
         //remove button events
         btn_LoadGame.onClick.RemoveAllListeners();
         //disable button interaction
