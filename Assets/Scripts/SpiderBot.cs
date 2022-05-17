@@ -1,13 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Interfaces;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 // TODO: Set up ability for spider-bot to walk on walls
 // TODO: Set up die state
 
-public class SpiderBot : MonoBehaviour, IDamageable<float>
+public class SpiderBot : MonoBehaviour, IDamageable
 {
     private enum EnemyState
     {
@@ -20,12 +22,15 @@ public class SpiderBot : MonoBehaviour, IDamageable<float>
     [Header("Stats")] 
     public float maxHp;
     private float _currentHp;
+    public float attackDamage;
     
     [Header("Movement")]
     public float speed;
     public float gcRaycastDist;
     public bool facingRight = true;
     public bool walkOnCeiling;
+    public LayerMask whatIsGround;
+    public LayerMask whatIsWall;
     
     // Controls for stopping and restarting movement
     [Header("Stop Movement")]
@@ -37,14 +42,14 @@ public class SpiderBot : MonoBehaviour, IDamageable<float>
     private float _timeBeforeNextStop;
     
     // Cached references
-    private Rigidbody2D _rb2d;
+    private Rigidbody2D _rb;
     private Transform _groundCheck;
     private IEnumerator _walkCycle;
     
     private void Start()
     {
         _currentHp = maxHp;
-        _rb2d = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
         _groundCheck = transform.GetChild(1).transform;
 
         if (!facingRight)
@@ -86,7 +91,7 @@ public class SpiderBot : MonoBehaviour, IDamageable<float>
             CheckForGround();
             CheckForWall();
 
-            _rb2d.velocity = new Vector2(speed, 0);
+            _rb.velocity = new Vector2(speed, 0);
 
             yield return null;
         }
@@ -97,7 +102,7 @@ public class SpiderBot : MonoBehaviour, IDamageable<float>
         // If spider-bot is on ceiling, this sets raycast to shoot up instead of down.
         var groundCheckDirection = walkOnCeiling ? Vector2.up : Vector2.down;
         var groundCheck = 
-            Physics2D.Raycast(_groundCheck.position, groundCheckDirection, gcRaycastDist);
+            Physics2D.Raycast(_groundCheck.position, groundCheckDirection, gcRaycastDist, whatIsGround);
 
         if (!groundCheck && facingRight)
         {
@@ -114,7 +119,7 @@ public class SpiderBot : MonoBehaviour, IDamageable<float>
         // Depending on facing direction, raycast will point forward
         var wallCheckDirection = facingRight ? Vector2.right : Vector2.left;
         var wallCheck =
-            Physics2D.Raycast(_groundCheck.position, wallCheckDirection, gcRaycastDist);
+            Physics2D.Raycast(_groundCheck.position, wallCheckDirection, gcRaycastDist, whatIsWall);
         if (wallCheck && facingRight)
         {
             Flip(-180);
@@ -137,7 +142,7 @@ public class SpiderBot : MonoBehaviour, IDamageable<float>
         var stopTime = Random.Range(minStopTime, maxStopTime);
         var currentSpeed = speed;
         speed = 0;
-        _rb2d.Sleep();
+        _rb.Sleep();
        
         _timeSinceLastStop = 0f;
         _timeBeforeNextStop = Random.Range(minTimeBeforeNextStop, maxTimeBeforeNextStop);
@@ -147,13 +152,21 @@ public class SpiderBot : MonoBehaviour, IDamageable<float>
         speed = currentSpeed;
     }
 
-
     public void TakeDamage(float damage)
     {
         _currentHp -= damage;
         if (_currentHp <= 0)
         {
             _currentState = EnemyState.Die;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
+            damageable.TakeDamage(attackDamage);
         }
     }
 }
