@@ -130,7 +130,7 @@ public class UI_PauseMenu : MonoBehaviour
                 List<int> numbers = new();
 
                 //get all separators in line
-                char[] separators = new char[] { 'X', '.', '0' };
+                char[] separators = new char[] { 'X', '.' };
 
                 foreach (string line in files)
                 {
@@ -154,6 +154,7 @@ public class UI_PauseMenu : MonoBehaviour
                 int newestSaveNumber = Mathf.Max(0, numbers[^1]);
 
                 newestSaveNumber++;
+                Debug.Log(newestSaveNumber);
 
                 string addedSaveNumber = "";
                 if (newestSaveNumber < 10)
@@ -169,6 +170,10 @@ public class UI_PauseMenu : MonoBehaviour
                          && newestSaveNumber < 1000)
                 {
                     addedSaveNumber = "0" + newestSaveNumber.ToString();
+                }
+                else if (newestSaveNumber >= 1000)
+                {
+                    addedSaveNumber = newestSaveNumber.ToString();
                 }
 
                 saveFilePath += addedSaveNumber;
