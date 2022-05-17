@@ -250,13 +250,20 @@ public class UI_PauseMenu : MonoBehaviour
                 {
                     if (line.Contains("Save"))
                     {
+                        //list all separators
+                        char[] extraSeparators = new char[] { 'X', '0' };
+                        //remove unwanted separators and split line into separate strings
+                        string[] extraLines = line.Split(extraSeparators, StringSplitOptions.RemoveEmptyEntries);
+                        //new text
+                        string txt = extraLines[0] + " " + extraLines[1];
+
                         //create a new button
                         Button btn_saveFileButton = Instantiate(btn_SaveFileButtonTemplate);
                         //change new button parent
                         btn_saveFileButton.transform.SetParent(par_SaveListContent.transform, false);
 
                         //change button text
-                        btn_saveFileButton.GetComponentInChildren<TMP_Text>().text = line;
+                        btn_saveFileButton.GetComponentInChildren<TMP_Text>().text = txt;
                         //add event to button
                         btn_saveFileButton.onClick.AddListener(delegate { ShowSaveData(line); });
 
@@ -306,8 +313,15 @@ public class UI_PauseMenu : MonoBehaviour
         //enable button interaction
         btn_LoadGame.interactable = true;
 
+        //list all separators
+        char[] extraSeparators = new char[] { 'X', '0' };
+        //remove unwanted separators and split line into separate strings
+        string[] extraLines = saveName.Split(extraSeparators, StringSplitOptions.RemoveEmptyEntries);
+        //new text
+        string txt = extraLines[0] + " " + extraLines[1];
+
         //assign save info
-        txt_GameSaveName.text = saveName;
+        txt_GameSaveName.text = txt;
         txt_SaveTime.text = saveTime;
         txt_SaveLoc.text = saveLoc;
     }
