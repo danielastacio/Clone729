@@ -902,7 +902,7 @@ MonoBehaviour:
   speed: 5
   jumpForce: 12.5
   maxJumpHeight: 10
-  offsetRadius: 0
+  offsetRadius: -0.5
   fallMultiplier: 2.5
   groundCheckRadius: 0.5
   whatIsGround:
