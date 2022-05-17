@@ -215,10 +215,15 @@ public class UI_PauseMenu : MonoBehaviour
         par_PauseMenuContent.SetActive(false);
         par_LoadMenuUI.SetActive(true);
 
+        //clear out previous buttons
+        foreach (Transform child in par_SaveListContent.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        ClearSaveData();
+
         try
         {
-            ClearSaveData();
-
             AddDataToList();
         }
         catch (Exception e)
@@ -308,12 +313,6 @@ public class UI_PauseMenu : MonoBehaviour
     }
     private void ClearSaveData()
     {
-        //clear out previous buttons
-        foreach (Transform child in par_SaveListContent.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
         //remove button events
         btn_LoadGame.onClick.RemoveAllListeners();
         //disable button interaction
