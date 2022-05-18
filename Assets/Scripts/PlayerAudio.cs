@@ -16,11 +16,11 @@ public class PlayerAudio : MonoBehaviour
 
     void OnEnable()
     {
-        Player.PlayerHealed += PlayHealing;
+        //Player.PlayerHealed += PlayHealing;
     }
     private void OnDisable()
     {
-        Player.PlayerHealed -= PlayHealing;
+        //Player.PlayerHealed -= PlayHealing;
     }
     #endregion
 }
