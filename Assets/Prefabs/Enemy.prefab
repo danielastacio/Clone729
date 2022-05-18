@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 1704585594299060261}
   - component: {fileID: 1704585594299060282}
   - component: {fileID: 1704585594299060283}
-  - component: {fileID: 1503021785595427093}
-  - component: {fileID: 1704585594299060280}
+  - component: {fileID: 7968484937769075984}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -84,23 +83,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &1503021785595427093
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1704585594299060281}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d63da978b6f61494680b63f10cd7359c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHp: 3
-  attackDamage: 1
-  speed: 2.5
-  facingRight: 1
---- !u!114 &1704585594299060280
+--- !u!114 &7968484937769075984
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -115,8 +98,8 @@ MonoBehaviour:
   maxHp: 3
   attackDamage: 1
   speed: 2.5
-  facingRight: 1
-  startingPosition: 0
+  gcRaycastDist: 1
+  facingRight: 0
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
@@ -127,6 +110,7 @@ MonoBehaviour:
   maxTimeBeforeNextStop: 2.5
   minStopTime: 0.5
   maxStopTime: 1.3
+  startingPosition: 0
 --- !u!1 &1704585594412071340
 GameObject:
   m_ObjectHideFlags: 0

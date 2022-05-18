@@ -5,7 +5,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 namespace scr_Enemies
 {
-    public class EnemyController : MonoBehaviour
+    public class EnemyController : MonoBehaviour, IDamageable
     {
         protected enum EnemyState
         {
@@ -14,7 +14,7 @@ namespace scr_Enemies
             Die
         };
     
-        private EnemyState _currentState = EnemyState.Idle;
+        protected EnemyState CurrentState = EnemyState.Idle;
 
         [Header("Stats")] 
         public float maxHp;
@@ -23,14 +23,13 @@ namespace scr_Enemies
 
         [Header("Movement")] 
         public float speed;
-        private float _horizSpeed;
+        protected float HorizSpeed;
         [SerializeField] protected float gcRaycastDist;
         [SerializeField] protected bool facingRight;
         protected Vector2 GroundCheckDirection;
-        protected Vector2 WallCheckDirection;
-
-        [SerializeField] protected LayerMask whatIsGround;
-        [SerializeField] protected LayerMask whatIsWall;
+        private Vector2 _wallCheckDirection;
+        [SerializeField] private LayerMask whatIsGround;
+        [SerializeField] private LayerMask whatIsWall;
         
         // Controls for stopping and restarting movement
         [Header("Stop Movement")]
@@ -38,31 +37,31 @@ namespace scr_Enemies
         public float maxTimeBeforeNextStop;
         public float minStopTime;
         public float maxStopTime;
-        private float _timeSinceLastStop;
-        private float _timeBeforeNextStop;
+        protected float TimeSinceLastStop;
+        protected float TimeBeforeNextStop;
         
         // Cached references
-        private Rigidbody2D _rb;
+        protected Rigidbody2D Rb;
         private Transform _groundCheck;
         private IEnumerator _walkCycle;
         
-        private void Start()
+        private void Awake()
         {
             _currentHp = maxHp;
-            _rb = GetComponent<Rigidbody2D>();
+            Rb = GetComponent<Rigidbody2D>();
             _groundCheck = transform.GetChild(1).transform;
             
             SetRotationAndSpeed();
         }
         
-        private void FixedUpdate()
+        protected virtual void FixedUpdate()
         {
-            if (_currentState == EnemyState.Idle && _walkCycle == null)
+            if (CurrentState == EnemyState.Idle && _walkCycle == null)
             {
                 _walkCycle = WalkCycle();
                 StartCoroutine(WalkCycle());
             }
-            else if (_currentState == EnemyState.Die)
+            else if (CurrentState == EnemyState.Die)
             {
                 StopCoroutine(WalkCycle());
                 Destroy(gameObject);
@@ -73,20 +72,20 @@ namespace scr_Enemies
         {
             if (facingRight)
             {
-                _horizSpeed = speed;
+                HorizSpeed = speed;
                 SetHorizontalRotation();
                 SetWallCheck(Vector2.right);
             }
             else if (!facingRight)
             {
-                _horizSpeed = -speed;
+                HorizSpeed = -speed;
                 SetHorizontalRotation();
                 SetWallCheck(Vector2.left);
             }
             GroundCheckDirection = Vector2.down;
         }
     
-        private void SetHorizontalRotation()
+        protected virtual void SetHorizontalRotation()
         {
             if (facingRight)
             {
@@ -98,12 +97,12 @@ namespace scr_Enemies
             }
         }
     
-        private void SetWallCheck(Vector2 direction)
+        protected void SetWallCheck(Vector2 direction)
         {
-            WallCheckDirection = direction;
+            _wallCheckDirection = direction;
         }
 
-        private void CheckForGround()
+        protected void CheckForGround()
         {
             var groundCheck = 
                 Physics2D.Raycast(_groundCheck.position, GroundCheckDirection, gcRaycastDist, whatIsGround);
@@ -115,10 +114,10 @@ namespace scr_Enemies
 
         }
 
-        private void CheckForWall()
+        protected void CheckForWall()
         {
             var wallCheck =
-                Physics2D.Raycast(_groundCheck.position, WallCheckDirection, gcRaycastDist, whatIsWall);
+                Physics2D.Raycast(_groundCheck.position, _wallCheckDirection, gcRaycastDist, whatIsWall);
         
             if (wallCheck)
             {
@@ -134,41 +133,59 @@ namespace scr_Enemies
         
         protected virtual IEnumerator WalkCycle()
         {
-            while (_currentState == EnemyState.Idle)
+            while (CurrentState == EnemyState.Idle)
             {
                 var stopChance = Random.Range(0f, 100f);
             
-                if (stopChance < 10 && _timeSinceLastStop > _timeBeforeNextStop)
+                if (stopChance < 10 && TimeSinceLastStop > TimeBeforeNextStop)
                 {
                     yield return StartCoroutine(Stop());
                 }
                 else
                 {
-                    _timeSinceLastStop += Time.deltaTime;
+                    TimeSinceLastStop += Time.deltaTime;
                 }
             
                 CheckForGround();
                 CheckForWall();
 
-                _rb.velocity = new Vector2(_horizSpeed, 0);
+                Rb.velocity = new Vector2(HorizSpeed, 0);
 
                 yield return null;
             }
         }
     
-        private IEnumerator Stop()
+        protected IEnumerator Stop()
         {
             var stopTime = Random.Range(minStopTime, maxStopTime);
-            var currentSpeed = _rb.velocity;
-            _rb.velocity = Vector2.zero;
-            _rb.Sleep();
+            var currentSpeed = Rb.velocity;
+            Rb.velocity = Vector2.zero;
+            Rb.Sleep();
        
-            _timeSinceLastStop = 0f;
-            _timeBeforeNextStop = Random.Range(minTimeBeforeNextStop, maxTimeBeforeNextStop);
+            TimeSinceLastStop = 0f;
+            TimeBeforeNextStop = Random.Range(minTimeBeforeNextStop, maxTimeBeforeNextStop);
 
             yield return new WaitForSeconds(stopTime);
         
-            _rb.velocity = currentSpeed;
+            Rb.velocity = currentSpeed;
+        }
+
+        public void TakeDamage(float damage)
+        {
+            _currentHp -= damage;
+            if (_currentHp <= 0)
+            {
+                CurrentState = EnemyState.Die;
+            }
+        }
+        
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            if (other.gameObject.CompareTag("Player"))
+            {
+                IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
+                damageable.TakeDamage(attackDamage);
+            }
         }
     }
 }
