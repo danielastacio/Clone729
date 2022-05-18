@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{A81FF108-CBDE-4810-8A6A-B6363CFD42AE}" SchemaVersion="103">
+	<AudioObjects>
+		<WorkUnit Name="Default Work Unit" ID="{A81FF108-CBDE-4810-8A6A-B6363CFD42AE}" PersistMode="Standalone">
+			<ChildrenList>
+				<Sound Name="Steam" ID="{98F4CBBA-0754-4379-AAED-34E1D7687F1A}" ShortID="698843713">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{233A2164-A57C-4DC9-937A-788E0EADA52D}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BCE363C7-E9D4-46BF-BEF8-117B56ABF35F}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="Steam 2" ID="{9D8BCE69-9062-4283-B10A-69BCAC02D6E3}">
+							<Language>SFX</Language>
+							<AudioFile>Steam 2.wav</AudioFile>
+							<MediaIDList>
+								<MediaID ID="740774714"/>
+							</MediaIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ObjectLists/>
+					<ActiveSourceList>
+						<ActiveSource Name="Steam 2" ID="{9D8BCE69-9062-4283-B10A-69BCAC02D6E3}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+			</ChildrenList>
+		</WorkUnit>
+	</AudioObjects>
+</WwiseDocument>
