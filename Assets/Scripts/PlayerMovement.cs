@@ -15,6 +15,12 @@ public class PlayerMovement : MonoBehaviour
     public Transform groundCheck;
     public LayerMask groundLayer;
 
+    //roll
+    Vector2 rollDir;
+    bool isRolling;
+    public float rollVelocity = 14f;
+    public float rollTime = 0.5f;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -38,12 +44,39 @@ public class PlayerMovement : MonoBehaviour
             _rb.velocity = new Vector2(_rb.velocity.x, _rb.velocity.y * 0.5f);
         }
 
+        //ground roll animation yet to include
+        //if (Input.GetButtonDown("Fire3") && IsGrounded())
+        if (Input.GetKeyDown(KeyCode.DownArrow) && IsGrounded())
+        {
+            isRolling = true;
+            rollDir = new Vector2(horizontal, 0f);
+
+            //
+            StartCoroutine(nameof(StopRolling));
+        }
+        if (isRolling)
+        {
+            _rb.velocity = rollDir.normalized * rollVelocity;
+            return;
+        }
+
+
         Flip();
     }
 
     private void FixedUpdate()
     {
-        _rb.velocity = new Vector2(horizontal * moveSpeed, _rb.velocity.y);
+        if (!isRolling)
+        {
+            _rb.velocity = new Vector2(horizontal * moveSpeed, _rb.velocity.y);
+
+        }
+    }
+
+    public IEnumerator StopRolling()
+    {
+        yield return new WaitForSeconds(rollTime);
+        isRolling = false;
     }
 
     private bool IsGrounded()

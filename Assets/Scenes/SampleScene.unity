@@ -285,8 +285,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 738140885}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.79, y: -1.34, z: 0}
-  m_LocalScale: {x: 12.7804, y: 1, z: 1}
+  m_LocalPosition: {x: 4.8862, y: -1.34, z: 0}
+  m_LocalScale: {x: 21.16562, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -330,7 +330,7 @@ GameObject:
   m_Layer: 0
   m_Name: GroundCheck
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -427,8 +427,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1080335415}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.0817, y: -2.7689247, z: 0}
-  m_LocalScale: {x: 12.7804, y: 1, z: 1}
+  m_LocalPosition: {x: -6.1321, y: -2.7689247, z: 0}
+  m_LocalScale: {x: 24.981848, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -894,3 +894,5 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  rollVelocity: 12
+  rollTime: 0.5
