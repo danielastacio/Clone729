@@ -17,7 +17,9 @@ public class Player : MonoBehaviour, IDamageable
     public float jumpForce;
     public float maxJumpHeight;
     private bool _isGrounded;
-    
+
+    [SerializeField]
+    private float offsetRadius;
     // Cached References
     private Rigidbody2D _rb;
 
@@ -27,7 +29,7 @@ public class Player : MonoBehaviour, IDamageable
     [Header("Ground Check")]
     public float groundCheckRadius;
     public LayerMask whatIsGround;
-    private Vector3 _groundCheckPos;
+    private Vector2 _groundCheckPos;
 
     void Awake()
     {
@@ -40,6 +42,7 @@ public class Player : MonoBehaviour, IDamageable
         Move();
         CheckIfGrounded();
         Jump();
+
     }
 
     void Move()
@@ -51,14 +54,15 @@ public class Player : MonoBehaviour, IDamageable
 
     void CheckIfGrounded()
     {
-        _groundCheckPos = transform.GetChild(1).transform.position;
-        var groundCheck = 
+       _groundCheckPos = new Vector2(transform.position.x, transform.position.y + offsetRadius);
+        var groundCheck =
             Physics2D.OverlapCircle(_groundCheckPos, groundCheckRadius, whatIsGround);
 
         if (groundCheck)
         {
             _isGrounded = true;
         }
+
     }
     
     void Jump()
