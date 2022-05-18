@@ -9,6 +9,8 @@ using UnityEngine.SceneManagement;
 
 public class UI_MainMenu : MonoBehaviour
 {
+    private static UI_MainMenu instance;
+    public static UI_MainMenu Instance { get { return instance; } }
     [Header("Main menu UI")]
     [SerializeField] private GameObject par_MainMenuContent;
     [SerializeField] private GameObject par_LoadContent;
@@ -44,6 +46,11 @@ public class UI_MainMenu : MonoBehaviour
 
     private void Awake()
     {
+        if(!instance && instance != this )
+        {
+            instance = this;
+        }
+
         btn_StartNewGame.onClick.AddListener(StartNewGame);
         btn_ShowLoadUI.onClick.AddListener(ShowLoadUI);
         btn_ShowCreditsUI.onClick.AddListener(ShowCreditsUI);
