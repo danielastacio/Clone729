@@ -51,6 +51,11 @@ public class UI_MainMenu : MonoBehaviour
             instance = this;
         }
 
+        else
+        {
+            Destroy(gameObject);
+        }
+
         btn_StartNewGame.onClick.AddListener(StartNewGame);
         btn_ShowLoadUI.onClick.AddListener(ShowLoadUI);
         btn_ShowCreditsUI.onClick.AddListener(ShowCreditsUI);
