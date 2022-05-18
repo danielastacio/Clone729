@@ -31,8 +31,9 @@ public class NPCScript : MonoBehaviour
             Debug.DrawRay(transform.position, new Vector2(1, -1) * 2, Color.green, 60);
             transform.Translate(Vector2.right * speed/10);
 
-            Debug.Log(h);
+
         }
        
     }
+    
 }   
