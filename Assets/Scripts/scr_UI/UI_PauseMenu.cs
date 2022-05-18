@@ -9,6 +9,9 @@ using UnityEngine.SceneManagement;
 
 public class UI_PauseMenu : MonoBehaviour
 {
+    [Header("Script checking")]
+    [SerializeField] private Inv_Player PlayerInventoryScript;
+
     [Header("Pause menu UI")]
     [SerializeField] private Button btn_ReturnToGame;
     [SerializeField] private Button btn_ReturnToPauseMenu;
@@ -109,8 +112,11 @@ public class UI_PauseMenu : MonoBehaviour
         par_PauseMenuContent.SetActive(false);
         par_PauseMenuUI.SetActive(false);
 
-        //continues game timer
-        Time.timeScale = 1;
+        if (!PlayerInventoryScript.isInventoryOpen)
+        {
+            //continues game timer
+            Time.timeScale = 1;
+        }
 
         isGamePaused = false;
     }
