@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{3CD60D20-CF1B-4098-AFC6-9D5154059967}" SchemaVersion="103">
+	<AudioObjects>
+		<WorkUnit Name="Main Menu" ID="{3CD60D20-CF1B-4098-AFC6-9D5154059967}" PersistMode="Standalone">
+			<ChildrenList>
+				<ActorMixer Name="Main Menu Mixer" ID="{F2223D04-4D3D-4E9F-B725-352D503952BE}" ShortID="816389664">
+					<PropertyList>
+						<Property Name="Volume" Type="Real64">
+							<ValueList>
+								<Value>6</Value>
+							</ValueList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{233A2164-A57C-4DC9-937A-788E0EADA52D}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BCE363C7-E9D4-46BF-BEF8-117B56ABF35F}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<Sound Name="Menu Select" ID="{BE723D15-3F0B-4E04-87E1-1D1BB68C0594}" ShortID="614990501">
+							<PropertyList>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>5</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{233A2164-A57C-4DC9-937A-788E0EADA52D}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BCE363C7-E9D4-46BF-BEF8-117B56ABF35F}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Menu Select" ID="{16E7EB54-B40C-4796-A359-04D8B203AA6C}">
+									<Language>SFX</Language>
+									<AudioFile>Menu Select.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="1045533594"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="Menu Select" ID="{16E7EB54-B40C-4796-A359-04D8B203AA6C}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="Menu Enter" ID="{ACE46D90-EC11-4BDA-9025-C08D562400D3}" ShortID="249052432">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{233A2164-A57C-4DC9-937A-788E0EADA52D}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BCE363C7-E9D4-46BF-BEF8-117B56ABF35F}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Menu Enter" ID="{CC7BFD33-1370-4153-9BEB-35EA9152DF57}">
+									<Language>SFX</Language>
+									<AudioFile>Menu Enter.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="179917572"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="Menu Enter" ID="{CC7BFD33-1370-4153-9BEB-35EA9152DF57}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="Menu Return" ID="{2969DD64-D79F-4D0F-B6DF-D7323CDA9462}" ShortID="491409651">
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{233A2164-A57C-4DC9-937A-788E0EADA52D}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BCE363C7-E9D4-46BF-BEF8-117B56ABF35F}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Menu Return" ID="{AFEE568A-44C3-45A3-9881-8FDCE744F059}">
+									<Language>SFX</Language>
+									<AudioFile>Menu Return.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="684581930"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="Menu Return" ID="{AFEE568A-44C3-45A3-9881-8FDCE744F059}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+						<Sound Name="Start Game" ID="{D8E86FF1-11FB-4C50-883E-12D130D22CA3}" ShortID="219712672">
+							<PropertyList>
+								<Property Name="Volume" Type="Real64">
+									<ValueList>
+										<Value>3</Value>
+									</ValueList>
+								</Property>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Conversion">
+									<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{233A2164-A57C-4DC9-937A-788E0EADA52D}"/>
+								</Reference>
+								<Reference Name="OutputBus">
+									<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{BCE363C7-E9D4-46BF-BEF8-117B56ABF35F}"/>
+								</Reference>
+							</ReferenceList>
+							<ChildrenList>
+								<AudioFileSource Name="Start Game" ID="{2A3DDE6C-BA07-4F0F-BE35-A2D087E1A9B7}">
+									<Language>SFX</Language>
+									<AudioFile>Start Game.wav</AudioFile>
+									<MediaIDList>
+										<MediaID ID="581976253"/>
+									</MediaIDList>
+								</AudioFileSource>
+							</ChildrenList>
+							<ObjectLists/>
+							<ActiveSourceList>
+								<ActiveSource Name="Start Game" ID="{2A3DDE6C-BA07-4F0F-BE35-A2D087E1A9B7}" Platform="Linked"/>
+							</ActiveSourceList>
+						</Sound>
+					</ChildrenList>
+					<ObjectLists/>
+				</ActorMixer>
+			</ChildrenList>
+		</WorkUnit>
+	</AudioObjects>
+</WwiseDocument>
