@@ -22,6 +22,13 @@ public class UI_MainMenu : MonoBehaviour
     [SerializeField] private Button btn_QuitGame;
     [SerializeField] private Button btn_ReturnToMainMenu;
 
+    public Button BTN_StartNewGame { get { return btn_StartNewGame; } }
+    public Button BTN_ShowLoadUI { get { return btn_ShowLoadUI; } }
+    public Button BTN_LoadGame { get { return btn_LoadGame; } }
+    public Button BTN_ShowCreditsUI { get { return btn_ShowCreditsUI; } }
+    public Button BTN_QuitGame { get { return btn_QuitGame; } }
+    public Button BTN_ReturnToMainMenu { get { return btn_ReturnToMainMenu; } }
+
     [Header("Load menu UI")]
     [SerializeField] private TMP_Text txt_GameSaveName;
     [SerializeField] private TMP_Text txt_SaveTime;
