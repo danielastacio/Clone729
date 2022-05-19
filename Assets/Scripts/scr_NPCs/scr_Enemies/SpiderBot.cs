@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 namespace scr_Enemies
 {
-    public class SpiderBot : EnemyController
+    public class SpiderBot : Enemy
     {
         private enum Positions
         {
@@ -120,17 +120,17 @@ namespace scr_Enemies
         
         protected override IEnumerator WalkCycle()
         {
-            while (CurrentState == EnemyState.Idle)
+            while (CurrentState == State.Patrol)
             {
                 var stopChance = Random.Range(0f, 100f);
             
-                if (stopChance < 10 && TimeSinceLastStop > TimeBeforeNextStop)
+                if (stopChance < 10 && TimeSinceLastIdle > TimeBeforeNextIdle)
                 {
-                    yield return StartCoroutine(Stop());
+                    CurrentState = State.Idle;
                 }
                 else
                 {
-                    TimeSinceLastStop += Time.deltaTime;
+                    TimeSinceLastIdle += Time.deltaTime;
                 }
             
                 CheckForGround();
