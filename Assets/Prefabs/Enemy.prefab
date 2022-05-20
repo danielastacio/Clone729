@@ -95,8 +95,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 215dac9d201ec884ebd0c6b61d2786ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 3
-  attackDamage: 1
   speed: 2.5
   gcRaycastDist: 1
   facingRight: 0
@@ -106,10 +104,14 @@ MonoBehaviour:
   whatIsWall:
     serializedVersion: 2
     m_Bits: 128
-  minTimeBeforeNextStop: 2
-  maxTimeBeforeNextStop: 2.5
-  minStopTime: 0.5
-  maxStopTime: 1.3
+  chanceToStop: 10
+  minTimeBeforeNextIdle: 2
+  maxTimeBeforeNextIdle: 2.5
+  minIdleTime: 0.5
+  maxIdleTime: 1.3
+  maxHp: 2
+  touchDamage: 1
+  attackDamage: 0
   startingPosition: 0
 --- !u!1 &1704585594412071340
 GameObject:

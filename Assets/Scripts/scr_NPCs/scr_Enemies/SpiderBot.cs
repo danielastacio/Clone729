@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using Interfaces;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 // TODO: Set up die state
 
-namespace scr_Enemies
+namespace scr_NPCs.scr_Enemies
 {
     public class SpiderBot : Enemy
     {
@@ -118,13 +117,13 @@ namespace scr_Enemies
             }
         }
         
-        protected override IEnumerator WalkCycle()
+        protected override IEnumerator Patrol()
         {
             while (CurrentState == State.Patrol)
             {
                 var stopChance = Random.Range(0f, 100f);
             
-                if (stopChance < 10 && TimeSinceLastIdle > TimeBeforeNextIdle)
+                if (stopChance < chanceToStop && TimeSinceLastIdle > TimeBeforeNextIdle)
                 {
                     CurrentState = State.Idle;
                 }
