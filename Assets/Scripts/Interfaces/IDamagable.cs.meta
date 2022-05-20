@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/MainMenuAudio.cs.meta
-guid: 5e60eaf4f3a531f45926534706d5e8a9
-========
-guid: 0b08ab5fb078db04498f694dc0d6f57d
->>>>>>>> main:Assets/Scripts/scr_Player/Player.cs.meta
+guid: e9ca2d72fe2ce8d4cba5fa2a53870b3d
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
