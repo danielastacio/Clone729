@@ -62,6 +62,8 @@ namespace scr_NPCs
         protected virtual void FixedUpdate()
         {
             CheckActiveState();
+            CheckForGround();
+            CheckForWall();
         }
     
         protected void CheckActiveState()
@@ -215,9 +217,6 @@ namespace scr_NPCs
                 {
                     TimeSinceLastIdle += Time.deltaTime;
                 }
-            
-                CheckForGround();
-                CheckForWall();
 
                 Rb.velocity = new Vector2(HorizSpeed, 0);
 
