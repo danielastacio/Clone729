@@ -1,5 +1,9 @@
+using System;
+using System.Collections;
 using scr_Interfaces;
+using Unity.VisualScripting;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace scr_NPCs.scr_Enemies
 {
@@ -19,10 +23,12 @@ namespace scr_NPCs.scr_Enemies
         [Header("Enemy Layer Masks")]
         [SerializeField] protected LayerMask whatIsPlayer;
         
-        // Raycasts
-        private RaycastHit2D _playerInSightRange;
-        private RaycastHit2D _playerInAttackRange;
-        private RaycastHit2D _playerInRetreatRange;
+        // Player Checks
+        private Collider2D _playerInSightRange;
+        private Collider2D _playerInAttackRange;
+        private Collider2D _playerInRetreatRange;
+
+        private Vector3 _playerPos;
         
         private void Start()
         {
@@ -31,34 +37,35 @@ namespace scr_NPCs.scr_Enemies
 
         private void Update()
         {
-            CheckForPlayer();
             Debug.DrawRay(transform.position, WallCheckDirection * sightRange, Color.blue);
-            Debug.DrawRay(transform.position - new Vector3(0, 0.5f, 0), WallCheckDirection * attackRange, Color.red);
-            Debug.DrawRay(transform.position + new Vector3(0, 0.5f, 0), WallCheckDirection * retreatRange, Color.green);
+            CheckForPlayer();
         }
         
         protected void CheckForPlayer()
         {
             _playerInSightRange = 
-                Physics2D.Raycast(transform.position, WallCheckDirection, sightRange, whatIsPlayer);
+                Physics2D.OverlapCircle(transform.position, sightRange, whatIsPlayer);
             _playerInAttackRange =
-                Physics2D.Raycast(transform.position, WallCheckDirection, attackRange, whatIsPlayer);
+                Physics2D.OverlapCircle(transform.position, attackRange, whatIsPlayer);
             _playerInRetreatRange =
-                Physics2D.Raycast(transform.position, WallCheckDirection, retreatRange, whatIsPlayer);
+                Physics2D.OverlapCircle(transform.position, retreatRange, whatIsPlayer);
 
-            if (_playerInRetreatRange)
-            {
-                CurrentState = State.Retreat;
-                Debug.Log("Run Away!");
-            }
-            else if (_playerInAttackRange)
-            {
-                CurrentState = State.Attack;
-                Debug.Log("Attacking!");
-            }
-            else if (_playerInSightRange)
+            
+            if (_playerInSightRange)
             {
                 Debug.Log("Player spotted!");
+                _playerPos = _playerInSightRange.transform.position;
+            
+                if (_playerInRetreatRange)
+                {
+                    CurrentState = State.Retreat;
+                    Debug.Log("Run Away!");
+                }
+                else if (_playerInAttackRange)
+                {
+                    CurrentState = State.Attack;
+                    Debug.Log("Attacking!");
+                }
             }
             else
             {
@@ -66,7 +73,7 @@ namespace scr_NPCs.scr_Enemies
                 Debug.Log("Where'd he go?");
             }
         }
-        
+
         public void TakeDamage(float damage)
         {
             _currentHp -= damage;
@@ -83,6 +90,39 @@ namespace scr_NPCs.scr_Enemies
                 IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
                 damageable.TakeDamage(touchDamage);
                 Flip();
+            }
+        }
+
+        protected override IEnumerator Attack()
+        {
+            while (CurrentState == State.Attack)
+            {
+                var facingPlayer =
+                    Physics2D.Raycast(transform.position, WallCheckDirection, sightRange, whatIsPlayer);
+
+                if (!facingPlayer)
+                {
+                    Flip();
+                }
+                else
+                {
+                    // Set up attack logic.
+                }
+
+                yield return null;
+            }
+        }
+
+        protected override IEnumerator Retreat()
+        {
+            Flip();
+            while (CurrentState == State.Retreat)
+            {
+                while (_playerInRetreatRange)
+                {
+                    Rb.velocity = new Vector2(HorizSpeed, 0);
+                    yield return null;
+                }
             }
         }
     }
