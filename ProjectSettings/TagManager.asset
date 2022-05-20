@@ -4,17 +4,16 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Ground
-  - NPC
+  - Wall
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Terrain
+  - 
   - Water
   - UI
-  - 
-  - 
+  - Ground
+  - Wall
   - 
   - 
   - 
