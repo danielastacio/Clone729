@@ -34,6 +34,13 @@ public class Env_Item : MonoBehaviour
         str_FakeItemName = str_ItemName.Replace('_', ' ');
     }
 
+    /*
+    --------------------------------------------
+    DEBUGGING FEATURE - REMOVE BEFORE RELEASE!!!
+
+    adds a placeholder item into players inventory
+    --------------------------------------------
+    */
     public void PickUpTest()
     {
         GameObject duplicate = Instantiate(gameObject,

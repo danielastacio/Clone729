@@ -11,6 +11,7 @@ public class UI_PauseMenu : MonoBehaviour
 {
     [Header("Script checking")]
     [SerializeField] private Inv_Player PlayerInventoryScript;
+    [SerializeField] private GameObject par_Managers;
 
     [Header("Pause menu UI")]
     [SerializeField] private Button btn_ReturnToGame;
@@ -94,11 +95,15 @@ public class UI_PauseMenu : MonoBehaviour
 
     public void PauseGame()
     {
-        isGamePaused = true;
-
         //pauses game timer
         Time.timeScale = 0;
     }
+    public void UnpauseGame()
+    {
+        //continues game timer
+        Time.timeScale = 1;
+    }
+
     public void OpenPauseMenuUI()
     {
         PauseGame();
@@ -112,13 +117,11 @@ public class UI_PauseMenu : MonoBehaviour
         par_PauseMenuContent.SetActive(false);
         par_PauseMenuUI.SetActive(false);
 
-        if (!PlayerInventoryScript.isInventoryOpen)
+        if (!PlayerInventoryScript.isInventoryOpen
+            && !par_Managers.GetComponent<UI_SkillTree>().isSkillTreeUIOpen)
         {
-            //continues game timer
-            Time.timeScale = 1;
+            UnpauseGame();
         }
-
-        isGamePaused = false;
     }
 
     public void SaveGame()
