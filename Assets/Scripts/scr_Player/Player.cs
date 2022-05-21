@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Interfaces;
+using scr_Interfaces;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 // TODO: Link SFX and Animations
 // TODO: Set up a max jump height, variable created
@@ -31,18 +31,41 @@ public class Player : MonoBehaviour, IDamageable
     public LayerMask whatIsGround;
     private Vector2 _groundCheckPos;
 
+    [Header("Scripts")]
+    [SerializeField] private GameObject par_Managers;
+    private Manager_UIReuse UIReuseScript;
+
     void Awake()
     {
         currentHp = maxHp;
         _rb = GetComponent<Rigidbody2D>();
+
+        UIReuseScript = par_Managers.GetComponent<Manager_UIReuse>();
+        UIReuseScript.UpdatePlayerHealthUI(currentHp, maxHp);
     }
-    
+
+    private void Update()
+    {
+        /*
+        --------------------------------------------
+        DEBUGGING FEATURE - REMOVE BEFORE RELEASE!!!
+
+        reduces players health by 10 while health is over 0
+        --------------------------------------------
+        */
+        if (!par_Managers.GetComponent<UI_PauseMenu>().isGamePaused
+            && Input.GetKeyDown(KeyCode.V)
+            && currentHp -10 >= 0)
+        {
+            TakeDamage(10);
+        }
+    }
+
     void FixedUpdate()
     {
         Move();
         CheckIfGrounded();
         Jump();
-
     }
 
     void Move()
@@ -76,7 +99,7 @@ public class Player : MonoBehaviour, IDamageable
         }
         else if (_rb.velocity.y < 0 && !jumpInput)
         {
-            _rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+            _rb.velocity += (fallMultiplier - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
         }
     }
     
@@ -87,8 +110,24 @@ public class Player : MonoBehaviour, IDamageable
         if (currentHp <= 0)
         {
             // Play death animation
+
             // Reset level on death
+            //SceneManager.LoadScene(1);
+
+            currentHp = 0;
+            
+            foreach(Transform child in UIReuseScript.PlayerHealthBar.transform)
+            {
+                if (child.name == "bar")
+                {
+                    child.gameObject.SetActive(false);
+                    break;
+                }
+            }
         }
+
+        Debug.Log("Player took " + damage + " damage!");
+        UIReuseScript.UpdatePlayerHealthUI(currentHp, maxHp);
     }
     
     private void OnDrawGizmos()

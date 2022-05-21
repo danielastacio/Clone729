@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
         float msec = Mathf.FloorToInt(deltaTime * 1000.0f);
         float fps = Mathf.FloorToInt(1.0f / deltaTime);
 
-        timer += Time.deltaTime;
+        timer += Time.unscaledDeltaTime;
 
         if (timer > 0.1f)
         {

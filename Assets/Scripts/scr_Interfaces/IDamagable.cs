@@ -1,4 +1,4 @@
-namespace Interfaces
+namespace scr_Interfaces
 {
     public interface IDamageable
     {

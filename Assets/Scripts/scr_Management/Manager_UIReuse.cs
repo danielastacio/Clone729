@@ -6,9 +6,13 @@ using TMPro;
 
 public class Manager_UIReuse : MonoBehaviour
 {
-    [Header("Script checking")]
+    [Header("Scripts")]
     [SerializeField] private Inv_Player PlayerInventoryScript;
+    [SerializeField] private GameObject par_Managers;
 
+    [Header("Player UI")]
+    public Slider PlayerHealthBar;
+     
     [Header("Inventory content")]
     public TMP_Text txt_ItemName;
     public TMP_Text txt_ItemDescription;
@@ -30,11 +34,37 @@ public class Manager_UIReuse : MonoBehaviour
     public Button btn_Inv3;
     public Button btn_ReturnToGame;
 
+    [Header("Skill tree content")]
+    public TMP_Text txt_Skillpoints;
+    public GameObject par_SkillTree;
+    public GameObject par_SkillTreeButtons;
+    [HideInInspector] public List<Button> skillTreeButtons;
+
     private void Awake()
     {
-        btn_ReturnToGame.onClick.AddListener(CloseInventory);
+        if (par_Inventory.activeInHierarchy)
+        {
+            par_Inventory.SetActive(false);
+        }
+        if (par_SkillTree.activeInHierarchy)
+        {
+            par_SkillTree.SetActive(false);
+        }
+        if (btn_ReturnToGame.gameObject.activeInHierarchy)
+        {
+            DisableReturnButton();
+        }
+
+        foreach(Transform button in par_SkillTreeButtons.transform)
+        {
+            //change button name
+            button.GetComponentInChildren<TMP_Text>().text = button.GetComponent<UI_Skill>().str_SkillName;
+            //add to buttons list
+            skillTreeButtons.Add(button.gameObject.GetComponent<Button>());
+        }
     }
 
+    //clears inventory data
     public void ClearInventoryData()
     {
         txt_ItemName.text = "";
@@ -67,6 +97,7 @@ public class Manager_UIReuse : MonoBehaviour
         btn_Inv3.interactable = false;
         btn_Inv3.gameObject.SetActive(false);
     }
+    //clears inventory buttons
     public void ClearInventoryList()
     {
         if (inventoryButtons.Count > 0)
@@ -79,11 +110,41 @@ public class Manager_UIReuse : MonoBehaviour
         }
     }
 
-    public void CloseInventory()
+    public void UpdateSkillTreeButtons()
     {
+        foreach (Button button in skillTreeButtons)
+        {
+            button.onClick.RemoveAllListeners();
+            button.interactable = false;
+
+            button.GetComponent<UI_Skill>().UpdateButtonStatus();
+        }
+    }
+
+    public void EnableReturnButton()
+    {
+        btn_ReturnToGame.gameObject.SetActive(true);
+        btn_ReturnToGame.interactable = true;
+
         if (PlayerInventoryScript.isInventoryOpen)
         {
-            PlayerInventoryScript.ToggleInventory();
+            btn_ReturnToGame.onClick.AddListener(PlayerInventoryScript.CloseUI);
         }
+        else if (par_Managers.GetComponent<UI_SkillTree>().isSkillTreeUIOpen)
+        {
+            btn_ReturnToGame.onClick.AddListener(par_Managers.GetComponent<UI_SkillTree>().CloseUI);
+        }
+    }
+    public void DisableReturnButton()
+    {
+        btn_ReturnToGame.onClick.RemoveAllListeners();
+        btn_ReturnToGame.interactable = false;
+        btn_ReturnToGame.gameObject.SetActive(false);
+    }
+
+    public void UpdatePlayerHealthUI(float currentHealth, float maxHealth)
+    {
+        PlayerHealthBar.value = currentHealth;
+        PlayerHealthBar.maxValue = maxHealth;
     }
 }
