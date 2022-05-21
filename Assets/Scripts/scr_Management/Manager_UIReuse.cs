@@ -9,6 +9,9 @@ public class Manager_UIReuse : MonoBehaviour
     [Header("Scripts")]
     [SerializeField] private Inv_Player PlayerInventoryScript;
     [SerializeField] private GameObject par_Managers;
+
+    [Header("Player UI")]
+    public Slider PlayerHealthBar;
      
     [Header("Inventory content")]
     public TMP_Text txt_ItemName;
@@ -137,5 +140,11 @@ public class Manager_UIReuse : MonoBehaviour
         btn_ReturnToGame.onClick.RemoveAllListeners();
         btn_ReturnToGame.interactable = false;
         btn_ReturnToGame.gameObject.SetActive(false);
+    }
+
+    public void UpdatePlayerHealthUI(float currentHealth, float maxHealth)
+    {
+        PlayerHealthBar.value = currentHealth;
+        PlayerHealthBar.maxValue = maxHealth;
     }
 }
