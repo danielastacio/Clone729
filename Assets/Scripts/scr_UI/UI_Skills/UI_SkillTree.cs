@@ -26,16 +26,17 @@ public class UI_SkillTree : MonoBehaviour
             && Input.GetKeyDown(KeyCode.Z))
         {
             isSkillTreeUIOpen = !isSkillTreeUIOpen;
-        }
-        if (!isSkillTreeUIOpen
-            && UIReuseScript.par_SkillTree.activeInHierarchy)
-        {
-            CloseUI();
-        }
-        else if (isSkillTreeUIOpen
-                 && !UIReuseScript.par_SkillTree.activeInHierarchy)
-        {
-            OpenUI();
+
+            if (!isSkillTreeUIOpen
+                && UIReuseScript.par_SkillTree.activeInHierarchy)
+            {
+                CloseUI();
+            }
+            else if (isSkillTreeUIOpen
+                     && !UIReuseScript.par_SkillTree.activeInHierarchy)
+            {
+                OpenUI();
+            }
         }
 
         /*
@@ -72,6 +73,7 @@ public class UI_SkillTree : MonoBehaviour
 
         UIReuseScript.par_SkillTree.SetActive(false);
 
+        isSkillTreeUIOpen = false;
         par_Managers.GetComponent<UI_PauseMenu>().UnpauseGame();
     }
 }

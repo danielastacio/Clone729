@@ -36,16 +36,17 @@ public class Inv_Player : MonoBehaviour
         {
             isInventoryOpen = !isInventoryOpen;
 
-        }
-        if (!isInventoryOpen
-            && UIReuseScript.par_Inventory.activeInHierarchy)
-        {
-            CloseUI();
-        }
-        else if (isInventoryOpen
-                 && !UIReuseScript.par_Inventory.activeInHierarchy)
-        {
-            OpenUI();
+            if (!isInventoryOpen
+                && UIReuseScript.par_Inventory.activeInHierarchy)
+            {
+                CloseUI();
+            }
+            else if (isInventoryOpen
+                     && !UIReuseScript.par_Inventory.activeInHierarchy)
+            {
+                OpenUI();
+            }
+
         }
 
         /*
@@ -82,6 +83,7 @@ public class Inv_Player : MonoBehaviour
         UIReuseScript.ClearInventoryList();
         UIReuseScript.par_Inventory.SetActive(false);
 
+        isInventoryOpen = false;
         par_Managers.GetComponent<UI_PauseMenu>().UnpauseGame();
     }
 

@@ -79,17 +79,17 @@ public class UI_PauseMenu : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             isGamePaused = !isGamePaused;
-        }
 
-        if (!isGamePaused 
-            && par_PauseMenuUI.activeInHierarchy)
-        {
-            ClosePauseMenuUI();
-        }
-        else if (isGamePaused
-                 && !par_PauseMenuUI.activeInHierarchy)
-        {
-            OpenPauseMenuUI();
+            if (!isGamePaused
+                && par_PauseMenuUI.activeInHierarchy)
+            {
+                ClosePauseMenuUI();
+            }
+            else if (isGamePaused
+                     && !par_PauseMenuUI.activeInHierarchy)
+            {
+                OpenPauseMenuUI();
+            }
         }
     }
 
@@ -122,6 +122,8 @@ public class UI_PauseMenu : MonoBehaviour
         {
             UnpauseGame();
         }
+
+        isGamePaused = false;
     }
 
     public void SaveGame()
