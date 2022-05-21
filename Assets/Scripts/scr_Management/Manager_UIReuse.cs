@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,29 +42,14 @@ public class Manager_UIReuse : MonoBehaviour
     public GameObject par_SkillTreeButtons;
     [HideInInspector] public List<Button> skillTreeButtons;
 
-    private void Awake()
-    {
-        if (par_Inventory.activeInHierarchy)
-        {
-            par_Inventory.SetActive(false);
-        }
-        if (par_SkillTree.activeInHierarchy)
-        {
-            par_SkillTree.SetActive(false);
-        }
-        if (btn_ReturnToGame.gameObject.activeInHierarchy)
-        {
-            DisableReturnButton();
-        }
-
-        foreach(Transform button in par_SkillTreeButtons.transform)
-        {
-            //change button name
-            button.GetComponentInChildren<TMP_Text>().text = button.GetComponent<UI_Skill>().str_SkillName;
-            //add to buttons list
-            skillTreeButtons.Add(button.gameObject.GetComponent<Button>());
-        }
-    }
+    [Header("Loading UI content")]
+    public TMP_Text txt_GameSaveName;
+    public TMP_Text txt_SaveTime;
+    public TMP_Text txt_SaveLoc;
+    public Button btn_LoadGame;
+    public Button btn_SaveFileButtonTemplate;
+    public GameObject par_SaveListContent;
+    public GameObject par_LoadMenuUI;
 
     //clears inventory data
     public void ClearInventoryData()
