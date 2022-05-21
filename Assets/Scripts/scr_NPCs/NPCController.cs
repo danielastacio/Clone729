@@ -1,190 +1,239 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCController : MonoBehaviour
+namespace scr_NPCs
 {
-    // NPC Classes can inherit directly from this script
-    
-    protected enum State
+    public class NPCController : MonoBehaviour
     {
-        Idle,
-        Patrol,
-        Attack,
-        Die
-    };
+        // NPC Classes can inherit directly from this script
     
-    protected State CurrentState = State.Idle;
+        protected enum State
+        {
+            Idle,
+            Patrol,
+            Attack,
+            Retreat,
+            Die
+        };
     
-    [Header("Movement")] 
-    public float speed;
-    protected float HorizSpeed;
-    [SerializeField] protected float gcRaycastDist;
-    [SerializeField] protected bool facingRight;
-    protected Vector2 GroundCheckDirection;
-    private Vector2 _wallCheckDirection;
-    [SerializeField] private LayerMask whatIsGround;
-    [SerializeField] private LayerMask whatIsWall;
+        protected State CurrentState = State.Idle;
+    
+        [Header("Movement")] 
+        public float speed;
+        protected float HorizSpeed;
+        [SerializeField] protected float gcRaycastDist;
+        [SerializeField] protected bool facingRight;
+        protected Vector2 GroundCheckDirection;
+        protected Vector2 WallCheckDirection;
         
-    // Controls for stopping and restarting movement
-    [Header("Idle delay")]
-    public float minTimeBeforeNextIdle;
-    public float maxTimeBeforeNextIdle;
-    public float minIdleTime;
-    public float maxIdleTime;
-    protected float TimeSinceLastIdle;
-    protected float TimeBeforeNextIdle;
+        [Header("Layer Masks")]
+        [SerializeField] private LayerMask whatIsGround;
+        [SerializeField] private LayerMask whatIsWall;
+
+        // Controls for stopping and restarting movement
+        [Header("Idle")]
+        [Tooltip("Set chance to stop to 100 if NPC is supposed to remain in idle state")]
+        public float chanceToStop;
+        public float minTimeBeforeNextIdle;
+        public float maxTimeBeforeNextIdle;
+        public float minIdleTime;
+        public float maxIdleTime;
+        protected float TimeSinceLastIdle;
+        protected float TimeBeforeNextIdle;
         
-    // Cached references
-    protected Rigidbody2D Rb;
-    protected Transform GroundCheck;
-    protected IEnumerator _idle;
-    protected IEnumerator _patrol;
-    protected IEnumerator _attack;
-    protected IEnumerator _die;
-    
-    private void Awake()
-    {
-        Rb = GetComponent<Rigidbody2D>();
-        GroundCheck = transform.GetChild(1).transform;
+        // Cached references
+        protected Rigidbody2D Rb;
+        protected Transform GroundCheck;
+        protected IEnumerator _idle;
+        protected IEnumerator _patrol;
+        protected IEnumerator _attack;
+        protected IEnumerator _retreat;
+        protected IEnumerator _die;
+        protected IEnumerator ActiveState;
+
+        private void Awake()
+        {
+            Rb = GetComponent<Rigidbody2D>();
+            GroundCheck = transform.GetChild(1).transform;
             
-        SetRotationAndSpeed();
-    }
+            SetRotationAndSpeed();
+        }
         
-    protected virtual void FixedUpdate()
-    {
-        CheckActiveState();
-    }
-    
-    protected void CheckActiveState()
-    {
-        // TODO: Add the rest of the states
-        if (CurrentState == State.Idle && _idle == null)
+        protected virtual void FixedUpdate()
         {
-            StopAllCoroutines();
-            _patrol = null;
-            _idle = Idle();
-            StartCoroutine(_idle);
-        }
-        else if (CurrentState == State.Patrol && _patrol == null)
-        {
-            StopAllCoroutines();
-            _idle = null;
-            _patrol = WalkCycle();
-            StartCoroutine(_patrol);
-        }
-        else if (CurrentState == State.Die)
-        {
-            StopAllCoroutines();
-            Destroy(gameObject);
-        }
-    }
-    
-    protected virtual void SetRotationAndSpeed()
-    {
-        if (facingRight)
-        {
-            HorizSpeed = speed;
-            SetHorizontalRotation();
-            SetWallCheck(Vector2.right);
-        }
-        else if (!facingRight)
-        {
-            HorizSpeed = -speed;
-            SetHorizontalRotation();
-            SetWallCheck(Vector2.left);
-        }
-        GroundCheckDirection = Vector2.down;
-    }
-
-    
-    protected virtual void SetHorizontalRotation()
-    {
-        if (facingRight)
-        {
-            transform.eulerAngles = new Vector3(transform.rotation.x, 0, transform.rotation.z);
-        }
-        else if (!facingRight)
-        {
-            transform.eulerAngles = new Vector3(transform.rotation.x, 180, transform.rotation.z);
-        }
-    }
-    
-    protected void SetWallCheck(Vector2 direction)
-    {
-        _wallCheckDirection = direction;
-    }
-
-    protected void CheckForGround()
-    {
-        var groundCheck = 
-            Physics2D.Raycast(GroundCheck.position, GroundCheckDirection, gcRaycastDist, whatIsGround);
-
-        if (!groundCheck)
-        {
-            Flip();
-        }
-
-    }
-
-    protected void CheckForWall()
-    {
-        var wallCheck =
-            Physics2D.Raycast(GroundCheck.position, _wallCheckDirection, gcRaycastDist, whatIsWall);
-        
-        if (wallCheck)
-        {
-            Flip();
-        }
-    }
-    
-    private void Flip()
-    {
-        facingRight = !facingRight;
-        SetRotationAndSpeed();
-    }
-
-    
-    protected virtual IEnumerator WalkCycle()
-    {
-        while (CurrentState == State.Patrol)
-        {
-            var stopChance = Random.Range(0f, 100f);
-            
-            if (stopChance < 10 && TimeSinceLastIdle > TimeBeforeNextIdle)
-            {
-                CurrentState = State.Idle;
-            }
-            else
-            {
-                TimeSinceLastIdle += Time.deltaTime;
-            }
-            
+            CheckActiveState();
             CheckForGround();
             CheckForWall();
+        }
+    
+        protected void CheckActiveState()
+        {
+            // TODO: Add the rest of the states
+            if (CurrentState == State.Idle && _idle == null)
+            {
+                StopAllCoroutines();
+                _idle = Idle();
+                _patrol = null;
+                _attack = null;
+                _retreat = null;
+                StartCoroutine(_idle);
+            }
+            else if (CurrentState == State.Patrol && _patrol == null)
+            {
+                StopAllCoroutines();
+                _idle = null;
+                _patrol = Patrol();
+                _attack = null;
+                _retreat = null;
+                StartCoroutine(_patrol);
+            }
+            else if (CurrentState == State.Attack && _attack == null)
+            {
+                StopAllCoroutines();
+                _idle = null;
+                _patrol = null;
+                _attack = Attack();
+                _retreat = null;
+                StartCoroutine(_attack);
+            }
+            else if (CurrentState == State.Retreat && _retreat == null)
+            {
+                StopAllCoroutines();
+                _idle = null;
+                _patrol = null;
+                _attack = null;
+                _retreat = Retreat();
+                StartCoroutine(_retreat);
+            }
+            else if (CurrentState == State.Die)
+            {
+                StopAllCoroutines();
+                Destroy(gameObject);
+            }
+        }
+        
+        protected virtual void SetRotationAndSpeed()
+        {
+            if (facingRight)
+            {
+                HorizSpeed = speed;
+                SetHorizontalRotation();
+                SetWallCheck(Vector2.right);
+            }
+            else if (!facingRight)
+            {
+                HorizSpeed = -speed;
+                SetHorizontalRotation();
+                SetWallCheck(Vector2.left);
+            }
+            GroundCheckDirection = Vector2.down;
+        }
 
-            Rb.velocity = new Vector2(HorizSpeed, 0);
+    
+        protected virtual void SetHorizontalRotation()
+        {
+            if (facingRight)
+            {
+                transform.eulerAngles = new Vector3(transform.rotation.x, 0, transform.rotation.z);
+            }
+            else if (!facingRight)
+            {
+                transform.eulerAngles = new Vector3(transform.rotation.x, 180, transform.rotation.z);
+            }
+        }
+    
+        protected void SetWallCheck(Vector2 direction)
+        {
+            WallCheckDirection = direction;
+        }
 
+        protected void CheckForGround()
+        {
+            var groundCheck = 
+                Physics2D.Raycast(GroundCheck.position, GroundCheckDirection, gcRaycastDist, whatIsGround);
+
+            if (!groundCheck)
+            {
+                Flip();
+            }
+        }
+
+        protected void CheckForWall()
+        {
+            var wallCheck =
+                Physics2D.Raycast(GroundCheck.position, WallCheckDirection, gcRaycastDist, whatIsWall);
+        
+            if (wallCheck)
+            {
+                Flip();
+            }
+        }
+
+        protected void Flip()
+        {
+            facingRight = !facingRight;
+            SetRotationAndSpeed();
+        }
+
+        // Override this to change Idle state
+        protected virtual IEnumerator Idle()
+        {
+            while (CurrentState == State.Idle)
+            {
+                if (chanceToStop >= 100)
+                {
+                    yield return null;
+                }
+                else
+                {
+                    var stopTime = Random.Range(minIdleTime, maxIdleTime);
+                    var currentSpeed = Rb.velocity;
+                    Rb.velocity = Vector2.zero;
+                    Rb.Sleep();
+
+                    TimeSinceLastIdle = 0f;
+                    TimeBeforeNextIdle = Random.Range(minTimeBeforeNextIdle, maxTimeBeforeNextIdle);
+
+                    yield return new WaitForSeconds(stopTime);
+
+                    Rb.velocity = currentSpeed;
+                    CurrentState = State.Patrol;
+                }
+            }
+        }
+    
+        // Override this to change patrol state
+        protected virtual IEnumerator Patrol()
+        {
+            while (CurrentState == State.Patrol)
+            {
+                var stopChance = Random.Range(0f, 100f);
+            
+                if (stopChance < chanceToStop && TimeSinceLastIdle > TimeBeforeNextIdle)
+                {
+                    CurrentState = State.Idle;
+                }
+                else
+                {
+                    TimeSinceLastIdle += Time.deltaTime;
+                }
+
+                Rb.velocity = new Vector2(HorizSpeed, 0);
+
+                yield return null;
+            }
+        }
+
+        protected virtual IEnumerator Attack()
+        {
+            // Set up attack logic
             yield return null;
         }
-    }
-    
-    protected IEnumerator Idle()
-    {
-        while (CurrentState == State.Idle)
+
+        protected virtual IEnumerator Retreat()
         {
-            var stopTime = Random.Range(minIdleTime, maxIdleTime);
-            var currentSpeed = Rb.velocity;
-            Rb.velocity = Vector2.zero;
-            Rb.Sleep();
-
-            TimeSinceLastIdle = 0f;
-            TimeBeforeNextIdle = Random.Range(minTimeBeforeNextIdle, maxTimeBeforeNextIdle);
-
-            yield return new WaitForSeconds(stopTime);
-
-            Rb.velocity = currentSpeed;
-            CurrentState = State.Patrol;
+            // Set up retreat logic
+            yield return null;
         }
     }
 }
