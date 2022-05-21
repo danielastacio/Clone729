@@ -8,13 +8,13 @@ public class Bullet : MonoBehaviour
 {
     public float speed;
     public float damage;
-    public Vector3 playerPos;
+    public Vector3 targetPos;
 
     void Update()
     {
         float step = speed * Time.deltaTime;
-        transform.position = Vector2.MoveTowards(transform.position, playerPos, step);
-        if (Vector2.Distance(transform.position, playerPos) <= 0.01)
+        transform.position = Vector2.MoveTowards(transform.position, targetPos, step);
+        if (Vector2.Distance(transform.position, targetPos) <= 0.01)
         {
             Destroy(gameObject);
         }

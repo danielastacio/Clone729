@@ -27,7 +27,7 @@ namespace scr_NPCs.scr_Enemies
                 var newBullet = Instantiate(bullet, _gun);
                 var bulletScript = newBullet.GetComponent<Bullet>();
                 bulletScript.damage = attackDamage;
-                bulletScript.playerPos = PlayerPos;
+                bulletScript.targetPos = PlayerPos;
 
                 yield return new WaitForSeconds(timeBetweenShots);
             }
