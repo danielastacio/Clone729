@@ -30,8 +30,9 @@ namespace scr_NPCs.scr_Enemies
         private Vector3 _startingRotation;
 
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             SetStartingRotation();
         }
 

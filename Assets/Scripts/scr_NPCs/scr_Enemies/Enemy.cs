@@ -33,18 +33,16 @@ namespace scr_NPCs.scr_Enemies
         private bool _playerSpotted;
         private RaycastHit2D _playerSpottingRay;
 
-        private Vector3 _playerPos;
+        protected Vector3 PlayerPos;
         
-        private void Start()
+        protected virtual void Start()
         {
             _currentHp = maxHp;
         }
 
         private void Update()
         {
-            Debug.DrawRay(transform.position, WallCheckDirection * sightRange, Color.blue);
             CheckForPlayer();
-            Debug.Log(CurrentState);
         }
         
         protected void CheckForPlayer()
@@ -66,7 +64,7 @@ namespace scr_NPCs.scr_Enemies
             if (_playerInSightRange && _playerSpotted)
             {
                 Debug.Log("Player spotted!");
-                _playerPos = _playerInSightRange.transform.position;
+                PlayerPos = _playerInSightRange.transform.position;
             
                 if (_playerInRetreatRange)
                 {
@@ -106,13 +104,13 @@ namespace scr_NPCs.scr_Enemies
             }
         }
 
-        private void CheckFacingPlayer()
+        protected void CheckFacingPlayer()
         {
-            if (Vector2.Distance(_playerPos, transform.position) > 0 && !facingRight)
+            if (PlayerPos.x > transform.position.x && !facingRight)
             {
                 Flip();
             }
-            else if (Vector2.Distance(_playerPos, transform.position) > 0 && facingRight)
+            else if (PlayerPos.x < transform.position.x && facingRight)
             {
                 Flip();
             }
@@ -125,7 +123,6 @@ namespace scr_NPCs.scr_Enemies
                 CheckFacingPlayer();
                 
                 // Set up attack logic.
-                
 
                 yield return null;
             }
@@ -136,6 +133,8 @@ namespace scr_NPCs.scr_Enemies
             Flip();
             while (CurrentState == State.Retreat && _playerInRetreatRange)
             {
+                CheckForGround();
+                CheckForWall();
                 Rb.velocity = new Vector2(HorizSpeed, 0);
                 yield return null;
             }
