@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_SkillTree : MonoBehaviour
 {
@@ -17,6 +18,11 @@ public class UI_SkillTree : MonoBehaviour
     private void Awake()
     {
         UIReuseScript = par_Managers.GetComponent<Manager_UIReuse>();
+
+        foreach (Transform btn in UIReuseScript.par_SkillTreeButtons.transform)
+        {
+            UIReuseScript.skillTreeButtons.Add(btn.GetComponent<Button>());
+        }
     }
 
     private void Update()
@@ -37,23 +43,6 @@ public class UI_SkillTree : MonoBehaviour
             {
                 OpenUI();
             }
-        }
-
-        /*
-        --------------------------------------------
-        DEBUGGING FEATURE - REMOVE BEFORE RELEASE!!!
-        
-        adds 25 skillpoints to player
-        --------------------------------------------
-        */
-        if (!par_Managers.GetComponent<UI_PauseMenu>().isGamePaused
-            && !PlayerInventoryScript.isInventoryOpen
-            && isSkillTreeUIOpen
-            && Input.GetKeyDown(KeyCode.C))
-        {
-            PlayerInventoryScript.skillpoints += 25;
-            UIReuseScript.txt_Skillpoints.text = PlayerInventoryScript.skillpoints.ToString();
-            UIReuseScript.UpdateSkillTreeButtons();
         }
     }
 

@@ -54,8 +54,10 @@ public class Player : MonoBehaviour, IDamageable
         --------------------------------------------
         */
         if (!par_Managers.GetComponent<UI_PauseMenu>().isGamePaused
-            && Input.GetKeyDown(KeyCode.V)
-            && currentHp -10 >= 0)
+            && Input.GetKeyDown(KeyCode.B)
+            && currentHp -10 >= 0
+            && !gameObject.GetComponent<Inv_Player>().isInventoryOpen
+            && !par_Managers.GetComponent<UI_SkillTree>().isSkillTreeUIOpen)
         {
             TakeDamage(10);
         }
