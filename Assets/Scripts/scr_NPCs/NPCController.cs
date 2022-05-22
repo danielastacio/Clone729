@@ -21,7 +21,7 @@ namespace scr_NPCs
         [Header("Movement")] 
         public float speed;
         protected float HorizSpeed;
-        [SerializeField] protected float gcRaycastDist;
+        [SerializeField] protected float groundCheckRaycastDist;
         [SerializeField] protected bool facingRight;
         protected Vector2 GroundCheckDirection;
         protected Vector2 WallCheckDirection;
@@ -44,11 +44,11 @@ namespace scr_NPCs
         // Cached references
         protected Rigidbody2D Rb;
         protected Transform GroundCheck;
-        protected IEnumerator _idle;
-        protected IEnumerator _patrol;
-        protected IEnumerator _attack;
-        protected IEnumerator _retreat;
-        protected IEnumerator _die;
+        private IEnumerator _idle;
+        private IEnumerator _patrol;
+        private IEnumerator _attack;
+        private IEnumerator _retreat;
+        private IEnumerator _die;
         protected IEnumerator ActiveState;
 
         private void Awake()
@@ -66,7 +66,7 @@ namespace scr_NPCs
             CheckForWall();
         }
     
-        protected void CheckActiveState()
+        private void CheckActiveState()
         {
             // TODO: Add the rest of the states
             if (CurrentState == State.Idle && _idle == null)
@@ -150,7 +150,7 @@ namespace scr_NPCs
         protected void CheckForGround()
         {
             var groundCheck = 
-                Physics2D.Raycast(GroundCheck.position, GroundCheckDirection, gcRaycastDist, whatIsGround);
+                Physics2D.Raycast(GroundCheck.position, GroundCheckDirection, groundCheckRaycastDist, whatIsGround);
 
             if (!groundCheck)
             {
@@ -161,7 +161,7 @@ namespace scr_NPCs
         protected void CheckForWall()
         {
             var wallCheck =
-                Physics2D.Raycast(GroundCheck.position, WallCheckDirection, gcRaycastDist, whatIsWall);
+                Physics2D.Raycast(GroundCheck.position, WallCheckDirection, groundCheckRaycastDist, whatIsWall);
         
             if (wallCheck)
             {

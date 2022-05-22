@@ -7,7 +7,6 @@ using Random = UnityEngine.Random;
 
 namespace scr_NPCs.scr_Enemies
 {
-    // TODO: Fix CheckFacingPlayer(). Enemy either faces the wrong way, or flips forever.
     // TODO: Figure out how to keep enemy from running off platforms when retreating
     // TODO: Make sure enemy is facing the player before trying to retreat, otherwise it retreats into the player...
     public class Enemy : NPCController, IDamageable
