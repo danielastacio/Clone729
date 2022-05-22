@@ -37,8 +37,9 @@ public class PlayerMovement : MonoBehaviour, IDamageable
 
     void Awake()
     {
-        currentHp = maxHp;
         _rb = GetComponent<Rigidbody2D>();
+        _rb.gravityScale = 10;
+        _rb.freezeRotation = true;
     }
 
     private void Update()
