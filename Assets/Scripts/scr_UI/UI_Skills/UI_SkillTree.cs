@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_SkillTree : MonoBehaviour
 {
@@ -17,6 +18,11 @@ public class UI_SkillTree : MonoBehaviour
     private void Awake()
     {
         UIReuseScript = par_Managers.GetComponent<Manager_UIReuse>();
+
+        foreach (Transform btn in UIReuseScript.par_SkillTreeButtons.transform)
+        {
+            UIReuseScript.skillTreeButtons.Add(btn.GetComponent<Button>());
+        }
     }
 
     private void Update()
