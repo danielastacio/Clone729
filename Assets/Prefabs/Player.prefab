@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 258669944946299380}
   - component: {fileID: 258669944946299381}
   - component: {fileID: 258669944946299383}
+  - component: {fileID: 4506025200274604558}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -106,3 +107,25 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &4506025200274604558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 258669944946299384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca6d11fd4a0157c41922760772194bf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHp: 0
+  currentHp: 0
+  speed: 10
+  jumpForce: 25
+  offsetRadius: -1.7
+  fallMultiplier: 7
+  groundCheckRadius: 0.5
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 64
