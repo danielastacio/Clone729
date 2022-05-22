@@ -177,7 +177,7 @@ public class Manager_GameSaving : MonoBehaviour
         foreach (GameObject item in PlayerInventoryScript.inventory)
         {
             //save item name
-            string line = "pi_" + item.GetComponent<Env_Item>().str_ItemName + " = ";
+            string line = "pi_" + item.GetComponent<Env_Item>().str_ItemName;
 
             saveFile.WriteLine(line);
         }
@@ -401,8 +401,6 @@ public class Manager_GameSaving : MonoBehaviour
                 //loading player items
                 else if (line.Contains("pi_"))
                 {
-                    GameObject spawnedItem = null;
-
                     foreach (GameObject item in par_Managers.GetComponent<GameManager>().items)
                     {
                         if (line.Contains(item.GetComponent<Env_Item>().str_ItemName))
@@ -420,8 +418,6 @@ public class Manager_GameSaving : MonoBehaviour
                             PlayerInventoryScript.inventory.Add(duplicate);
 
                             duplicate.GetComponent<Env_Item>().isInPlayerInventory = true;
-
-                            spawnedItem = duplicate;
                         }
                     }
                 }
