@@ -128,7 +128,7 @@ public class PlayerMovement : MonoBehaviour, IDamageable
             isMovingRight = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.K) && _isGrounded && !isRolling)
+        if (Input.GetKeyDown(KeyCode.K) && _isGrounded && !isRolling && !isCrouching)
         {
             isRolling = true;
         }
@@ -205,6 +205,12 @@ public class PlayerMovement : MonoBehaviour, IDamageable
         if(isRolling)
         {
             _rb.AddForce(rollDirection * rollForce, ForceMode2D.Impulse);
+            transform.localScale = new Vector2(transform.localScale.x, crouchHeight);
+        }
+
+        else if(!isCrouching)
+        {
+            transform.localScale = new Vector2(transform.localScale.x, playerHeight);
         }
     }
 
