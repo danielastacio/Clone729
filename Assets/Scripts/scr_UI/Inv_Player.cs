@@ -46,22 +46,57 @@ public class Inv_Player : MonoBehaviour
             {
                 OpenUI();
             }
-
         }
+
 
         /*
         --------------------------------------------
         DEBUGGING FEATURE - REMOVE BEFORE RELEASE!!!
-        
-        adds a placeholder item into players inventory
+
+        top one creates a testing item
+        bottom one adds 25 skillpoints to player
         --------------------------------------------
         */
-        if (!par_Managers.GetComponent<UI_PauseMenu>().isGamePaused
-            && isInventoryOpen
-            && Input.GetKeyDown(KeyCode.X))
+        if (!par_Managers.GetComponent<UI_PauseMenu>().isGamePaused)
         {
-            testDuplicateTemplate.GetComponent<Env_Item>().PickUpTest();
+            if (Input.GetKeyDown(KeyCode.X)
+                && isInventoryOpen)
+            {
+                SpawnTestItem();
+            }
+            else if (Input.GetKeyDown(KeyCode.C)
+                     && isInventoryOpen)
+            {
+                playerMoney += 25;
+                RebuildPlayerInventory();
+            }
+            else if (Input.GetKeyDown(KeyCode.V)
+                     && SkillTreeScript.isSkillTreeUIOpen)
+            {
+                skillpoints += 25;
+                UIReuseScript.txt_Skillpoints.text = skillpoints.ToString();
+                UIReuseScript.UpdateSkillTreeButtons();
+            }
         }
+    }
+
+    private void SpawnTestItem()
+    {
+        GameObject duplicate = Instantiate(par_Managers.GetComponent<GameManager>().items[0],
+                                      par_PlayerInventory.transform.position,
+                                      Quaternion.identity,
+                                      par_PlayerInventory);
+
+        duplicate.GetComponent<Env_Item>().str_FakeItemName
+            = duplicate.GetComponent<Env_Item>().str_ItemName.Replace('_', ' ');
+
+        duplicate.SetActive(false);
+
+        inventory.Add(duplicate);
+
+        duplicate.GetComponent<Env_Item>().isInPlayerInventory = true;
+
+        RebuildPlayerInventory();
     }
 
     private void OpenUI()
@@ -105,5 +140,7 @@ public class Inv_Player : MonoBehaviour
             //add function to button
             itemButton.onClick.AddListener(item.GetComponent<Env_Item>().ShowItemData);
         }
+
+        UIReuseScript.txt_PlayerMoney.text = playerMoney.ToString();
     }
 }

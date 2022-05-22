@@ -9,7 +9,7 @@ public class UI_Skill : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [Header("Assignables")]
     public string str_SkillName;
     [SerializeField] private string str_SkillDescription;
-    [SerializeField] private int skillPointsRequired;
+    public int skillPointsRequired;
     [SerializeField] private int skillPointUpgradeMultiplier;
 
     [Header("Scripts")]

@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviour
     [Header("Framerate")]
     [SerializeField] private TMP_Text txt_fpsValue;
 
+    [Header("Lists")]
+    public List<GameObject> items;
+
     //public but hidden variables
     [HideInInspector] public int scene;
 
@@ -21,6 +24,8 @@ public class GameManager : MonoBehaviour
     {
         Screen.SetResolution(1920, 1080, FullScreenMode.ExclusiveFullScreen);
         QualitySettings.vSyncCount = 0;
+
+        GetScene();
     }
 
     private void Update()

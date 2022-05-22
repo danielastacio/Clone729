@@ -45,7 +45,6 @@ public class UI_MainMenu : MonoBehaviour
         par_CreditsContent.SetActive(false);
         btn_ReturnToMainMenu.gameObject.SetActive(false);
 
-        par_Managers.GetComponent<Manager_GameSaving>().ClearSaveData();
         par_MainMenuContent.SetActive(true);
     }
     public void ShowLoadMenuUI()

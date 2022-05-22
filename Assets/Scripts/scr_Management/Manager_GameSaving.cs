@@ -9,6 +9,8 @@ using TMPro;
 public class Manager_GameSaving : MonoBehaviour
 {
     [Header("Scripts")]
+    [SerializeField] private Player PlayerScript;
+    [SerializeField] private Inv_Player PlayerInventoryScript;
     [SerializeField] private GameObject par_Managers;
 
     //public but hidden variables
@@ -45,7 +47,8 @@ public class Manager_GameSaving : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F5))
+        if (Input.GetKeyDown(KeyCode.F5)
+            && par_Managers.GetComponent<GameManager>().scene != 0)
         {
             SaveGame();
         }
@@ -93,7 +96,6 @@ public class Manager_GameSaving : MonoBehaviour
                     int newestSaveNumber = Mathf.Max(0, numbers[^1]);
 
                     newestSaveNumber++;
-                    Debug.Log(newestSaveNumber);
 
                     string addedSaveNumber = "";
                     if (newestSaveNumber < 10)
@@ -151,6 +153,55 @@ public class Manager_GameSaving : MonoBehaviour
 
         //random location name
         saveFile.WriteLine("gv_saveLoc = loc" + UnityEngine.Random.Range(1, 25));
+
+        saveFile.WriteLine("");
+        saveFile.WriteLine("--- PLAYER VALUES ---");
+
+        saveFile.WriteLine("");
+
+        //save player current health
+        saveFile.WriteLine("pv_currentPlayerHealth = " + PlayerScript.currentHp);
+        //save player max health
+        saveFile.WriteLine("pv_maxPlayerHealth = " + PlayerScript.maxHp);
+        //save player money
+        saveFile.WriteLine("pv_playerMoney = " + PlayerInventoryScript.playerMoney);
+        //save player skill points
+        saveFile.WriteLine("pv_playerSkillPoints = " + PlayerInventoryScript.skillpoints);
+
+        saveFile.WriteLine("");
+
+        saveFile.WriteLine("--- PLAYER ITEMS ---");
+
+        saveFile.WriteLine("");
+
+        foreach (GameObject item in PlayerInventoryScript.inventory)
+        {
+            //save item name
+            string line = "pi_" + item.GetComponent<Env_Item>().str_ItemName + " = ";
+
+            saveFile.WriteLine(line);
+        }
+
+        saveFile.WriteLine("");
+
+        saveFile.WriteLine("--- PLAYER SKILLS ---");
+        saveFile.WriteLine("1 - skill tier");
+        saveFile.WriteLine("2 - cost for next upgrade");
+
+        saveFile.WriteLine("");
+
+        foreach (Button btn in UIReuseScript.skillTreeButtons)
+        {
+            UI_Skill SkillScript = btn.GetComponent<UI_Skill>();
+
+            string line = "ps_" + SkillScript.str_SkillName + " = ";
+            line += SkillScript.skillTier.ToString() + ", ";
+            line += SkillScript.skillPointsRequired.ToString();
+
+            saveFile.WriteLine(line);
+        }
+
+        saveFile.WriteLine("");
 
         Debug.Log("Created new save file at path " + saveFilePath + "!");
     }
@@ -290,6 +341,114 @@ public class Manager_GameSaving : MonoBehaviour
 
     public void LoadGame(string saveName)
     {
-        Debug.Log("Loading data from " + saveName + ".");
+        if (par_Managers.GetComponent<GameManager>().scene != 0)
+        {
+            par_Managers.GetComponent<UI_PauseMenu>().ClosePauseMenuUI();
+
+            //find X and get 4 positions before it
+            int pos = 0;
+            for (int i = 0; i < saveName.Length; i++)
+            {
+                if (saveName[i] == 'X')
+                {
+                    pos = i - 4;
+                    break;
+                }
+            }
+            //add _ and .txt to string
+            saveName = saveName.Insert(pos, "_") + ".txt";
+            //get final save path
+            string savePath = path + @"\" + saveName;
+
+            foreach (string line in File.ReadLines(savePath))
+            {
+                //get all separators in line
+                char[] separators = new char[] { ' ', ',', '=', '(', ')', '_' };
+                //remove unwanted separators and split line into separate strings
+                string[] values = line.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                //list of confirmed numbers
+                List<string> numbers = new();
+                //add all numbers to new list
+                foreach (string value in values)
+                {
+                    bool isFloat = float.TryParse(value, out _);
+                    if (isFloat)
+                    {
+                        numbers.Add(value);
+                    }
+                }
+
+                //loading player values
+                if (line.Contains("pv_"))
+                {
+                    if (line.Contains("currentPlayerHealth"))
+                    {
+                        PlayerScript.currentHp = int.Parse(numbers[0]);
+                    }
+                    else if (line.Contains("maxPlayerHeart"))
+                    {
+                        PlayerScript.maxHp = int.Parse(numbers[0]);
+                    }
+                    else if (line.Contains("playerMoney"))
+                    {
+                        PlayerInventoryScript.playerMoney = int.Parse(numbers[0]);
+                    }
+                    else if (line.Contains("playerSkillPoints"))
+                    {
+                        PlayerInventoryScript.skillpoints = int.Parse(numbers[0]);
+                    }
+                }
+                //loading player items
+                else if (line.Contains("pi_"))
+                {
+                    GameObject spawnedItem = null;
+
+                    foreach (GameObject item in par_Managers.GetComponent<GameManager>().items)
+                    {
+                        if (line.Contains(item.GetComponent<Env_Item>().str_ItemName))
+                        {
+                            GameObject duplicate = Instantiate(par_Managers.GetComponent<GameManager>().items[0],
+                                                               PlayerInventoryScript.par_PlayerInventory.transform.position,
+                                                               Quaternion.identity,
+                                                               PlayerInventoryScript.par_PlayerInventory);
+
+                            duplicate.GetComponent<Env_Item>().str_FakeItemName
+                                = duplicate.GetComponent<Env_Item>().str_ItemName.Replace('_', ' ');
+
+                            duplicate.SetActive(false);
+
+                            PlayerInventoryScript.inventory.Add(duplicate);
+
+                            duplicate.GetComponent<Env_Item>().isInPlayerInventory = true;
+
+                            spawnedItem = duplicate;
+                        }
+                    }
+                }
+                //loading player skills
+                else if (line.Contains("ps_"))
+                {
+                    foreach (Button btn in UIReuseScript.skillTreeButtons)
+                    {
+                        UI_Skill SkillScript = btn.GetComponent<UI_Skill>();
+
+                        if (line.Contains(SkillScript.str_SkillName))
+                        {
+                            SkillScript.skillTier = int.Parse(numbers[0]);
+                            SkillScript.skillPointsRequired = int.Parse(numbers[1]);
+                        }
+                    }
+                }
+            }
+
+            float damageDealt = PlayerScript.maxHp - PlayerScript.currentHp;
+            PlayerScript.TakeDamage(damageDealt);
+
+            Debug.Log("Successfully loaded all data from " + saveName + "!");
+        }
+        else
+        {
+            Debug.LogWarning("Error: The game cannot yet be loaded from the main menu! Load the game from pause menu instead.");
+        }
     }
 }

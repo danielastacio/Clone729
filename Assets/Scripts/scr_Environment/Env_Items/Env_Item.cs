@@ -35,35 +35,6 @@ public class Env_Item : MonoBehaviour
     }
 
     /*
-    --------------------------------------------
-    DEBUGGING FEATURE - REMOVE BEFORE RELEASE!!!
-
-    adds a placeholder item into players inventory
-    --------------------------------------------
-    */
-    public void PickUpTest()
-    {
-        GameObject duplicate = Instantiate(gameObject,
-                                           PlayerInventoryScript.par_PlayerInventory.transform.position,
-                                           Quaternion.identity,
-                                           PlayerInventoryScript.par_PlayerInventory);
-
-        duplicate.GetComponent<Env_Item>().str_ItemName 
-            = "TestItem_" + Random.Range(1, 1000).ToString();
-
-        duplicate.GetComponent<Env_Item>().str_FakeItemName 
-            = duplicate.GetComponent<Env_Item>().str_ItemName.Replace('_', ' ');
-
-        duplicate.SetActive(false);
-
-        PlayerInventoryScript.inventory.Add(duplicate);
-
-        duplicate.GetComponent<Env_Item>().isInPlayerInventory = true;
-
-        PlayerInventoryScript.RebuildPlayerInventory();
-    }
-
-    /*
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.transform.CompareTag("Player"))
