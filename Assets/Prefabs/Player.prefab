@@ -49,12 +49,18 @@ MonoBehaviour:
   maxHp: 0
   currentHp: 0
   speed: 10
+  defaultSpeed: 10
+  crouchSpeed: 5
   jumpForce: 25
-  _isGrounded: 0
-  isCrouching: 0
-  offsetRadius: -1.7
+  rollForce: 1000
   fallMultiplier: 7
+  isInsideMech: 0
+  isReadyForMech: 0
+  isCollidingWithMech: 0
+  rollTime: 0
+  defaultRollTime: 0.5
   groundCheckRadius: 0.5
+  offsetRadius: -1.7
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
@@ -125,8 +131,8 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_GravityScale: 10
+  m_Material: {fileID: 6200000, guid: 437c2e3d853429a4ab339a888b527094, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
