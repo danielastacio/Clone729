@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour, IDamageable
     [SerializeField]
     private float defaultRollTime = 0.5f;
 
-    protected internal Rigidbody2D _rb;
+    protected internal Rigidbody2D rb;
 
     [Header("Ground Check")]
     [SerializeField]
@@ -80,9 +80,9 @@ public class PlayerMovement : MonoBehaviour, IDamageable
 
     private void SetPlayerRbSettings()
     {
-        _rb = GetComponent<Rigidbody2D>();
-        _rb.gravityScale = 10;
-        _rb.freezeRotation = true;
+        rb = GetComponent<Rigidbody2D>();
+        rb.gravityScale = 10;
+        rb.freezeRotation = true;
 
         playerHeight = transform.localScale.y;
         crouchHeight = playerHeight / 2;
@@ -270,14 +270,14 @@ public class PlayerMovement : MonoBehaviour, IDamageable
 #region Rigidbody
     protected void FreezeRigidBody()
     {
-        _rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
     }
 
 
     protected void UnFreezeRigidBody()
     {
-        _rb.constraints = RigidbodyConstraints2D.None;
-        _rb.freezeRotation = true;
+        rb.constraints = RigidbodyConstraints2D.None;
+        rb.freezeRotation = true;
     }
     #endregion
 #region Movement Methods
@@ -288,7 +288,7 @@ public class PlayerMovement : MonoBehaviour, IDamageable
             isFacingLeft = true;
             isFacingRight = false;
 
-            _rb.velocity = new Vector2(-speed, _rb.velocity.y);
+            rb.velocity = new Vector2(-speed, rb.velocity.y);
         }
 
         else if (isInputMoveRight)
@@ -296,12 +296,12 @@ public class PlayerMovement : MonoBehaviour, IDamageable
             isFacingRight = true;
             isFacingLeft = false;
 
-            _rb.velocity = new Vector2(speed, _rb.velocity.y);
+            rb.velocity = new Vector2(speed, rb.velocity.y);
         }
 
         else
         {
-            _rb.velocity = new Vector2(0, _rb.velocity.y);
+            rb.velocity = new Vector2(0, rb.velocity.y);
         }
     }
     private void Jump()
@@ -309,11 +309,11 @@ public class PlayerMovement : MonoBehaviour, IDamageable
         if (isInputJump && isGrounded && !isRolling)
         {
             isGrounded = false;
-            _rb.velocity = Vector2.up * jumpForce;
+            rb.velocity = Vector2.up * jumpForce;
         }
-        else if (_rb.velocity.y < 0 && !isInputJump)
+        else if (rb.velocity.y < 0 && !isInputJump)
         {
-            _rb.velocity += (fallMultiplier - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
+            rb.velocity += (fallMultiplier - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
         }
     }
     private void Crouch()
@@ -349,7 +349,7 @@ public class PlayerMovement : MonoBehaviour, IDamageable
 
             if (isRolling)
             {
-                _rb.AddForce(rollDirection * rollForce, ForceMode2D.Impulse);
+                rb.AddForce(rollDirection * rollForce, ForceMode2D.Impulse);
                 transform.localScale = new Vector2(transform.localScale.x, crouchHeight);
             }
         }
@@ -370,7 +370,7 @@ public class PlayerMovement : MonoBehaviour, IDamageable
     private void DeactivateMech()
     {
         SetPlayerRbSettings();
-        _rb.GetComponent<CapsuleCollider2D>().isTrigger = false;
+        rb.GetComponent<CapsuleCollider2D>().isTrigger = false;
 
         isReadyForMech = false;
         isInsideMech = false;        
@@ -381,8 +381,8 @@ public class PlayerMovement : MonoBehaviour, IDamageable
         if (isInsideMech)
         {
             this.transform.position = mech.transform.position;
-            _rb.GetComponent<CapsuleCollider2D>().isTrigger = true;
-            _rb.Sleep();
+            rb.GetComponent<CapsuleCollider2D>().isTrigger = true;
+            rb.Sleep();
         }
     }
 #endregion

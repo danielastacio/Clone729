@@ -13,13 +13,13 @@ public class MechMovement : PlayerMovement
     private void ActivateMech()
     {
         UnFreezeRigidBody();
-        _rb.GetComponent<CapsuleCollider2D>().isTrigger = false;
+        rb.GetComponent<CapsuleCollider2D>().isTrigger = false;
     }
 
     private void DeactivateMech()
     {
         FreezeRigidBody();
-        _rb.GetComponent<CapsuleCollider2D>().isTrigger = true;
+        rb.GetComponent<CapsuleCollider2D>().isTrigger = true;
     }
     private void SetDefaultMechSettings()
     {
@@ -29,10 +29,10 @@ public class MechMovement : PlayerMovement
         offsetRadius = -4.5f;
         groundCheckRadius = 1.5f;
 
-        _rb = GetComponent<Rigidbody2D>();
-        _rb.gravityScale = 2;
+        rb = GetComponent<Rigidbody2D>();
+        rb.gravityScale = 2;
 
-        _rb.GetComponent<CapsuleCollider2D>().isTrigger = true;
+        rb.GetComponent<CapsuleCollider2D>().isTrigger = true;
     }
 
     protected override void CheckCrouchInput() { }
