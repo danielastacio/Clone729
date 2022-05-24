@@ -46,17 +46,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca6d11fd4a0157c41922760772194bf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 0
+  maxHp: 100
   currentHp: 0
-  speed: 10
+  speed: 0
   defaultSpeed: 10
   crouchSpeed: 5
   jumpForce: 25
-  rollForce: 1000
+  rollForce: 20
   fallMultiplier: 7
-  isInsideMech: 0
-  isReadyForMech: 0
-  isCollidingWithMech: 0
   rollTime: 0
   defaultRollTime: 0.5
   groundCheckRadius: 0.5
