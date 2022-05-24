@@ -9,7 +9,6 @@ namespace scr_NPCs.scr_Enemies
     // TODO: Set up delay between shots
     public class GunMech : Enemy
     {
-        [SerializeField] private float timeBetweenShots;
         private Transform _gun;
         [SerializeField] private GameObject bullet;
 
@@ -24,13 +23,18 @@ namespace scr_NPCs.scr_Enemies
             while (CurrentState == State.Attack)
             {
                 CheckFacingPlayer();
-                var newBullet = Instantiate(bullet, _gun);
-                var bulletScript = newBullet.GetComponent<Bullet>();
-                bulletScript.damage = attackDamage;
-                bulletScript.targetPos = PlayerPos;
+                FireBullet();
 
-                yield return new WaitForSeconds(timeBetweenShots);
+                yield return new WaitForSeconds(timeBetweenAttacks);
             }
+        }
+
+        private void FireBullet()
+        {
+            var newBullet = Instantiate(bullet, _gun);
+            var bulletScript = newBullet.GetComponent<Bullet>();
+            bulletScript.damage = attackDamage;
+            bulletScript.targetPos = PlayerPos;
         }
     }
 }

@@ -26,6 +26,10 @@ namespace scr_NPCs.scr_Enemies
         };
 
         private float _vertSpeed;
+        [Tooltip("Set starting position depending on where Spider-Bot is starting.\n" +
+                 "Make sure to change what is ground and what is wall to match.\n" +
+                 "Starting position Ceiling/Ground -- What is ground = ground, What is wall = wall\n" +
+                 "Starting position Left/Right wall -- What is ground = wall, What is wall = ground")]
         [SerializeField] private Positions startingPosition;
         private Vector3 _startingRotation;
 
@@ -132,9 +136,6 @@ namespace scr_NPCs.scr_Enemies
                 {
                     TimeSinceLastIdle += Time.deltaTime;
                 }
-            
-                CheckForGround();
-                CheckForWall();
 
                 Rb.velocity = new Vector2(HorizSpeed, _vertSpeed);
 

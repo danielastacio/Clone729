@@ -43,18 +43,17 @@ namespace scr_NPCs
         
         // Cached references
         protected Rigidbody2D Rb;
-        protected Transform GroundCheck;
+        private Transform _groundCheck;
         private IEnumerator _idle;
         private IEnumerator _patrol;
         private IEnumerator _attack;
         private IEnumerator _retreat;
         private IEnumerator _die;
-        protected IEnumerator ActiveState;
 
         private void Awake()
         {
             Rb = GetComponent<Rigidbody2D>();
-            GroundCheck = transform.GetChild(1).transform;
+            _groundCheck = transform.GetChild(1).transform;
             
             SetRotationAndSpeed();
         }
@@ -68,7 +67,6 @@ namespace scr_NPCs
     
         private void CheckActiveState()
         {
-            // TODO: Add the rest of the states
             if (CurrentState == State.Idle && _idle == null)
             {
                 StopAllCoroutines();
@@ -150,7 +148,7 @@ namespace scr_NPCs
         protected void CheckForGround()
         {
             var groundCheck = 
-                Physics2D.Raycast(GroundCheck.position, GroundCheckDirection, groundCheckRaycastDist, whatIsGround);
+                Physics2D.Raycast(_groundCheck.position, GroundCheckDirection, groundCheckRaycastDist, whatIsGround);
 
             if (!groundCheck)
             {
@@ -161,7 +159,7 @@ namespace scr_NPCs
         protected void CheckForWall()
         {
             var wallCheck =
-                Physics2D.Raycast(GroundCheck.position, WallCheckDirection, groundCheckRaycastDist, whatIsWall);
+                Physics2D.Raycast(_groundCheck.position, WallCheckDirection, groundCheckRaycastDist, whatIsWall);
         
             if (wallCheck)
             {

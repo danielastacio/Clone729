@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2.5
-  gcRaycastDist: 1
+  groundCheckRaycastDist: 0
   facingRight: 0
   whatIsGround:
     serializedVersion: 2

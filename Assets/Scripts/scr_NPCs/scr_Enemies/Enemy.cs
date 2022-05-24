@@ -12,10 +12,12 @@ namespace scr_NPCs.scr_Enemies
     public class Enemy : NPCController, IDamageable
     {
         [Header("Stats")] 
-        public float maxHp;
+        [SerializeField] protected float maxHp;
         private float _currentHp;
-        public float touchDamage; // Damage when player bumps the enemy
-        public float attackDamage;
+        [SerializeField] protected float touchDamage; // Damage when player bumps the enemy
+        [SerializeField] protected float attackDamage;
+        [SerializeField] protected float timeBetweenAttacks;
+
         
         [Header("Combat")]
         [SerializeField] private float sightRange;
@@ -123,7 +125,7 @@ namespace scr_NPCs.scr_Enemies
                 
                 // Set up attack logic.
 
-                yield return null;
+                yield return new WaitForSeconds(timeBetweenAttacks);
             }
         }
 
