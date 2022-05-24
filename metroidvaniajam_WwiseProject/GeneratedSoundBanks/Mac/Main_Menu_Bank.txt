@@ -1,0 +1,12 @@
+Event	ID	Name			Wwise Object Path	Notes
+	1049090908	Play_Menu_Enter			\Main Menu\Play_Menu_Enter	
+	1806488964	Play_Menu_Return			\Main Menu\Play_Menu_Return	
+	2167056030	Play_Menu_Select			\Main Menu\Play_Menu_Select	
+	3294915283	Play_Start_Game			\Main Menu\Play_Start_Game	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	179917572	Menu Enter	C:\Users\danie\Documents\Unity Projects\metroidvaniajam\metroidvaniajam_WwiseProject\.cache\Mac\SFX\Menu Enter_10C4C929.wem		\Actor-Mixer Hierarchy\Main Menu\Main Menu Mixer\Menu Enter		88264
+	581976253	Start Game	C:\Users\danie\Documents\Unity Projects\metroidvaniajam\metroidvaniajam_WwiseProject\.cache\Mac\SFX\Start Game_10C4C929.wem		\Actor-Mixer Hierarchy\Main Menu\Main Menu Mixer\Start Game		585592
+	684581930	Menu Return	C:\Users\danie\Documents\Unity Projects\metroidvaniajam\metroidvaniajam_WwiseProject\.cache\Mac\SFX\Menu Return_10C4C929.wem		\Actor-Mixer Hierarchy\Main Menu\Main Menu Mixer\Menu Return		88264
+	1045533594	Menu Select	C:\Users\danie\Documents\Unity Projects\metroidvaniajam\metroidvaniajam_WwiseProject\.cache\Mac\SFX\Menu Select_10C4C929.wem		\Actor-Mixer Hierarchy\Main Menu\Main Menu Mixer\Menu Select		88264
+

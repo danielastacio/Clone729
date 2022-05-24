@@ -9,7 +9,7 @@ using TMPro;
 public class Manager_GameSaving : MonoBehaviour
 {
     [Header("Scripts")]
-    [SerializeField] private Player PlayerScript;
+    [SerializeField] private PlayerController PlayerScript;
     [SerializeField] private Inv_Player PlayerInventoryScript;
     [SerializeField] private GameObject par_Managers;
 
