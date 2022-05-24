@@ -72,7 +72,7 @@ public class PlayerMovement : MonoBehaviour, IDamageable
 
     [SerializeField]
     private LayerMask whatIsGround;
-    private Vector2 _groundCheckPos;
+    private Vector2 groundCheckPos;
     private Transform mech;
 
     public static event Action MechActivated;
@@ -96,9 +96,9 @@ public class PlayerMovement : MonoBehaviour, IDamageable
 
     private void CheckIfGrounded()
     {
-        _groundCheckPos = new Vector2(transform.position.x, transform.position.y + offsetRadius);
+        groundCheckPos = new Vector2(transform.position.x, transform.position.y + offsetRadius);
         var groundCheck =
-            Physics2D.OverlapCircle(_groundCheckPos, groundCheckRadius, whatIsGround);
+            Physics2D.OverlapCircle(groundCheckPos, groundCheckRadius, whatIsGround);
 
         if (groundCheck)
         {
@@ -146,7 +146,7 @@ public class PlayerMovement : MonoBehaviour, IDamageable
     }
     private void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(_groundCheckPos, groundCheckRadius);
+        Gizmos.DrawSphere(groundCheckPos, groundCheckRadius);
     }
 #endregion
 #region Triggers
