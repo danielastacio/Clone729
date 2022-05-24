@@ -4,14 +4,11 @@ using System.Collections.Generic;
 using scr_Interfaces;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour, IDamageable
+public class PlayerController : MonoBehaviour, IDamageable
 {
     [Header("Stats")]
-    [SerializeField]
-    private float maxHp;
-
-    [SerializeField]
-    private float currentHp;
+    public float maxHp = 100;
+    public float currentHp;
 
     [Header("Speed and Force")]
     [SerializeField]
@@ -152,7 +149,7 @@ public class PlayerMovement : MonoBehaviour, IDamageable
 #region Triggers
     protected virtual void OnTriggerEnter2D(Collider2D collider)
     {
-        isCollidingWithMech = collider.gameObject.GetComponent<MechMovement>();
+        isCollidingWithMech = collider.gameObject.GetComponent<MechController>();
         mech = collider.gameObject.gameObject.GetComponent<Transform>();
 
         if (!isInsideMech && isCollidingWithMech)

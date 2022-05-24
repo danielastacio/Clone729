@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MechMovement : PlayerMovement
+public class MechController : PlayerController
 {
     private void OnEnable()
     {
