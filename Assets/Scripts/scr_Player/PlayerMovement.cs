@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour, IDamageable
     protected internal float jumpForce = 25;
 
     [SerializeField]
-    private float rollForce = 1000;
+    private float rollForce = 20;
 
     private float
         playerHeight,
