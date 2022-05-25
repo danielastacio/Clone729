@@ -60,9 +60,9 @@ namespace scr_NPCs
         
         protected virtual void FixedUpdate()
         {
-            CheckActiveState();
             CheckForGround();
             CheckForWall();
+            CheckActiveState();
         }
     
         private void CheckActiveState()

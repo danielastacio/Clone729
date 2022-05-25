@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using scr_Consumables;
 using scr_Interfaces;
 using UnityEngine;
 
@@ -120,6 +121,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void Awake()
     {
         SetPlayerRbSettings();
+        currentHp = maxHp;
     }
     private void Update()
     {
@@ -155,6 +157,18 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (!isInsideMech && isCollidingWithMech)
         {
             isReadyForMech = true;
+        }
+
+        if (collider.gameObject.CompareTag("Consumable"))
+        {
+            if (collider.GetComponent<HealthConsumable>() && currentHp <= maxHp)
+            {
+                currentHp += collider.GetComponent<HealthConsumable>().ConsumeItem();
+                if (currentHp >= maxHp)
+                {
+                    currentHp = maxHp;
+                }
+            }
         }
     }
     protected virtual void OnTriggerExit2D(Collider2D collider)

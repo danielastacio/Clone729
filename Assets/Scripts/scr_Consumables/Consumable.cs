@@ -10,5 +10,13 @@ namespace scr_Consumables
         {
             return 0f;
         }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.gameObject.CompareTag("Player"))
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 }
