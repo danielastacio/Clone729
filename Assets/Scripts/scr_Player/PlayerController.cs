@@ -11,20 +11,22 @@ public class PlayerController : MonoBehaviour, IDamageable
     public float currentHp;
 
     [Header("Speed and Force")]
-    [SerializeField]
-    private float speed = 0;
 
-    [SerializeField]
-    protected internal float defaultSpeed = 10;
+    [SerializeField] private float speed = 0;
+    [SerializeField] protected internal float defaultSpeed = 10;
+    [SerializeField] private float crouchSpeed = 5;
+    [SerializeField] protected internal float jumpForce = 25;
+    [SerializeField] protected internal float fallMultiplier = 7;
+    [SerializeField] private float rollForce = 20;
+    [SerializeField] private float rollTime;
+    [SerializeField] private float defaultRollTime = 0.5f;
 
-    [SerializeField]
-    private float crouchSpeed = 5;
+    [Header("Ground Check")]
 
-    [SerializeField]
-    protected internal float jumpForce = 25;
-
-    [SerializeField]
-    private float rollForce = 20;
+    [SerializeField] protected internal float groundCheckRadius = 0.5f;
+    [SerializeField] protected internal float offsetRadius = -1.7f;
+    [SerializeField] private LayerMask whatIsGround;
+    private Vector2 groundCheckPos;
 
     private float
         playerHeight,
@@ -46,35 +48,16 @@ public class PlayerController : MonoBehaviour, IDamageable
         isFacingRight,
         isFacingLeft;
 
-    [SerializeField]
-    protected internal float fallMultiplier = 7;
-
     private bool 
         isInsideMech, 
         isReadyForMech, 
         isCollidingWithMech;
-   
-    [SerializeField]
-    private float rollTime;
-    [SerializeField]
-    private float defaultRollTime = 0.5f;
 
     protected internal Rigidbody2D rb;
-
-    [Header("Ground Check")]
-    [SerializeField]
-    protected internal float groundCheckRadius = 0.5f;
-    [SerializeField]
-    protected internal float offsetRadius = -1.7f;
-
-    [SerializeField]
-    private LayerMask whatIsGround;
-    private Vector2 groundCheckPos;
-    private Transform mech;
-
     public static event Action MechActivated;
     public static event Action MechDeactivated;
 
+    private Transform mech;
     private void SetPlayerRbSettings()
     {
         rb = GetComponent<Rigidbody2D>();
