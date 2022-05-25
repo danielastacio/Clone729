@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0fd7db57fc20fc47b89cdc5ad083b61, type: 3}
+  m_Name: 554EE9E8-5AEA-4136-AD4C-46FFB751A806
+  m_EditorClassIdentifier: 
+  objectName: Main_Menu_Bank
+  id: 523052073
+  guid: 554EE9E8-5AEA-4136-AD4C-46FFB751A806

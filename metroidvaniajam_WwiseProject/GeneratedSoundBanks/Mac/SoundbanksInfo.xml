@@ -11,25 +11,49 @@
 	<StreamedFiles/>
 	<MediaFilesNotInAnyBank/>
 	<SoundBanks>
-		<SoundBank Id="1355168291" Language="SFX" Hash="2754342975">
-			<ObjectPath>Init</ObjectPath>
-			<ShortName>Init</ShortName>
-			<Path>Init.bnk</Path>
-		</SoundBank>
-		<SoundBank Id="1512859615" Language="SFX" Hash="1337770186">
-			<ObjectPath>\SoundBanks\Default Work Unit\Testing</ObjectPath>
-			<ShortName>Testing</ShortName>
-			<Path>Testing.bnk</Path>
+		<SoundBank Id="523052073" Language="SFX" Hash="2345695854">
+			<ObjectPath>\SoundBanks\Main Menu\Main_Menu_Bank</ObjectPath>
+			<ShortName>Main_Menu_Bank</ShortName>
+			<Path>Main_Menu_Bank.bnk</Path>
 			<IncludedEvents>
-				<Event Id="2885688842" Name="Play_Steam" ObjectPath="\Events\Default Work Unit\Play_Steam" DurationType="OneShot" DurationMin="17.830839" DurationMax="17.830839">
+				<Event Id="1049090908" Name="Play_Menu_Enter" ObjectPath="\Events\Main Menu\Play_Menu_Enter" DurationType="OneShot" DurationMin="0.500000" DurationMax="0.500000">
 					<IncludedMemoryFiles>
-						<File Id="740774714" Language="SFX">
-							<ShortName>Steam 2.wav</ShortName>
-							<Path>SFX\Steam 2_10C4C929.wem</Path>
+						<File Id="179917572" Language="SFX">
+							<ShortName>Menu Enter.wav</ShortName>
+							<Path>SFX\Menu Enter_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="1806488964" Name="Play_Menu_Return" ObjectPath="\Events\Main Menu\Play_Menu_Return" DurationType="OneShot" DurationMin="0.500000" DurationMax="0.500000">
+					<IncludedMemoryFiles>
+						<File Id="684581930" Language="SFX">
+							<ShortName>Menu Return.wav</ShortName>
+							<Path>SFX\Menu Return_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="2167056030" Name="Play_Menu_Select" ObjectPath="\Events\Main Menu\Play_Menu_Select" DurationType="OneShot" DurationMin="0.500000" DurationMax="0.500000">
+					<IncludedMemoryFiles>
+						<File Id="1045533594" Language="SFX">
+							<ShortName>Menu Select.wav</ShortName>
+							<Path>SFX\Menu Select_10C4C929.wem</Path>
+						</File>
+					</IncludedMemoryFiles>
+				</Event>
+				<Event Id="3294915283" Name="Play_Start_Game" ObjectPath="\Events\Main Menu\Play_Start_Game" DurationType="OneShot" DurationMin="3.319320" DurationMax="3.319320">
+					<IncludedMemoryFiles>
+						<File Id="581976253" Language="SFX">
+							<ShortName>Start Game.wav</ShortName>
+							<Path>SFX\Start Game_10C4C929.wem</Path>
 						</File>
 					</IncludedMemoryFiles>
 				</Event>
 			</IncludedEvents>
+		</SoundBank>
+		<SoundBank Id="1355168291" Language="SFX" Hash="2754342975">
+			<ObjectPath>Init</ObjectPath>
+			<ShortName>Init</ShortName>
+			<Path>Init.bnk</Path>
 		</SoundBank>
 	</SoundBanks>
 </SoundBanksInfo>
