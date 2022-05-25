@@ -33,8 +33,7 @@ namespace scr_NPCs.scr_Enemies
         {
             var newBullet = Instantiate(bullet, _gun);
             var bulletScript = newBullet.GetComponent<Bullet>();
-            bulletScript.damage = attackDamage;
-            bulletScript.targetPos = PlayerPos;
+            bulletScript.CreateBullet("Player", PlayerPos, attackDamage);
         }
     }
 }

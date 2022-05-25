@@ -6,26 +6,33 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed;
-    public float damage;
-    public Vector3 targetPos;
-
-    void Update()
+    private string _target;
+    private Vector3 _targetPos;
+    [SerializeField] private float speed;
+    private float _damage;
+    
+    private void Update()
     {
-        float step = speed * Time.deltaTime;
-        transform.position = Vector2.MoveTowards(transform.position, targetPos, step);
-        if (Vector2.Distance(transform.position, targetPos) <= 0.01)
+        var step = speed * Time.deltaTime;
+        transform.position = Vector2.MoveTowards(transform.position, _targetPos, step);
+        if (Vector2.Distance(transform.position, _targetPos) <= 0.01)
         {
             Destroy(gameObject);
         }
     }
 
+    public void CreateBullet(string targetTag, Vector3 targetPos, float damage)
+    {
+        _target = targetTag;
+        _targetPos = targetPos;
+        _damage = damage;
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag(_target))
         {
-            IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
-            damageable.TakeDamage(damage);
+            other.gameObject.GetComponent<IDamageable>().TakeDamage(_damage);
         }
         Destroy(gameObject);
     }
