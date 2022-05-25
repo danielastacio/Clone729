@@ -586,15 +586,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 258669944946299380, guid: 89a23ae0e2c9db448a197fb8c3c25598, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 258669944946299380, guid: 89a23ae0e2c9db448a197fb8c3c25598, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 258669944946299380, guid: 89a23ae0e2c9db448a197fb8c3c25598, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 258669944946299380, guid: 89a23ae0e2c9db448a197fb8c3c25598, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -648,7 +648,8 @@ PrefabInstance:
       propertyPath: whatIsGround.m_Bits
       value: 64
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -1306471926729899300, guid: 89a23ae0e2c9db448a197fb8c3c25598, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 89a23ae0e2c9db448a197fb8c3c25598, type: 3}
 --- !u!1001 &6761244564529201369
 PrefabInstance:
