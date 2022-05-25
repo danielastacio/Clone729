@@ -161,14 +161,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         if (collider.gameObject.CompareTag("Consumable"))
         {
-            if (collider.GetComponent<HealthConsumable>() && currentHp <= maxHp)
-            {
-                currentHp += collider.GetComponent<HealthConsumable>().ConsumeItem();
-                if (currentHp >= maxHp)
-                {
-                    currentHp = maxHp;
-                }
-            }
+            CheckConsumablePickup(collider);
         }
     }
     protected virtual void OnTriggerExit2D(Collider2D collider)
@@ -179,6 +172,30 @@ public class PlayerController : MonoBehaviour, IDamageable
             isCollidingWithMech = false;
         }
     }
+#endregion
+
+#region Trigger Checks
+    private void CheckConsumablePickup(Collider2D consumable)
+    {
+        if (consumable.GetComponent<HealthConsumable>() && currentHp <= maxHp)
+        {
+            RestoreHP(consumable.GetComponent<HealthConsumable>().ConsumeItem());
+        }
+    }
+
+#endregion
+
+#region Restoration Methods
+
+private void RestoreHP(float restoreAmount)
+{
+    currentHp += restoreAmount;
+    if (currentHp >= maxHp)
+    {
+        currentHp = maxHp;
+    }
+}
+
 #endregion
 
 #region Inputs
@@ -397,4 +414,5 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
     }
 #endregion
+
 }
