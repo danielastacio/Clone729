@@ -25,6 +25,10 @@ namespace scr_NPCs
         [SerializeField] protected bool facingRight;
         protected Vector2 GroundCheckDirection;
         protected Vector2 WallCheckDirection;
+
+        [Header("Ground/Wall Checks")] 
+        protected RaycastHit2D GroundCheck;
+        protected RaycastHit2D WallCheck;
         
         [Header("Layer Masks")]
         [SerializeField] private LayerMask whatIsGround;
@@ -147,10 +151,10 @@ namespace scr_NPCs
 
         protected void CheckForGround()
         {
-            var groundCheck = 
+            GroundCheck = 
                 Physics2D.Raycast(_groundCheck.position, GroundCheckDirection, groundCheckRaycastDist, whatIsGround);
 
-            if (!groundCheck)
+            if (!GroundCheck)
             {
                 Flip();
             }
@@ -158,10 +162,10 @@ namespace scr_NPCs
 
         protected void CheckForWall()
         {
-            var wallCheck =
+            WallCheck =
                 Physics2D.Raycast(_groundCheck.position, WallCheckDirection, groundCheckRaycastDist, whatIsWall);
         
-            if (wallCheck)
+            if (WallCheck)
             {
                 Flip();
             }

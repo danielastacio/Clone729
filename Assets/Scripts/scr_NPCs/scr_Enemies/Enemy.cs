@@ -23,6 +23,7 @@ namespace scr_NPCs.scr_Enemies
         [SerializeField] private float sightRange;
         [SerializeField] private float attackRange;
         [SerializeField] private float retreatRange;
+        private float _currentRetreatRange;
         
         [Header("Enemy Layer Masks")]
         [SerializeField] protected LayerMask whatIsPlayer;
@@ -55,18 +56,18 @@ namespace scr_NPCs.scr_Enemies
             _playerInAttackRange =
                 Physics2D.OverlapCircle(transform.position, attackRange, whatIsPlayer);
             _playerInRetreatRange =
-                Physics2D.OverlapCircle(transform.position, retreatRange, whatIsPlayer);
+                Physics2D.OverlapCircle(transform.position, _currentRetreatRange, whatIsPlayer);
 
             if (_playerSpottingRay)
             {
                 _playerSpotted = true;
             }
-            
+
             if (_playerInSightRange && _playerSpotted)
             {
                 Debug.Log("Player spotted!");
                 PlayerPos = _playerInSightRange.transform.position;
-            
+
                 if (_playerInRetreatRange)
                 {
                     CurrentState = State.Retreat;
@@ -82,6 +83,7 @@ namespace scr_NPCs.scr_Enemies
             {
                 _playerSpotted = false;
                 CurrentState = State.Patrol;
+                _currentRetreatRange = retreatRange;
                 Debug.Log("Where'd he go?");
             }
         }
@@ -99,9 +101,7 @@ namespace scr_NPCs.scr_Enemies
         {
             if (other.gameObject.CompareTag("Player"))
             {
-                IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
-                damageable.TakeDamage(touchDamage);
-                Flip();
+                other.gameObject.GetComponent<IDamageable>().TakeDamage(touchDamage);
             }
         }
 
@@ -134,8 +134,10 @@ namespace scr_NPCs.scr_Enemies
             Flip();
             while (CurrentState == State.Retreat && _playerInRetreatRange)
             {
-                CheckForGround();
-                CheckForWall();
+                if (!GroundCheck || WallCheck)
+                {
+                    _currentRetreatRange = 0;
+                }
                 Rb.velocity = new Vector2(HorizSpeed, 0);
                 yield return null;
             }
