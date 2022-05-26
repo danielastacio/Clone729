@@ -23,6 +23,7 @@ namespace scr_NPCs.scr_Enemies
             while (CurrentState == State.Attack)
             {
                 CheckFacingPlayer();
+                Rb.Sleep();
 
                 yield return new WaitForSeconds(timeBetweenAttacks);
                 

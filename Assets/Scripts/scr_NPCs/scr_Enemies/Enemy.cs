@@ -33,7 +33,6 @@ namespace scr_NPCs.scr_Enemies
         private Collider2D _playerInAttackRange;
         private Collider2D _playerInRetreatRange;
         private bool _playerSpotted;
-        private RaycastHit2D _playerSpottingRay;
 
         protected Vector3 PlayerPos;
         
@@ -49,8 +48,6 @@ namespace scr_NPCs.scr_Enemies
         
         protected void CheckForPlayer()
         {
-            _playerSpottingRay =
-                Physics2D.Raycast(transform.position, WallCheckDirection, sightRange, whatIsPlayer);
             _playerInSightRange = 
                 Physics2D.OverlapCircle(transform.position, sightRange, whatIsPlayer);
             _playerInAttackRange =
@@ -58,10 +55,7 @@ namespace scr_NPCs.scr_Enemies
             _playerInRetreatRange =
                 Physics2D.OverlapCircle(transform.position, _currentRetreatRange, whatIsPlayer);
 
-            if (_playerSpottingRay)
-            {
-                _playerSpotted = true;
-            }
+            PlayerSpottingRaycast();
 
             if (_playerInSightRange && _playerSpotted)
             {
@@ -107,11 +101,24 @@ namespace scr_NPCs.scr_Enemies
 
         protected void CheckFacingPlayer()
         {
-            if (PlayerPos.x > transform.position.x && !facingRight)
+            if ((PlayerPos.x > transform.position.x && !facingRight)
+                || (PlayerPos.x < transform.position.x && facingRight))
             {
                 Flip();
             }
-            else if (PlayerPos.x < transform.position.x && facingRight)
+        }
+
+        private void PlayerSpottingRaycast()
+        {
+            var playerSpottingRay =
+                Physics2D.Raycast(transform.position, WallCheckDirection, sightRange, whatIsPlayer);
+            
+            if (playerSpottingRay)
+            {
+                _playerSpotted = true;
+            }
+
+            if (playerSpottingRay && CurrentState == State.Retreat)
             {
                 Flip();
             }
@@ -121,8 +128,6 @@ namespace scr_NPCs.scr_Enemies
         {
             while (CurrentState == State.Attack)
             {
-                CheckFacingPlayer();
-                
                 // Set up attack logic.
 
                 yield return new WaitForSeconds(timeBetweenAttacks);
@@ -131,9 +136,9 @@ namespace scr_NPCs.scr_Enemies
 
         protected override IEnumerator Retreat()
         {
-            Flip();
             while (CurrentState == State.Retreat && _playerInRetreatRange)
             {
+                PlayerSpottingRaycast();
                 if (!GroundCheck || WallCheck)
                 {
                     _currentRetreatRange = 0;
