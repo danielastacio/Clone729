@@ -62,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
 
 
         Flip();
+
     }
 
     private void FixedUpdate()
