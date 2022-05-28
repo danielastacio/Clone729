@@ -34,28 +34,6 @@ public class Env_Item : MonoBehaviour
         str_FakeItemName = str_ItemName.Replace('_', ' ');
     }
 
-    public void PickUpTest()
-    {
-        GameObject duplicate = Instantiate(gameObject,
-                                           PlayerInventoryScript.par_PlayerInventory.transform.position,
-                                           Quaternion.identity,
-                                           PlayerInventoryScript.par_PlayerInventory);
-
-        duplicate.GetComponent<Env_Item>().str_ItemName 
-            = "TestItem_" + Random.Range(1, 1000).ToString();
-
-        duplicate.GetComponent<Env_Item>().str_FakeItemName 
-            = duplicate.GetComponent<Env_Item>().str_ItemName.Replace('_', ' ');
-
-        duplicate.SetActive(false);
-
-        PlayerInventoryScript.inventory.Add(duplicate);
-
-        duplicate.GetComponent<Env_Item>().isInPlayerInventory = true;
-
-        PlayerInventoryScript.RebuildPlayerInventory();
-    }
-
     /*
     private void OnCollisionEnter2D(Collision2D collision)
     {

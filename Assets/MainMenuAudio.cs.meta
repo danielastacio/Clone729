@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/MainMenuAudio.cs.meta
+guid: 3b8d6b8a870f9c745926ba9d6d015275
+========
+guid: 0b08ab5fb078db04498f694dc0d6f57d
+>>>>>>>> main:Assets/Scripts/scr_Player/Player.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

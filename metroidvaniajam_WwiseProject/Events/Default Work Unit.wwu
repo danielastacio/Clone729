@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{079C36E1-3C2A-4290-9003-102FF37A8863}" SchemaVersion="103">
 	<Events>
-		<WorkUnit Name="Default Work Unit" ID="{079C36E1-3C2A-4290-9003-102FF37A8863}" PersistMode="Standalone">
-			<ChildrenList>
-				<Event Name="Play_Steam" ID="{25F2037B-A3DC-4CA1-A1E2-F21BBB9349BC}">
-					<ChildrenList>
-						<Action Name="" ID="{278BC3A8-40D2-45C9-BEE6-9686A7C3103D}" ShortID="936480434">
-							<ReferenceList>
-								<Reference Name="Target">
-									<ObjectRef Name="Steam" ID="{98F4CBBA-0754-4379-AAED-34E1D7687F1A}" WorkUnitID="{A81FF108-CBDE-4810-8A6A-B6363CFD42AE}"/>
-								</Reference>
-							</ReferenceList>
-						</Action>
-					</ChildrenList>
-				</Event>
-			</ChildrenList>
-		</WorkUnit>
+		<WorkUnit Name="Default Work Unit" ID="{079C36E1-3C2A-4290-9003-102FF37A8863}" PersistMode="Standalone"/>
 	</Events>
 </WwiseDocument>
