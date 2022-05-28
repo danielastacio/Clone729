@@ -179,6 +179,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         if (consumable.GetComponent<HealthConsumable>() && currentHp <= maxHp)
         {
+            Debug.Log(consumable.GetComponent<HealthConsumable>().ConsumeItem());
             RestoreHP(consumable.GetComponent<HealthConsumable>().ConsumeItem());
         }
     }

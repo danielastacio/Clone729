@@ -15,6 +15,7 @@ namespace scr_Consumables
         {
             if (other.gameObject.CompareTag("Player"))
             {
+                ConsumeItem();
                 Destroy(gameObject);
             }
         }
