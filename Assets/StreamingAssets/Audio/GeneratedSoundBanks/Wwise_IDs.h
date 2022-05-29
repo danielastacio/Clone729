@@ -13,13 +13,16 @@ namespace AK
 {
     namespace EVENTS
     {
-        static const AkUniqueID PLAY_STEAM = 2885688842U;
+        static const AkUniqueID PLAY_MENU_ENTER = 1049090908U;
+        static const AkUniqueID PLAY_MENU_RETURN = 1806488964U;
+        static const AkUniqueID PLAY_MENU_SELECT = 2167056030U;
+        static const AkUniqueID PLAY_START_GAME = 3294915283U;
     } // namespace EVENTS
 
     namespace BANKS
     {
         static const AkUniqueID INIT = 1355168291U;
-        static const AkUniqueID TESTING = 1512859615U;
+        static const AkUniqueID MAIN_MENU_BANK = 523052073U;
     } // namespace BANKS
 
     namespace BUSSES

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{BFACFC3B-4D9A-4BDD-BE5F-186E84567405}" SchemaVersion="103">
+	<Events>
+		<WorkUnit Name="Main Menu" ID="{BFACFC3B-4D9A-4BDD-BE5F-186E84567405}" PersistMode="Standalone">
+			<ChildrenList>
+				<Event Name="Play_Start_Game" ID="{E5F024EF-1949-42C7-A259-C4C103B23215}">
+					<ChildrenList>
+						<Action Name="" ID="{3879FBF3-8CB9-47CC-833C-9B0C5B8BB323}" ShortID="230266957">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Start Game" ID="{D8E86FF1-11FB-4C50-883E-12D130D22CA3}" WorkUnitID="{3CD60D20-CF1B-4098-AFC6-9D5154059967}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Menu_Select" ID="{B6C9C2E4-4B87-4FCC-8CDC-8E0747530C32}">
+					<ChildrenList>
+						<Action Name="" ID="{156FB6DF-C21C-4408-86E0-8C6F2DB5AB6D}" ShortID="540424270">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Menu Select" ID="{BE723D15-3F0B-4E04-87E1-1D1BB68C0594}" WorkUnitID="{3CD60D20-CF1B-4098-AFC6-9D5154059967}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Menu_Return" ID="{09918297-253C-4CC6-A830-32235F74EB93}">
+					<ChildrenList>
+						<Action Name="" ID="{36409F72-D250-4490-9CA3-D7923651C30C}" ShortID="775505677">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Menu Return" ID="{2969DD64-D79F-4D0F-B6DF-D7323CDA9462}" WorkUnitID="{3CD60D20-CF1B-4098-AFC6-9D5154059967}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Menu_Enter" ID="{CBA6312D-BBAC-4578-8352-957889F8ADF4}">
+					<ChildrenList>
+						<Action Name="" ID="{E0265EBA-B7C3-44BE-875A-0BBC149EF9F5}" ShortID="949161957">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="Menu Enter" ID="{ACE46D90-EC11-4BDA-9025-C08D562400D3}" WorkUnitID="{3CD60D20-CF1B-4098-AFC6-9D5154059967}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+			</ChildrenList>
+		</WorkUnit>
+	</Events>
+</WwiseDocument>
