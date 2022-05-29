@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Interfaces;
 
 public class BulletScript : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class BulletScript : MonoBehaviour
     [HideInInspector] public  Vector3 direction;
     [HideInInspector] public float bulletDamage;
     private Rigidbody2D rb;
-    private float timebeforedeletion = 0;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -19,18 +20,26 @@ public class BulletScript : MonoBehaviour
     void Update()
     {
 
-            Destroy(this);
-        rb.AddForce(direction * bulletSpeed);
+            
+       rb.AddRelativeForce(Vector3.right * bulletSpeed);
     
        
 
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if(collision.gameObject.tag != "Player")
-            Debug.Log("Something Hit!");
-           Destroy(collision.gameObject);
+       
+         if (other.gameObject.CompareTag("Enemy"))
+         {
+            IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
+            damageable.TakeDamage(bulletDamage);
             Destroy(gameObject);
-      
+         }
+
+        if (other.gameObject.CompareTag("Wall") || other.gameObject.CompareTag("Ground"))
+            Destroy(gameObject);
+        
+     
     }
 }
+

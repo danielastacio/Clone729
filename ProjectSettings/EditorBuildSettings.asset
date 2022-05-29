@@ -5,10 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Scene_Main.unity
     guid: f3b47e420aeb8304fb2030896d5bbc01
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Scene_Game.unity
     guid: bc4fc2ce950b0224fb6dd8812d4425a2
+  - enabled: 1
+    path: Assets/Scenes/zareth_spider_bot_scene.unity
+    guid: 631b3c4c23001994fa679a2ac195a0c8
   m_configObjects: {}

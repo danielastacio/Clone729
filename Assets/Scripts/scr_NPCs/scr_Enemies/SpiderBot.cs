@@ -34,6 +34,8 @@ namespace scr_Enemies
         private void Start()
         {
             SetStartingRotation();
+            SetHealth();
+           
         }
 
         private void SetStartingRotation()

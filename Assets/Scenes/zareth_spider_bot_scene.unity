@@ -167,7 +167,7 @@ GameObject:
   - component: {fileID: 283232972}
   m_Layer: 6
   m_Name: Platform
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -363,6 +363,10 @@ PrefabInstance:
     - target: {fileID: 1704585594299060283, guid: d6fc5d24129c83147867b38155e51c9b, type: 3}
       propertyPath: m_Constraints
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7968484937769075984, guid: d6fc5d24129c83147867b38155e51c9b, type: 3}
+      propertyPath: maxHp
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7968484937769075984, guid: d6fc5d24129c83147867b38155e51c9b, type: 3}
       propertyPath: facingRight
@@ -721,7 +725,7 @@ GameObject:
   - component: {fileID: 1330748092}
   m_Layer: 6
   m_Name: Floor
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -918,9 +922,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0
-  bullet: {fileID: 7641052432668267021, guid: 0237a53b73946dd47b2098486d257894, type: 3}
-  bulletDamage: 0
-  bulletSpeed: 1.29
+  bullet: {fileID: 5284038447227857950, guid: 0237a53b73946dd47b2098486d257894, type: 3}
+  bulletDamage: 1
+  bulletSpeed: 100
+  fireRate: 0.3
 --- !u!1 &1436720027
 GameObject:
   m_ObjectHideFlags: 0
@@ -1506,7 +1511,7 @@ GameObject:
   - component: {fileID: 1861660044}
   m_Layer: 0
   m_Name: Enemy2
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1536,7 +1541,7 @@ MonoBehaviour:
   maxTimeBeforeNextIdle: 5
   minIdleTime: 1.5
   maxIdleTime: 3
-  maxHp: 3
+  maxHp: 5
   attackDamage: 1
 --- !u!50 &1861660045
 Rigidbody2D:
@@ -1583,7 +1588,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1861660043}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.98, y: 3.467, z: -0.037977003}
+  m_LocalPosition: {x: -5.79, y: -2.61, z: -0.037977003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1605,7 +1610,7 @@ GameObject:
   - component: {fileID: 1883415572}
   m_Layer: 6
   m_Name: Platform (1)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1749,7 +1754,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 7.860384
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
