@@ -1,4 +1,5 @@
 using System.Collections;
+using scr_NPCs.scr_Enemies;
 using UnityEngine;
 
 namespace scr_NPCs
@@ -110,7 +111,7 @@ namespace scr_NPCs
             else if (CurrentState == State.Die)
             {
                 StopAllCoroutines();
-                Destroy(gameObject);
+                Die();
             }
         }
         
@@ -236,6 +237,12 @@ namespace scr_NPCs
         {
             // Set up retreat logic
             yield return null;
+        }
+
+        protected virtual void Die()
+        {
+            // This will be overridden in Enemy script
+            return;
         }
     }
 }

@@ -18,8 +18,8 @@ namespace scr_NPCs.scr_Enemies
         [SerializeField] protected float attackDamage;
         [SerializeField] protected float timeBetweenAttacks;
 
-        
-        [Header("Combat")]
+        [Header("Combat")] 
+        [SerializeField] private int itemDropChance;
         [SerializeField] private float sightRange;
         [SerializeField] private float attackRange;
         [SerializeField] private float retreatRange;
@@ -147,6 +147,12 @@ namespace scr_NPCs.scr_Enemies
                 yield return null;
             }
             CheckFacingPlayer();
+        }
+
+        protected override void Die()
+        {
+            GetComponent<EnemyDropTable>().CalculateDropChance(itemDropChance);
+            Destroy(gameObject);
         }
     }
 }

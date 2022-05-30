@@ -158,6 +158,7 @@ GameObject:
   - component: {fileID: 8014830874930480865}
   - component: {fileID: 8014830874930480866}
   - component: {fileID: 8014830874930480895}
+  - component: {fileID: 34200996}
   m_Layer: 0
   m_Name: GunMech
   m_TagString: Enemy
@@ -250,6 +251,7 @@ MonoBehaviour:
   touchDamage: 1
   attackDamage: 2
   timeBetweenAttacks: 1.2
+  itemDropChance: 50
   sightRange: 15
   attackRange: 10
   retreatRange: 5
@@ -257,3 +259,18 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   bullet: {fileID: 1098913445886223160, guid: f44e6d0ca98ade74780e041d05af0e08, type: 3}
+--- !u!114 &34200996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8014830874930480868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69366796f8453e5469cdee19985d2fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DropTable:
+  - Item: {fileID: 4200728059679739103, guid: a3d4fefa182c4e544bba35079195f2d2, type: 3}
+    DropChance: 50
