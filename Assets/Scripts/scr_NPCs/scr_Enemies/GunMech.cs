@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using scr_NPCs.scr_Enemies.scr_EnemyUtilities;
 using UnityEngine;
 
 namespace scr_NPCs.scr_Enemies

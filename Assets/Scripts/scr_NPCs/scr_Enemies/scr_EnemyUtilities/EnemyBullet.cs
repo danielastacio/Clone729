@@ -1,7 +1,7 @@
 using scr_Interfaces;
 using UnityEngine;
 
-namespace scr_NPCs.scr_Enemies
+namespace scr_NPCs.scr_Enemies.scr_EnemyUtilities
 {
     public class EnemyBullet: MonoBehaviour
     {

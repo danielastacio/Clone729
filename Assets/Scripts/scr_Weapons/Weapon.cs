@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using scr_Weapons;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
-
 {
     //Inspector Dudes/Variables
     [Header("Debug")]
@@ -18,14 +18,8 @@ public class Weapon : MonoBehaviour
     private Vector3 difference;
     private float angle;
     private bool canShoot = true;
-    // Start is called before the first frame update
-    void Start()
-    {
-       
-    }
-
-    // Update is called once per frame
-    void Update()
+    
+    private void Update()
     {
          LookAtCursor();
          RotateAroundMech();
@@ -35,7 +29,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    public void LookAtCursor()
+    private void LookAtCursor()
     {
         // Get Direction and Normalize It
         difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
@@ -46,21 +40,17 @@ public class Weapon : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f, 0f, angle + offset);
 
     }
-    public void RotateAroundMech()
+    private void RotateAroundMech()
     {
         //set Position around the mech by taking which direction it's pointing at
         transform.position = transform.parent.position + difference;
     }
 
-    public virtual void  InstantiateBullet()
+    protected virtual void  InstantiateBullet()
     {
         var newBullet = 
             Instantiate(bullet, transform.position, Quaternion.Euler(0f, 0f, angle + offset));
-        newBullet.GetComponent<BulletScript>().CreateBullet("Enemy", bulletDamage, bulletSpeed);
-        
-        /*bullet.GetComponent<BulletScript>().bulletDamage = bulletDamage;
-        bullet.GetComponent<BulletScript>().direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
-        bullet.GetComponent<BulletScript>().bulletSpeed = bulletSpeed;*/
+        newBullet.GetComponent<PlayerBullet>().CreateBullet("Enemy", bulletDamage, bulletSpeed);
     }
     IEnumerator Shoot()
     {

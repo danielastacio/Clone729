@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using scr_Interfaces;
+using scr_NPCs.scr_Enemies.scr_EnemyUtilities;
 using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;

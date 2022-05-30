@@ -3,7 +3,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace scr_NPCs.scr_Enemies
+namespace scr_NPCs.scr_Enemies.scr_EnemyUtilities
 {
     public class EnemyDropTable : MonoBehaviour
     {
