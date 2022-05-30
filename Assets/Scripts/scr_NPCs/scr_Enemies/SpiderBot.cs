@@ -38,6 +38,8 @@ namespace scr_NPCs.scr_Enemies
         {
             base.Start();
             SetStartingRotation();
+           
+           
         }
 
         private void SetStartingRotation()
