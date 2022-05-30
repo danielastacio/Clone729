@@ -19,11 +19,7 @@ namespace scr_NPCs.scr_Enemies.scr_EnemyUtilities
         {
             int calcDropChance = Random.Range(0, 100);
 
-            if (calcDropChance > dropChance)
-            {
-                return;
-            }
-            else
+            if (calcDropChance <= dropChance)
             {
                 DropItem();
             }
