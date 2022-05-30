@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 
-
 {
     //Inspector Dudes/Variables
     [Header("Debug")]
@@ -32,7 +31,6 @@ public class Weapon : MonoBehaviour
          RotateAroundMech();
         if(Input.GetMouseButtonUp(0) && canShoot)
         {
-            Shoot();
             StartCoroutine(Shoot());
         }
     }
@@ -56,12 +54,15 @@ public class Weapon : MonoBehaviour
 
     public virtual void  InstantiateBullet()
     {
-        bullet.GetComponent<BulletScript>().bulletDamage = bulletDamage;
-        bullet.GetComponent<BulletScript>().direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized ;
-        bullet.GetComponent<BulletScript>().bulletSpeed = bulletSpeed;
-        Instantiate(bullet, transform.position, Quaternion.Euler(0f, 0f, angle + offset));
+        var newBullet = 
+            Instantiate(bullet, transform.position, Quaternion.Euler(0f, 0f, angle + offset));
+        newBullet.GetComponent<BulletScript>().CreateBullet("Enemy", bulletDamage, bulletSpeed);
+        
+        /*bullet.GetComponent<BulletScript>().bulletDamage = bulletDamage;
+        bullet.GetComponent<BulletScript>().direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
+        bullet.GetComponent<BulletScript>().bulletSpeed = bulletSpeed;*/
     }
-    IEnumerator  Shoot()
+    IEnumerator Shoot()
     {
         canShoot = false;
         InstantiateBullet();

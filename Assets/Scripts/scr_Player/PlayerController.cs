@@ -109,6 +109,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         if (currentHp <= 0)
         {
+            Destroy(gameObject);
             // Play death animation
 
             // Reset level on death

@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using scr_NPCs.scr_Enemies;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace scr_NPCs
 {
@@ -62,12 +64,16 @@ namespace scr_NPCs
             
             SetRotationAndSpeed();
         }
-        
+
+        protected virtual void Update()
+        {
+            CheckActiveState();
+        }
+
         protected virtual void FixedUpdate()
         {
             CheckForGround();
             CheckForWall();
-            CheckActiveState();
         }
     
         private void CheckActiveState()
@@ -242,7 +248,6 @@ namespace scr_NPCs
         protected virtual void Die()
         {
             // This will be overridden in Enemy script
-            return;
         }
     }
 }

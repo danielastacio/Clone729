@@ -7,13 +7,11 @@ using Random = UnityEngine.Random;
 
 namespace scr_NPCs.scr_Enemies
 {
-    // TODO: Figure out how to keep enemy from running off platforms when retreating
-    // TODO: Make sure enemy is facing the player before trying to retreat, otherwise it retreats into the player...
     public class Enemy : NPCController, IDamageable
     {
         [Header("Stats")] 
         [SerializeField] protected float maxHp;
-        private float _currentHp;
+        [SerializeField] private float _currentHp;
         [SerializeField] protected float touchDamage; // Damage when player bumps the enemy
         [SerializeField] protected float attackDamage;
         [SerializeField] protected float timeBetweenAttacks;
@@ -41,11 +39,12 @@ namespace scr_NPCs.scr_Enemies
             _currentHp = maxHp;
         }
 
-        private void Update()
+        protected override void FixedUpdate()
         {
+            base.FixedUpdate();
             CheckForPlayer();
         }
-        
+
         protected void CheckForPlayer()
         {
             _playerInSightRange = 
