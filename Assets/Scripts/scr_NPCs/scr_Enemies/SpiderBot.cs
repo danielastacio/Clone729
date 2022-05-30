@@ -34,7 +34,7 @@ namespace scr_NPCs.scr_Enemies
         {
             base.Start();
             SetStartingRotation();
-            SetHealth();
+           
            
         }
 

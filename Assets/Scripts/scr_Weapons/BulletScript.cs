@@ -21,7 +21,8 @@ public class BulletScript : MonoBehaviour
     {
 
             
-       rb.AddRelativeForce(Vector3.right * bulletSpeed);
+       rb.AddRelativeForce(Vector3.right * bulletSpeed,ForceMode2D.Impulse);
+        StartCoroutine(BulletDestroy());
     
        
 
@@ -40,6 +41,11 @@ public class BulletScript : MonoBehaviour
             Destroy(gameObject);
         
      
+    }
+    IEnumerator BulletDestroy()
+    {
+        yield return new WaitForSeconds(2);
+        Destroy(gameObject);
     }
 }
 
