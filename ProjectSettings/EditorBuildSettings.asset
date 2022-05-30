@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Scene_Game.unity
     guid: bc4fc2ce950b0224fb6dd8812d4425a2
   - enabled: 1
-    path: Assets/Scenes/zareth_spider_bot_scene.unity
+    path: Assets/Scenes/TestScenes/zareth_Gun_spider_bot_scene.unity
     guid: 631b3c4c23001994fa679a2ac195a0c8
   m_configObjects: {}

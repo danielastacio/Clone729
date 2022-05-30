@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Interfaces;
+using scr_Interfaces;
 
 public class BulletScript : MonoBehaviour
 {
