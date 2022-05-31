@@ -531,6 +531,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1801584528, guid: 89a23ae0e2c9db448a197fb8c3c25598, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 258669944946299380, guid: 89a23ae0e2c9db448a197fb8c3c25598, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -579,6 +583,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5907496317987002545, guid: 89a23ae0e2c9db448a197fb8c3c25598, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89a23ae0e2c9db448a197fb8c3c25598, type: 3}
 --- !u!1001 &6761244564529201369
@@ -599,10 +607,6 @@ PrefabInstance:
     - target: {fileID: 6497214864846317695, guid: 6b08de7af138b2348802ceba0e40b34b, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6761244563051676167, guid: 6b08de7af138b2348802ceba0e40b34b, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6792060363143641236, guid: 6b08de7af138b2348802ceba0e40b34b, type: 3}
       propertyPath: m_Name
@@ -673,12 +677,24 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6792060363143641243, guid: 6b08de7af138b2348802ceba0e40b34b, type: 3}
+      propertyPath: m_Mass
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6792060363143641243, guid: 6b08de7af138b2348802ceba0e40b34b, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6792060363143641243, guid: 6b08de7af138b2348802ceba0e40b34b, type: 3}
       propertyPath: m_Constraints
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6792060363143641243, guid: 6b08de7af138b2348802ceba0e40b34b, type: 3}
       propertyPath: m_GravityScale
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8224734470486341601, guid: 6b08de7af138b2348802ceba0e40b34b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8224734470486341601, guid: 6b08de7af138b2348802ceba0e40b34b, type: 3}
       propertyPath: mechScript

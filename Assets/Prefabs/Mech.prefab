@@ -138,11 +138,8 @@ MonoBehaviour:
   defaultSpeed: 10
   crouchSpeed: 5
   jumpForce: 25
-  rollForce: 0
   fallMultiplier: 17
-  isInsideMech: 0
-  isReadyForMech: 0
-  isCollidingWithMech: 0
+  rollForce: 0
   rollTime: 0
   defaultRollTime: 0.5
   groundCheckRadius: 1.5
@@ -150,7 +147,6 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
-  insideMech: {fileID: 0}
 --- !u!212 &6792060363143641241
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -234,7 +230,7 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

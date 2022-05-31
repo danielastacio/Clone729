@@ -54,11 +54,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         isReadyForMech, 
         isCollidingWithMech;
 
-    protected internal Rigidbody2D rb;
-    public static event Action MechActivated;
-    public static event Action MechDeactivated;
+    protected internal Rigidbody2D rb;    
 
     private Transform mech;
+    private MechController mechController;
     private void SetPlayerRbSettings()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -106,6 +105,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         SetPlayerRbSettings();
         currentHp = maxHp;
+
     }
     private void Update()
     {
@@ -125,30 +125,36 @@ public class PlayerController : MonoBehaviour, IDamageable
         Crouch();
         Roll();
         SwitchToMechAndBack();
-        
+
     }
     private void OnDrawGizmos()
     {
         Gizmos.DrawSphere(groundCheckPos, groundCheckRadius);
     }
-#endregion
-#region Triggers
-    protected virtual void OnTriggerEnter2D(Collider2D collider)
+    #endregion
+    #region Triggers
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        isCollidingWithMech = collider.gameObject.GetComponent<MechController>();
-        mech = collider.gameObject.gameObject.GetComponent<Transform>();
-
-        if (!isInsideMech && isCollidingWithMech)
-        {
-            isReadyForMech = true;
-        }
-
         if (collider.gameObject.CompareTag("Consumable"))
         {
             CheckConsumablePickup(collider);
         }
     }
-    protected virtual void OnTriggerExit2D(Collider2D collider)
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
+    {               
+        if(collision.gameObject.GetComponent<MechController>()) 
+        {
+            isCollidingWithMech = true;
+            mech = collision.transform;
+            mechController = collision.gameObject.GetComponent<MechController>();
+        }
+        if (!isInsideMech && isCollidingWithMech)
+        {
+            isReadyForMech = true;
+        }
+        
+    }
+    protected virtual void OnCollisionExit2D(Collision2D collision)
     {
         if (!isInsideMech && isCollidingWithMech)
         {
@@ -189,13 +195,11 @@ private void RestoreHP(float restoreAmount)
         {
             if (isReadyForMech)
             {
-                MechActivated?.Invoke();
                 ActivateMech();
             }
 
             else if (isInsideMech)
             {
-                MechDeactivated?.Invoke();
                 DeactivateMech();
             }
         }
@@ -377,13 +381,21 @@ private void RestoreHP(float restoreAmount)
     {        
         isReadyForMech = false;
         isInsideMech = true;
+
+        mechController.enabled = true;
+        mechController.rb.constraints = RigidbodyConstraints2D.None;
+        mechController.rb.freezeRotation = true;
     }
 
     private void DeactivateMech()
     {
-        SetPlayerRbSettings();
-        rb.GetComponent<CapsuleCollider2D>().isTrigger = false;
+        
+        mechController.rb.constraints = RigidbodyConstraints2D.None;
+        mechController.rb.constraints = RigidbodyConstraints2D.FreezePositionX;
+        mechController.rb.freezeRotation = true;
 
+        rb.GetComponent<CapsuleCollider2D>().isTrigger = false;
+        mechController.enabled = false;
         isReadyForMech = false;
         isInsideMech = false;        
     }
