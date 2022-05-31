@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using MetroidvaniaJam.Player;
 public class Manager_GameSaving : MonoBehaviour
 {
     [Header("Scripts")]
