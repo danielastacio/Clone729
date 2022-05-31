@@ -352,7 +352,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 6761244564529201369}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6b5c001c2e54af43991047c33aafd61, type: 3}
   m_Name: 
@@ -691,10 +691,6 @@ PrefabInstance:
     - target: {fileID: 6792060363143641243, guid: 6b08de7af138b2348802ceba0e40b34b, type: 3}
       propertyPath: m_GravityScale
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8224734470486341601, guid: 6b08de7af138b2348802ceba0e40b34b, type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8224734470486341601, guid: 6b08de7af138b2348802ceba0e40b34b, type: 3}
       propertyPath: mechScript
