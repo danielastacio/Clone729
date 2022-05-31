@@ -26,8 +26,8 @@ namespace MetroidvaniaJam.Player
 
         [Header("Ground Check")]
 
-        [SerializeField] protected internal float groundCheckRadius = 0.5f;
-        [SerializeField] protected internal float offsetRadius = -1.7f;
+        [SerializeField] protected internal float groundCheckRadius = 0.1f;
+        [SerializeField] protected internal float offsetRadius = -1f;
         [SerializeField] private LayerMask whatIsGround;
         private Vector2 groundCheckPos;
 
@@ -47,9 +47,7 @@ namespace MetroidvaniaJam.Player
             isInputMoveLeft,
             isInputMoveRight;
 
-        private bool
-            isFacingRight,
-            isFacingLeft;
+        private bool isFacingLeft;
 
         private bool
             isInsideMech,
@@ -59,19 +57,21 @@ namespace MetroidvaniaJam.Player
         protected internal Rigidbody2D rb;
 
         private MechController mechController;
-        private void SetPlayerRbSettings()
+        protected virtual void SetRigidbodySettings()
         {
             rb = GetComponent<Rigidbody2D>();
             rb.gravityScale = 10;
-            rb.freezeRotation = true;
+            rb.freezeRotation = true;            
+        }
 
+        private void SetPlayerSettings()
+        {
             playerHeight = transform.localScale.y;
             crouchHeight = playerHeight / 2;
             rollTime = defaultRollTime;
 
             speed = defaultSpeed;
 
-            isFacingRight = true;
             isFacingLeft = false;
         }
 
@@ -104,7 +104,9 @@ namespace MetroidvaniaJam.Player
         #region MonoBehavior Cycles
         private void Awake()
         {
-            SetPlayerRbSettings();
+
+            SetRigidbodySettings();
+            SetPlayerSettings();
             currentHp = maxHp;
 
         }
@@ -118,7 +120,7 @@ namespace MetroidvaniaJam.Player
 
         }
 
-        protected virtual void FixedUpdate()
+        private void FixedUpdate()
         {
             CheckIfGrounded();
             Move();
@@ -302,14 +304,12 @@ namespace MetroidvaniaJam.Player
             if (isInputMoveLeft)
             {
                 isFacingLeft = true;
-                isFacingRight = false;
 
                 rb.velocity = new Vector2(-speed, rb.velocity.y);
             }
 
             else if (isInputMoveRight)
             {
-                isFacingRight = true;
                 isFacingLeft = false;
 
                 rb.velocity = new Vector2(speed, rb.velocity.y);

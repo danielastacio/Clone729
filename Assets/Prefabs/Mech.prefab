@@ -142,8 +142,8 @@ MonoBehaviour:
   rollForce: 0
   rollTime: 0
   defaultRollTime: 0.5
-  groundCheckRadius: 1.5
-  offsetRadius: -4.5
+  groundCheckRadius: 0.1
+  offsetRadius: -1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
