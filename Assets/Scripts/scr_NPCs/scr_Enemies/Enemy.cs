@@ -1,27 +1,28 @@
 using System;
 using System.Collections;
 using scr_Interfaces;
+using scr_NPCs.scr_Enemies.scr_EnemyUtilities;
 using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace scr_NPCs.scr_Enemies
 {
-    // TODO: Fix CheckFacingPlayer(). Enemy either faces the wrong way, or flips forever.
-    // TODO: Figure out how to keep enemy from running off platforms when retreating
-    // TODO: Make sure enemy is facing the player before trying to retreat, otherwise it retreats into the player...
     public class Enemy : NPCController, IDamageable
     {
         [Header("Stats")] 
-        public float maxHp;
-        private float _currentHp;
-        public float touchDamage; // Damage when player bumps the enemy
-        public float attackDamage;
-        
-        [Header("Combat")]
+        [SerializeField] protected float maxHp;
+        [SerializeField] private float _currentHp;
+        [SerializeField] protected float touchDamage; // Damage when player bumps the enemy
+        [SerializeField] protected float attackDamage;
+        [SerializeField] protected float timeBetweenAttacks;
+
+        [Header("Combat")] 
+        [SerializeField] private int itemDropChance;
         [SerializeField] private float sightRange;
         [SerializeField] private float attackRange;
         [SerializeField] private float retreatRange;
+        private float _currentRetreatRange;
         
         [Header("Enemy Layer Masks")]
         [SerializeField] protected LayerMask whatIsPlayer;
@@ -31,7 +32,6 @@ namespace scr_NPCs.scr_Enemies
         private Collider2D _playerInAttackRange;
         private Collider2D _playerInRetreatRange;
         private bool _playerSpotted;
-        private RaycastHit2D _playerSpottingRay;
 
         protected Vector3 PlayerPos;
         
@@ -40,32 +40,28 @@ namespace scr_NPCs.scr_Enemies
             _currentHp = maxHp;
         }
 
-        private void Update()
+        protected override void FixedUpdate()
         {
+            base.FixedUpdate();
             CheckForPlayer();
         }
-        
+
         protected void CheckForPlayer()
         {
-            _playerSpottingRay =
-                Physics2D.Raycast(transform.position, WallCheckDirection, sightRange, whatIsPlayer);
             _playerInSightRange = 
                 Physics2D.OverlapCircle(transform.position, sightRange, whatIsPlayer);
             _playerInAttackRange =
                 Physics2D.OverlapCircle(transform.position, attackRange, whatIsPlayer);
             _playerInRetreatRange =
-                Physics2D.OverlapCircle(transform.position, retreatRange, whatIsPlayer);
+                Physics2D.OverlapCircle(transform.position, _currentRetreatRange, whatIsPlayer);
 
-            if (_playerSpottingRay)
-            {
-                _playerSpotted = true;
-            }
-            
+            PlayerSpottingRaycast();
+
             if (_playerInSightRange && _playerSpotted)
             {
                 Debug.Log("Player spotted!");
                 PlayerPos = _playerInSightRange.transform.position;
-            
+
                 if (_playerInRetreatRange)
                 {
                     CurrentState = State.Retreat;
@@ -81,6 +77,7 @@ namespace scr_NPCs.scr_Enemies
             {
                 _playerSpotted = false;
                 CurrentState = State.Patrol;
+                _currentRetreatRange = retreatRange;
                 Debug.Log("Where'd he go?");
             }
         }
@@ -99,19 +96,30 @@ namespace scr_NPCs.scr_Enemies
         {
             if (other.gameObject.CompareTag("Player"))
             {
-                IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
-                damageable.TakeDamage(touchDamage);
-                Flip();
+                other.gameObject.GetComponent<IDamageable>().TakeDamage(touchDamage);
             }
         }
 
         protected void CheckFacingPlayer()
         {
-            if (PlayerPos.x > transform.position.x && !facingRight)
+            if ((PlayerPos.x > transform.position.x && !facingRight)
+                || (PlayerPos.x < transform.position.x && facingRight))
             {
                 Flip();
             }
-            else if (PlayerPos.x < transform.position.x && facingRight)
+        }
+
+        private void PlayerSpottingRaycast()
+        {
+            var playerSpottingRay =
+                Physics2D.Raycast(transform.position, WallCheckDirection, sightRange, whatIsPlayer);
+            
+            if (playerSpottingRay)
+            {
+                _playerSpotted = true;
+            }
+
+            if (playerSpottingRay && CurrentState == State.Retreat)
             {
                 Flip();
             }
@@ -121,25 +129,31 @@ namespace scr_NPCs.scr_Enemies
         {
             while (CurrentState == State.Attack)
             {
-                CheckFacingPlayer();
-                
                 // Set up attack logic.
 
-                yield return null;
+                yield return new WaitForSeconds(timeBetweenAttacks);
             }
         }
 
         protected override IEnumerator Retreat()
         {
-            Flip();
             while (CurrentState == State.Retreat && _playerInRetreatRange)
             {
-                CheckForGround();
-                CheckForWall();
+                PlayerSpottingRaycast();
+                if (!GroundCheck || WallCheck)
+                {
+                    _currentRetreatRange = 0;
+                }
                 Rb.velocity = new Vector2(HorizSpeed, 0);
                 yield return null;
             }
             CheckFacingPlayer();
+        }
+
+        protected override void Die()
+        {
+            GetComponent<EnemyDropTable>().CalculateDropChance(itemDropChance);
+            Destroy(gameObject);
         }
     }
 }

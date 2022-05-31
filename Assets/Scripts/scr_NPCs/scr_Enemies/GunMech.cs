@@ -1,15 +1,12 @@
 using System;
 using System.Collections;
+using scr_NPCs.scr_Enemies.scr_EnemyUtilities;
 using UnityEngine;
 
 namespace scr_NPCs.scr_Enemies
 {
-    // TODO: Override attack function for ranged attacks.
-    // TODO: Set up prefab for bullet
-    // TODO: Set up delay between shots
     public class GunMech : Enemy
     {
-        [SerializeField] private float timeBetweenShots;
         private Transform _gun;
         [SerializeField] private GameObject bullet;
 
@@ -24,13 +21,19 @@ namespace scr_NPCs.scr_Enemies
             while (CurrentState == State.Attack)
             {
                 CheckFacingPlayer();
-                var newBullet = Instantiate(bullet, _gun);
-                var bulletScript = newBullet.GetComponent<Bullet>();
-                bulletScript.damage = attackDamage;
-                bulletScript.targetPos = PlayerPos;
+                Rb.Sleep();
 
-                yield return new WaitForSeconds(timeBetweenShots);
+                yield return new WaitForSeconds(timeBetweenAttacks);
+                
+                FireBullet();
             }
+        }
+
+        private void FireBullet()
+        {
+            var newBullet = Instantiate(bullet, _gun);
+            var bulletScript = newBullet.GetComponent<EnemyBullet>();
+            bulletScript.CreateBullet("Player", PlayerPos, attackDamage);
         }
     }
 }
