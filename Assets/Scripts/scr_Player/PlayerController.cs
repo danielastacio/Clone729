@@ -45,7 +45,9 @@ namespace MetroidvaniaJam.Player
             isInputCrouch,
             isInputRoll,
             isInputMoveLeft,
-            isInputMoveRight;
+            isInputMoveRight,
+            isInputSwitchPlayer;
+        
 
         private bool isFacingLeft;
 
@@ -193,7 +195,8 @@ namespace MetroidvaniaJam.Player
         #region Inputs
         protected virtual void CheckMechInput()
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift))
+            isInputSwitchPlayer = Input.GetKeyDown(KeyCode.LeftShift);
+            if (isInputSwitchPlayer)
             {
                 if (isReadyForMech)
                 {
@@ -208,15 +211,8 @@ namespace MetroidvaniaJam.Player
         }
         protected virtual void CheckCrouchInput()
         {
-            if (Input.GetKey(KeyCode.S))
-            {
-                isInputCrouch = true;
-            }
+            isInputCrouch = Input.GetKey(KeyCode.S);
 
-            else
-            {
-                isInputCrouch = false;
-            }
         }
 
         protected virtual void CheckRollInput()
@@ -249,39 +245,13 @@ namespace MetroidvaniaJam.Player
         {
             if (!isRolling)
             {
-                if (Input.GetKey(KeyCode.A))
-                {
-                    isInputMoveLeft = true;
-                }
-
-                else
-                {
-                    isInputMoveLeft = false;
-                }
-
-                if (Input.GetKey(KeyCode.D))
-                {
-                    isInputMoveRight = true;
-                }
-
-                else
-                {
-                    isInputMoveRight = false;
-                }
+                isInputMoveLeft = Input.GetKey(KeyCode.A);
+                isInputMoveRight = Input.GetKey(KeyCode.D);
             }
         }
         private void CheckJumpInput()
         {
-            if (Input.GetKey(KeyCode.Space))
-            {
-                isInputJump = true;
-            }
-
-            else
-            {
-                isInputJump = false;
-            }
-
+            isInputJump = Input.GetKey(KeyCode.Space);
         }
 
         #endregion
@@ -382,6 +352,8 @@ namespace MetroidvaniaJam.Player
             isReadyForMech = false;
             isInsideMech = true;
 
+            rb.GetComponent<CapsuleCollider2D>().isTrigger = true;
+
             mechController.enabled = true;
             mechController.rb.constraints = RigidbodyConstraints2D.None;
             mechController.rb.freezeRotation = true;
@@ -389,7 +361,6 @@ namespace MetroidvaniaJam.Player
 
         private void DeactivateMech()
         {
-
             mechController.rb.constraints = RigidbodyConstraints2D.None;
             mechController.rb.constraints = RigidbodyConstraints2D.FreezePositionX;
             mechController.rb.freezeRotation = true;
@@ -405,7 +376,6 @@ namespace MetroidvaniaJam.Player
             if (isInsideMech)
             {
                 transform.position = mechController.transform.position;
-                rb.GetComponent<CapsuleCollider2D>().isTrigger = true;
                 rb.Sleep();
             }
         }
