@@ -54,12 +54,12 @@ MonoBehaviour:
   defaultSpeed: 10
   crouchSpeed: 5
   jumpForce: 25
-  rollForce: 20
   fallMultiplier: 7
+  rollForce: 20
   rollTime: 0.5
   defaultRollTime: 0.4
-  groundCheckRadius: 0.5
-  offsetRadius: -1.7
+  groundCheckRadius: 0.1
+  offsetRadius: -1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
