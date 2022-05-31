@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
+using scr_NPCs.scr_Enemies;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace scr_NPCs
 {
@@ -21,10 +24,14 @@ namespace scr_NPCs
         [Header("Movement")] 
         public float speed;
         protected float HorizSpeed;
-        [SerializeField] protected float gcRaycastDist;
+        [SerializeField] protected float groundCheckRaycastDist;
         [SerializeField] protected bool facingRight;
         protected Vector2 GroundCheckDirection;
         protected Vector2 WallCheckDirection;
+
+        [Header("Ground/Wall Checks")] 
+        protected RaycastHit2D GroundCheck;
+        protected RaycastHit2D WallCheck;
         
         [Header("Layer Masks")]
         [SerializeField] private LayerMask whatIsGround;
@@ -43,32 +50,34 @@ namespace scr_NPCs
         
         // Cached references
         protected Rigidbody2D Rb;
-        protected Transform GroundCheck;
-        protected IEnumerator _idle;
-        protected IEnumerator _patrol;
-        protected IEnumerator _attack;
-        protected IEnumerator _retreat;
-        protected IEnumerator _die;
-        protected IEnumerator ActiveState;
+        private Transform _groundCheck;
+        private IEnumerator _idle;
+        private IEnumerator _patrol;
+        private IEnumerator _attack;
+        private IEnumerator _retreat;
+        private IEnumerator _die;
 
         private void Awake()
         {
             Rb = GetComponent<Rigidbody2D>();
-            GroundCheck = transform.GetChild(1).transform;
+            _groundCheck = transform.GetChild(1).transform;
             
             SetRotationAndSpeed();
         }
-        
-        protected virtual void FixedUpdate()
+
+        protected virtual void Update()
         {
             CheckActiveState();
+        }
+
+        protected virtual void FixedUpdate()
+        {
             CheckForGround();
             CheckForWall();
         }
     
-        protected void CheckActiveState()
+        private void CheckActiveState()
         {
-            // TODO: Add the rest of the states
             if (CurrentState == State.Idle && _idle == null)
             {
                 StopAllCoroutines();
@@ -108,7 +117,7 @@ namespace scr_NPCs
             else if (CurrentState == State.Die)
             {
                 StopAllCoroutines();
-                Destroy(gameObject);
+                Die();
             }
         }
         
@@ -149,10 +158,10 @@ namespace scr_NPCs
 
         protected void CheckForGround()
         {
-            var groundCheck = 
-                Physics2D.Raycast(GroundCheck.position, GroundCheckDirection, gcRaycastDist, whatIsGround);
+            GroundCheck = 
+                Physics2D.Raycast(_groundCheck.position, GroundCheckDirection, groundCheckRaycastDist, whatIsGround);
 
-            if (!groundCheck)
+            if (!GroundCheck)
             {
                 Flip();
             }
@@ -160,10 +169,10 @@ namespace scr_NPCs
 
         protected void CheckForWall()
         {
-            var wallCheck =
-                Physics2D.Raycast(GroundCheck.position, WallCheckDirection, gcRaycastDist, whatIsWall);
+            WallCheck =
+                Physics2D.Raycast(_groundCheck.position, WallCheckDirection, groundCheckRaycastDist, whatIsWall);
         
-            if (wallCheck)
+            if (WallCheck)
             {
                 Flip();
             }
@@ -234,6 +243,11 @@ namespace scr_NPCs
         {
             // Set up retreat logic
             yield return null;
+        }
+
+        protected virtual void Die()
+        {
+            // This will be overridden in Enemy script
         }
     }
 }

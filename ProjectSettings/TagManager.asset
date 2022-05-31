@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Wall
+  - Consumable
   - Enemy
   - Ground
   layers:
