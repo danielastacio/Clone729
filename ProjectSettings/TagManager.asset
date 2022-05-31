@@ -4,7 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - WorldTransition
+  - Wall
+  - Consumable
+  - Enemy
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -12,9 +15,9 @@ TagManager:
   - 
   - Water
   - UI
-  - Ground_2D
-  - Ground_3D
-  - 
+  - Ground
+  - Wall
+  - Player
   - 
   - 
   - 
