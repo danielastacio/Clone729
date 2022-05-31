@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class CannonWeapon : Weapon
 {
-    [SerializeField] private float cannonDamage = 1;
-    [SerializeField] private int shootingForce = 100;
-    [SerializeField] private float miniBombDamage;
-    [SerializeField] private float radius;
+    [Header("Cannon")]
+    [SerializeField] private float radius = 1;
+    [SerializeField] private float detonationTime = 3;
+    [SerializeField] private float damageReduction = 1;
+    [SerializeField] private float spread = 2;
+    [SerializeField] private float spreadHeight = 2;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,21 +18,22 @@ public class CannonWeapon : Weapon
     }
 
     // Update is called once per frame
-    void Update()
+   protected override void Update()
     {
 
         base.Update();
 
        
     }
-     protected override void InstantiateBullet()
-    {
-        bullet.GetComponent<CannonBomb>().cannonDamage = cannonDamage;
-        bullet.GetComponent<CannonBomb>().cannonForce = shootingForce;
-        bullet.GetComponent<CannonBomb>().scatterBombDamage = miniBombDamage;
-        bullet.GetComponent<CannonBomb>().radius = radius;
 
-        Instantiate(bullet, transform.position, Quaternion.Euler(0f, 0f, angle + offset));
-        
+    protected override void SetStats()
+    {
+        bullet.GetComponent<CannonBomb>().damage = damage;
+        bullet.GetComponent<CannonBomb>().speed = speed;
+        bullet.GetComponent<CannonBomb>().radius = radius;
+        bullet.GetComponent<CannonBomb>().detonationTime = detonationTime;
+        bullet.GetComponent<CannonBomb>().damageReduction = damageReduction;
+        bullet.GetComponent<CannonBomb>().spread = spread;
+        bullet.GetComponent<CannonBomb>().spreadHeight = spreadHeight;
     }
 }

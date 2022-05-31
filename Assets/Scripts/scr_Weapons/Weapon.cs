@@ -9,11 +9,11 @@ public class Weapon : MonoBehaviour
     //Inspector Dudes/Variables
     [Header("Debug")]
     [SerializeField][Tooltip("if gun isn't looking at cursor keep increasing offset")] protected int offset;
-    [Header("Bullet")]
+    [Header("Stats")]
+    [SerializeField] protected float damage = 1;
+    [SerializeField] protected float speed = 5;
+    [SerializeField] protected float fireRate = 0.5f;
     [SerializeField] protected GameObject bullet;
-    [SerializeField] private float bulletDamage;
-    [SerializeField] private float bulletSpeed;
-    [SerializeField] private float fireRate;
 
     //Private Dudes/Variables
     protected Vector3 difference;
@@ -55,16 +55,21 @@ public class Weapon : MonoBehaviour
 
     protected virtual void  InstantiateBullet()
     {
-        bullet.GetComponent<BulletScript>().bulletDamage = bulletDamage;
-        bullet.GetComponent<BulletScript>().direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized ;
-        bullet.GetComponent<BulletScript>().bulletSpeed = bulletSpeed;
         Instantiate(bullet, transform.position, Quaternion.Euler(0f, 0f, angle + offset));
     }
     protected IEnumerator  Shoot()
     {
         canShoot = false;
+        SetStats();
         InstantiateBullet();
         yield return new WaitForSeconds(fireRate);
         canShoot = true;
     }
+    protected virtual void SetStats()
+    {
+
+        bullet.GetComponent<BulletScript>().bulletDamage = damage;
+        bullet.GetComponent<BulletScript>().bulletSpeed = speed;
+    }
+         
 }

@@ -5,10 +5,13 @@ using scr_Interfaces;
 
 public class MiniBomb : MonoBehaviour
 {
-    [HideInInspector] public float damage = 1;
+    [HideInInspector] public float damage;
     [HideInInspector] public float direction;
-    [HideInInspector] public float radius = 1;
-    [HideInInspector] public float detonationTime = 3;
+    [HideInInspector] public float radius;
+    [HideInInspector] public float detonationTime;
+    [HideInInspector] public float spread;
+    [HideInInspector] public float spreadHeight;
+    [HideInInspector] public LayerMask whatisObstacle;
     Rigidbody2D rb;
 
     // Start is called before the first frame update
@@ -16,7 +19,7 @@ public class MiniBomb : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
    
-        rb.AddForce(new Vector2(direction, 1),ForceMode2D.Impulse);
+        rb.AddForce(new Vector2(direction * spread, spreadHeight),ForceMode2D.Impulse);
         StartCoroutine(DetonationTimer());
     }
 
@@ -31,22 +34,36 @@ public class MiniBomb : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         GetComponent<CircleCollider2D>().isTrigger = false;
         yield return new WaitForSeconds(detonationTime);
-      
-            Collider2D[] hitList = Physics2D.OverlapCircleAll(transform.position, radius);
-            foreach (var hit in hitList)
-            {
-                Debug.DrawLine(transform.position, hit.transform.position, Color.red, 10);
-                if (hit.gameObject.CompareTag("Enemy"))
-                {
 
-                    hit.GetComponent<IDamageable>().TakeDamage(damage);
-                }
-            };
+        CheckCollidingObjects();
         Destroy(gameObject);
     }
+
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Wall"))
+        if (other.gameObject.CompareTag("Wall") || other.gameObject.CompareTag("Ground"))
             GetComponent<CircleCollider2D>().isTrigger = false;
+    }
+    private void CheckCollidingObjects()
+    {
+
+        Collider2D[] hitList = Physics2D.OverlapCircleAll(transform.position, radius);
+        foreach (Collider2D hit in hitList)
+        {
+            if (hit.gameObject.CompareTag("Enemy"))
+            {
+
+            if(!CheckForObstacles(hit))
+                hit.GetComponent<IDamageable>().TakeDamage(damage);
+            }
+        };
+    }
+    private bool CheckForObstacles(Collider2D hit)
+    {
+        if (Physics2D.Raycast(transform.position, hit.transform.position, radius,whatisObstacle))
+            return true;
+        else
+            return false;
     }
 }
