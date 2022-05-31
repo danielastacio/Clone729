@@ -9,7 +9,8 @@ public class CannonBomb : MonoBehaviour
     [HideInInspector]public float cannonForce;
     [HideInInspector] public float scatterBombDamage;
     [SerializeField] private GameObject miniBomb;
-    [HideInInspector] public float radius;
+    [HideInInspector] public float radius = 1;
+    [SerializeField] LayerMask whatisEnemy;
 
     // Start is called before the first frame update
     Rigidbody2D rb;
@@ -29,9 +30,12 @@ public class CannonBomb : MonoBehaviour
          if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Wall") || collision.gameObject.CompareTag("Enemy"))
         {
             Collider2D[] hitList = Physics2D.OverlapCircleAll(transform.position, radius);
-            foreach (var hit in hitList)
+            
+            Debug.Log(hitList.Length);
+            foreach (Collider2D hit in hitList)
             {
-                Debug.DrawLine(transform.position, hit.transform.position, Color.red);
+                Debug.Log(hit.gameObject.name);
+                Debug.DrawRay(transform.position,hit.transform.position,Color.red,30);
                 if (hit.gameObject.CompareTag("Enemy"))
                 {
 
@@ -39,13 +43,17 @@ public class CannonBomb : MonoBehaviour
                 }
             };
             miniBomb.GetComponent<MiniBomb>().direction = 1;
-            Instantiate(miniBomb,transform.position,Quaternion.identity);
+            Instantiate(miniBomb,new Vector2(transform.position.x + 0.1f,transform.position.y + 0.1f),Quaternion.identity);
             miniBomb.GetComponent<MiniBomb>().direction = 0;
-            Instantiate(miniBomb,transform.position,Quaternion.identity);
+            Instantiate(miniBomb, new Vector2(transform.position.x + 0.1f, transform.position.y + 0.1f), Quaternion.identity);
             miniBomb.GetComponent<MiniBomb>().direction = -1;
-            Instantiate(miniBomb,transform.position,Quaternion.identity);
+            Instantiate(miniBomb,new Vector2(transform.position.x + 0.1f,transform.position.y + 0.1f),Quaternion.identity);
             Destroy(gameObject);
 
         }
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(transform.position, radius);
     }
 }

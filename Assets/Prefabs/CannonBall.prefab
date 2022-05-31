@@ -103,6 +103,10 @@ MonoBehaviour:
   cannonForce: 3
   scatterBombDamage: 0
   miniBomb: {fileID: 3068277378502542658, guid: 58e2708eda76aaf44900b09f2a6a3828, type: 3}
+  radius: 0
+  whatisEnemy:
+    serializedVersion: 2
+    m_Bits: 768
 --- !u!50 &6747374147040978824
 Rigidbody2D:
   serializedVersion: 4
