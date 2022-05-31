@@ -19,6 +19,7 @@ namespace MetroidvaniaJam.Player
         [SerializeField] protected internal float defaultSpeed = 10;
         [SerializeField] private float crouchSpeed = 5;
         [SerializeField] protected internal float jumpForce = 25;
+        [SerializeField] protected internal float LaunchForce = 45;
         [SerializeField] protected internal float fallMultiplier = 7;
         [SerializeField] private float rollForce = 20;
         [SerializeField] private float rollTime;
@@ -45,19 +46,17 @@ namespace MetroidvaniaJam.Player
             isInputCrouch,
             isInputRoll,
             isInputMoveLeft,
-            isInputMoveRight,
-            isInputSwitchPlayer;
-        
+            isInputMoveRight;
 
         private bool isFacingLeft;
 
         private bool
             isInsideMech,
             isReadyForMech,
-            isCollidingWithMech;
+            isCollidingWithMech,
+            isPlayerLaunched;
 
         protected internal Rigidbody2D rb;
-
         private MechController mechController;
         protected virtual void SetRigidbodySettings()
         {
@@ -110,8 +109,9 @@ namespace MetroidvaniaJam.Player
             SetRigidbodySettings();
             SetPlayerSettings();
             currentHp = maxHp;
-
+            
         }
+
         private void Update()
         {
             CheckRollInput();
@@ -129,8 +129,13 @@ namespace MetroidvaniaJam.Player
             Jump();
             Crouch();
             Roll();
-            SwitchToMechAndBack();
+            UpdatePlayerPosition();
+            LaunchPlayer();
+        }
 
+        public void Heard()
+        {
+            print("switched");
         }
         private void OnDrawGizmos()
         {
@@ -194,9 +199,8 @@ namespace MetroidvaniaJam.Player
 
         #region Inputs
         protected virtual void CheckMechInput()
-        {
-            isInputSwitchPlayer = Input.GetKeyDown(KeyCode.LeftShift);
-            if (isInputSwitchPlayer)
+        { 
+            if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 if (isReadyForMech)
                 {
@@ -206,6 +210,7 @@ namespace MetroidvaniaJam.Player
                 else if (isInsideMech)
                 {
                     DeactivateMech();
+                    isPlayerLaunched = true;
                 }
             }
         }
@@ -371,7 +376,7 @@ namespace MetroidvaniaJam.Player
             isInsideMech = false;
         }
 
-        private void SwitchToMechAndBack()
+        private void UpdatePlayerPosition()
         {
             if (isInsideMech)
             {
@@ -380,6 +385,16 @@ namespace MetroidvaniaJam.Player
             }
         }
         #endregion
+
+        public void LaunchPlayer()
+        {
+            if (isPlayerLaunched)
+            {
+                rb.AddForce(Vector2.up * LaunchForce, ForceMode2D.Impulse);
+
+                isPlayerLaunched = false;
+            }
+        }
 
     }
 }
