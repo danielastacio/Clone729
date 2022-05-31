@@ -8,17 +8,17 @@ public class Weapon : MonoBehaviour
 {
     //Inspector Dudes/Variables
     [Header("Debug")]
-    [SerializeField][Tooltip("if gun isn't looking at cursor keep increasing offset")] int offset;
+    [SerializeField][Tooltip("if gun isn't looking at cursor keep increasing offset")] protected int offset;
     [Header("Bullet")]
-    [SerializeField] private GameObject bullet;
+    [SerializeField] protected GameObject bullet;
     [SerializeField] private float bulletDamage;
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float fireRate;
 
     //Private Dudes/Variables
-    private Vector3 difference;
-    private float angle;
-    private bool canShoot = true;
+    protected Vector3 difference;
+    protected float angle;
+    protected bool canShoot = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,13 +26,12 @@ public class Weapon : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
          LookAtCursor();
          RotateAroundMech();
         if(Input.GetMouseButtonUp(0) && canShoot)
         {
-            Shoot();
             StartCoroutine(Shoot());
         }
     }
@@ -48,20 +47,20 @@ public class Weapon : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f, 0f, angle + offset);
 
     }
-    public void RotateAroundMech()
+    protected void RotateAroundMech()
     {
         //set Position around the mech by taking which direction it's pointing at
         transform.position = transform.parent.position + difference;
     }
 
-    public virtual void  InstantiateBullet()
+    protected virtual void  InstantiateBullet()
     {
         bullet.GetComponent<BulletScript>().bulletDamage = bulletDamage;
         bullet.GetComponent<BulletScript>().direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized ;
         bullet.GetComponent<BulletScript>().bulletSpeed = bulletSpeed;
         Instantiate(bullet, transform.position, Quaternion.Euler(0f, 0f, angle + offset));
     }
-    IEnumerator  Shoot()
+    protected IEnumerator  Shoot()
     {
         canShoot = false;
         InstantiateBullet();
