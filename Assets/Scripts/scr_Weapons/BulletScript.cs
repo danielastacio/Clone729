@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace scr_Weapons
 {
-    public class PlayerBullet : MonoBehaviour
+    public class BulletScript : MonoBehaviour
     {
-        private float _bulletSpeed;
-        private float _bulletDamage;
+        public float bulletSpeed;
+        public float bulletDamage;
         private Rigidbody2D _rb;
 
         private string _target;
@@ -19,22 +19,22 @@ namespace scr_Weapons
 
         private void Update()
         {
-            _rb.AddRelativeForce(Vector3.right * _bulletSpeed,ForceMode2D.Impulse);
+            _rb.AddRelativeForce(Vector3.right * bulletSpeed,ForceMode2D.Impulse);
             StartCoroutine(BulletDestroy());
         }
         
         public void CreateBullet(string targetTag, float damage, float speed)
         {
             _target = targetTag;
-            _bulletDamage = damage;
-            _bulletSpeed = speed;
+            bulletDamage = damage;
+            bulletSpeed = speed;
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.gameObject.CompareTag(_target))
             {
-                other.gameObject.GetComponent<IDamageable>().TakeDamage(_bulletDamage);
+                other.gameObject.GetComponent<IDamageable>().TakeDamage(bulletDamage);
             }
             Destroy(gameObject);
         }
