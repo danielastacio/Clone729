@@ -1,25 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
-using scr_Weapons;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
+
+
 {
     //Inspector Dudes/Variables
     [Header("Debug")]
-    [SerializeField][Tooltip("if gun isn't looking at cursor keep increasing offset")] int offset;
-    [Header("Bullet")]
-    [SerializeField] private GameObject bullet;
-    [SerializeField] private float bulletDamage;
-    [SerializeField] private float bulletSpeed;
-    [SerializeField] private float fireRate;
+    [SerializeField][Tooltip("if gun isn't looking at cursor keep increasing offset")] protected int offset;
+    [Header("Stats")]
+    [SerializeField] protected float damage = 1;
+    [SerializeField] protected float speed = 5;
+    [SerializeField] protected float fireRate = 0.5f;
+    [SerializeField] protected GameObject bullet;
 
     //Private Dudes/Variables
-    private Vector3 difference;
-    private float angle;
-    private bool canShoot = true;
-    
-    private void Update()
+    protected Vector3 difference;
+    protected float angle;
+    protected bool canShoot = true;
+    // Start is called before the first frame update
+    void Start()
+    {
+       
+    }
+
+    // Update is called once per frame
+    protected virtual void Update()
     {
          LookAtCursor();
          RotateAroundMech();
@@ -29,7 +36,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    private void LookAtCursor()
+    public void LookAtCursor()
     {
         // Get Direction and Normalize It
         difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
@@ -40,7 +47,7 @@ public class Weapon : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f, 0f, angle + offset);
 
     }
-    private void RotateAroundMech()
+    protected void RotateAroundMech()
     {
         //set Position around the mech by taking which direction it's pointing at
         transform.position = transform.parent.position + difference;
@@ -48,15 +55,21 @@ public class Weapon : MonoBehaviour
 
     protected virtual void  InstantiateBullet()
     {
-        var newBullet = 
-            Instantiate(bullet, transform.position, Quaternion.Euler(0f, 0f, angle + offset));
-        newBullet.GetComponent<PlayerBullet>().CreateBullet("Enemy", bulletDamage, bulletSpeed);
+        Instantiate(bullet, transform.position, Quaternion.Euler(0f, 0f, angle + offset));
     }
-    IEnumerator Shoot()
+    protected IEnumerator  Shoot()
     {
         canShoot = false;
+        SetStats();
         InstantiateBullet();
         yield return new WaitForSeconds(fireRate);
         canShoot = true;
     }
+    protected virtual void SetStats()
+    {
+
+        bullet.GetComponent<BulletScript>().bulletDamage = damage;
+        bullet.GetComponent<BulletScript>().bulletSpeed = speed;
+    }
+         
 }

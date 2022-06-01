@@ -85,6 +85,7 @@ namespace scr_NPCs.scr_Enemies
         public void TakeDamage(float damage)
         {
             _currentHp -= damage;
+            Debug.Log("Name: " + gameObject.name + " Health: " + _currentHp+ " Max Health: " + maxHp);
             if (_currentHp <= 0)
             {
                 CurrentState = State.Die;
