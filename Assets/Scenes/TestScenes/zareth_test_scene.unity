@@ -291,6 +291,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4506025200274604558, guid: 89a23ae0e2c9db448a197fb8c3c25598, type: 3}
+      propertyPath: maxHp
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907496317987002547, guid: 89a23ae0e2c9db448a197fb8c3c25598, type: 3}
+      propertyPath: bulletSpeed
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89a23ae0e2c9db448a197fb8c3c25598, type: 3}
 --- !u!1001 &676002685
@@ -411,6 +419,63 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de7e3ec1c2146dc4e951aca7a4ae7a19, type: 3}
+--- !u!1001 &1074398237
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1704585594299060261, guid: d6fc5d24129c83147867b38155e51c9b, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704585594299060261, guid: d6fc5d24129c83147867b38155e51c9b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -19.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704585594299060261, guid: d6fc5d24129c83147867b38155e51c9b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704585594299060261, guid: d6fc5d24129c83147867b38155e51c9b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704585594299060261, guid: d6fc5d24129c83147867b38155e51c9b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704585594299060261, guid: d6fc5d24129c83147867b38155e51c9b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704585594299060261, guid: d6fc5d24129c83147867b38155e51c9b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704585594299060261, guid: d6fc5d24129c83147867b38155e51c9b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704585594299060261, guid: d6fc5d24129c83147867b38155e51c9b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704585594299060261, guid: d6fc5d24129c83147867b38155e51c9b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704585594299060261, guid: d6fc5d24129c83147867b38155e51c9b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704585594299060281, guid: d6fc5d24129c83147867b38155e51c9b, type: 3}
+      propertyPath: m_Name
+      value: SpiderBot
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d6fc5d24129c83147867b38155e51c9b, type: 3}
 --- !u!1 &1446135008
 GameObject:
   m_ObjectHideFlags: 0
