@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace scr_UI
@@ -16,12 +17,16 @@ namespace scr_UI
         private readonly Vector2 _openMenuPos = new Vector2(394, 350);
         private Vector2 _hiddenPos;
 
+        protected readonly Color32 DefaultColor = new Color32(159, 159, 159, 255);
+        protected readonly Color32 SelectedColor = new Color32(255, 255, 255, 255);
+
         public void Start()
         {
             foreach (var button in buttons)
             {
                 _buttonStartingPositions.Add(button.GetComponent<RectTransform>().anchoredPosition);
                 selectedMenuCanvas.gameObject.SetActive(false);
+                button.image.color = DefaultColor;
             }
         }
 
@@ -50,13 +55,17 @@ namespace scr_UI
 
             if (Input.GetKeyDown(KeyCode.Escape) && _selectedButton != null)
             {
-                ResetButtonPositions();
+                _selectedButton.GetComponent<MainMenuButtons>().enabled = true;
                 _selectedButton = null;
+                ResetButtonPositions();
             }
+            
         }
 
         private void MoveSelectedButton(Button btn)
         {
+            btn.image.color = SelectedColor;
+            _selectedButton.GetComponent<MainMenuButtons>().enabled = false;
             StartCoroutine(MoveButtons(btn, _openMenuPos));
         }
 
@@ -78,6 +87,7 @@ namespace scr_UI
             selectedMenuCanvas.gameObject.SetActive(false);
             for (int i = 0; i < buttons.Count; i++)
             {
+                buttons[i].image.color = DefaultColor;
                 StartCoroutine(MoveButtons(buttons[i], _buttonStartingPositions[i]));
             }
         }
