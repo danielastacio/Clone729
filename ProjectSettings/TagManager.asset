@@ -8,6 +8,7 @@ TagManager:
   - Consumable
   - Enemy
   - Ground
+  - Conductor
   layers:
   - Default
   - TransparentFX

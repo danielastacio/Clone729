@@ -1,4 +1,6 @@
+using System;
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using scr_Interfaces;
@@ -22,12 +24,15 @@ public class ElectricWeapon : MonoBehaviour
     protected Vector3 difference;
     protected float angle;
     protected bool canShoot = true;
+    private int[] ID;
+    private int bounceNum;
+    
 
-
+    
     // Start is called before the first frame update
     void Start()
     {
-        
+     
     }
 
     // Update is called once per frame
@@ -67,14 +72,22 @@ public class ElectricWeapon : MonoBehaviour
     }
     public void CastRay()
     {
-        _bounce = bounce;
+        ResetVariables();
+        
+        //cast "lightning"
         RaycastHit2D hit = Physics2D.Raycast(transform.position, difference, distance,whatisConductor);
         if (hit)
         {
             if(hit.collider.gameObject.CompareTag("Enemy"))
             {
+                //reduce number of bounces remaining
                 _bounce--;
+                //enemy takes damage
                 hit.collider.GetComponent<IDamageable>().TakeDamage(damage);
+                //add enemy ID to array to prevent same enemy from taking hits
+                AddToHitArray(hit);   
+
+                //set position for circle to enemy position so it can "bounce" from there
                 bouncePosition = hit.collider.transform.position;
                 CheckCircle();
                
@@ -84,28 +97,69 @@ public class ElectricWeapon : MonoBehaviour
 
     private void CheckCircle()
     {
+        //check if there are remaining bounces
+        
         if(_bounce > 0)
         {
-           
-        Collider2D[] circle = Physics2D.OverlapCircleAll(bouncePosition, bounceRadius);
+            //overlapcirlce for bounceable objects that are in bounce radius
+            Collider2D[] circle = Physics2D.OverlapCircleAll(bouncePosition, bounceRadius, whatisConductor);
+            //check whether its an enemy or a conductor
         foreach (Collider2D collided in circle)
         {
-            if (collided.gameObject.CompareTag("Enemy"))
+            //if it's an enemy that wasn't bounced to, bounce to them
+            if (collided.gameObject.CompareTag("Enemy") &&  ID.All(id => id != collided.gameObject.GetInstanceID()))
             {
+
                 collided.gameObject.GetComponent<IDamageable>().TakeDamage(damage);
+
                 _bounce--;
+
+                ID[bounceNum] = collided.gameObject.GetInstanceID();
+                Debug.Log(ID[bounceNum]);
+                    bounceNum++;
                 bouncePosition = collided.transform.position;
                 break;
                 
             }
-            else if(collided.gameObject.CompareTag("Conductor"))
+            //if it's a conductor that wasn't bounced to, bounce to it
+            //NOTE: the gun will favor enemies over conductors for overlapcircle
+            else if(collided.gameObject.CompareTag("Conductor") && ID.All(id => id != collided.gameObject.GetInstanceID()))
             {
                 _bounce--;
+
+                ID[bounceNum] = collided.gameObject.GetInstanceID();
+                Debug.Log(ID[bounceNum]);
+                bounceNum++;
+                   
+
                 bouncePosition = collided.transform.position;
+
                 break;
             }
         }
-                CheckCircle();
+
+
+            //just in case _bounce doesn't reduce itself and starts an endless loop because it's the only object in the circle
+            if (circle.Length == 1)
+                _bounce = 0;
+            CheckCircle();
         }
+        
+      
     }
+    private void ResetVariables()
+    {
+        ID = new int[bounce];
+        bounceNum = 0;
+        _bounce = bounce;
+
+    }
+    private void AddToHitArray(RaycastHit2D hit
+        )
+    {
+        ID[bounceNum] = hit.collider.gameObject.GetInstanceID();
+        Debug.Log(ID[bounceNum]);
+        bounceNum++;
+    }
+
 }
