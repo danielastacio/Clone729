@@ -9,6 +9,8 @@ TagManager:
   - Enemy
   - Ground
   - Conductor
+  - Mirror
+  - Trigger
   layers:
   - Default
   - TransparentFX
@@ -21,7 +23,7 @@ TagManager:
   - Player
   - Conductor
   - Enemy
-  - 
+  - MirrorTrigger
   - 
   - 
   - 
