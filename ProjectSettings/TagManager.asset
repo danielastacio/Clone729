@@ -8,6 +8,7 @@ TagManager:
   - Consumable
   - Enemy
   - Ground
+  - Conductor
   layers:
   - Default
   - TransparentFX
@@ -18,8 +19,8 @@ TagManager:
   - Ground
   - Wall
   - Player
-  - 
-  - 
+  - Conductor
+  - Enemy
   - 
   - 
   - 
