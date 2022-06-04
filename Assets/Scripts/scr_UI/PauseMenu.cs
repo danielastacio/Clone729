@@ -1,24 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace scr_UI
 {
-    public class MainMenuButtons : MonoBehaviour
+    public class PauseMenu : Menu
     {
         public Canvas selectedMenuCanvas;
 
         public List<Button> buttons = new List<Button>();
-        private List<Vector2> _buttonStartingPositions = new List<Vector2>();
+        private readonly List<Vector2> _buttonStartingPositions = new List<Vector2>();
         private Button _selectedButton;
 
         private readonly Vector2 _openMenuPos = new Vector2(394, 350);
         private Vector2 _hiddenPos;
-
-        protected readonly Color32 DefaultColor = new Color32(159, 159, 159, 255);
-        protected readonly Color32 SelectedColor = new Color32(255, 255, 255, 255);
 
         public void Start()
         {
@@ -40,7 +36,7 @@ namespace scr_UI
                         _selectedButton = button;
                         if (_selectedButton.name.Equals("ExitButton"))
                         {
-                            Application.Quit();
+                            gameObject.SetActive(false);
                         }
                         else if (_selectedButton != null)
                         {
@@ -52,20 +48,24 @@ namespace scr_UI
                     }
                 );
             }
-
+            
             if (Input.GetKeyDown(KeyCode.Escape) && _selectedButton != null)
             {
-                _selectedButton.GetComponent<MainMenuButtons>().enabled = true;
-                _selectedButton = null;
+                _selectedButton.GetComponent<MenuButtonHover>().enabled = true;
                 ResetButtonPositions();
+                _selectedButton = null;
             }
-            
+            else if (Input.GetKeyDown(KeyCode.Escape) && _selectedButton == null)
+            {
+                Time.timeScale = 1;
+                gameObject.SetActive(false);
+            }
         }
 
         private void MoveSelectedButton(Button btn)
         {
-            btn.image.color = SelectedColor;
-            _selectedButton.GetComponent<MainMenuButtons>().enabled = false;
+            btn.image.color = HighlightedColor;
+            _selectedButton.GetComponent<MenuButtonHover>().enabled = false;
             StartCoroutine(MoveButtons(btn, _openMenuPos));
         }
 

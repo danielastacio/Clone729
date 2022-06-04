@@ -9,6 +9,8 @@ TagManager:
   - Enemy
   - Ground
   - Conductor
+  - NPC
+  - Menu
   layers:
   - Default
   - TransparentFX

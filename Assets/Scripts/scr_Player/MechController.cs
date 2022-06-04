@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using scr_Player;
 using UnityEngine;
 
-namespace MetroidvaniaJam.Player
+namespace scr_Player
 {
     public class MechController : PlayerController
     {
