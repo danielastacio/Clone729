@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4506025200274604558}
   - component: {fileID: 258669944946299381}
   - component: {fileID: 258669944946299383}
-  - component: {fileID: 1801584528}
+  - component: {fileID: 7679430979406031352}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 258669944946299384}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.02114873, y: -3.63, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4847956278573145667}
@@ -60,7 +60,7 @@ MonoBehaviour:
   rollTime: 0.5
   defaultRollTime: 0.4
   groundCheckRadius: 0.1
-  offsetRadius: -1
+  offsetRadius: -1.4
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
@@ -105,7 +105,7 @@ SpriteRenderer:
   m_SortingLayerID: -383171243
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
+  m_Sprite: {fileID: -1419292932, guid: 6c517bd3ec0cecb4e89b8e6f61561a1e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -133,26 +133,30 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 10
   m_Material: {fileID: 6200000, guid: 437c2e3d853429a4ab339a888b527094, type: 2}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!70 &1801584528
-CapsuleCollider2D:
+--- !u!95 &7679430979406031352
+Animator:
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 258669944946299384}
   m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 2}
-  m_Direction: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 27973ee7fbb3ac84c921c30172ae03ec, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &1350167391891522218
 PrefabInstance:
   m_ObjectHideFlags: 0
