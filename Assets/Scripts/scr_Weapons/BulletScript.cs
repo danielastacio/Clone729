@@ -23,7 +23,7 @@ namespace scr_Weapons
             StartCoroutine(BulletDestroy());
         }
         
-        public void CreateBullet(string targetTag, float damage, float speed)
+        public virtual void CreateBullet(string targetTag, float damage, float speed)
         {
             _target = targetTag;
             bulletDamage = damage;
