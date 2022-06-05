@@ -11,6 +11,7 @@ TagManager:
   - Conductor
   - NPC
   - Menu
+  - Door
   layers:
   - Default
   - TransparentFX

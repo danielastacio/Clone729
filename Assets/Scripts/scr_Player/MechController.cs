@@ -6,8 +6,8 @@ namespace scr_Player
     {
         protected override void SetRigidbodySettings()
         {            
-            rb = GetComponent<Rigidbody2D>();
-            rb.gravityScale = 2;
+            Rb = GetComponent<Rigidbody2D>();
+            Rb.gravityScale = 2;
 
             fallMultiplier = 17;
             jumpForce = 12;
