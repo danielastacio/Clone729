@@ -102,8 +102,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -383171243
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -160,6 +160,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 258669944946299380}
     m_Modifications:
+    - target: {fileID: 5907496318065215594, guid: 84d861317f0392446a1a116de5f08a9e, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907496318065215594, guid: 84d861317f0392446a1a116de5f08a9e, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -383171243
+      objectReference: {fileID: 0}
     - target: {fileID: 5907496319101476073, guid: 84d861317f0392446a1a116de5f08a9e, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -207,6 +215,14 @@ PrefabInstance:
     - target: {fileID: 5907496319101476074, guid: 84d861317f0392446a1a116de5f08a9e, type: 3}
       propertyPath: m_Name
       value: Gun
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907496319101476079, guid: 84d861317f0392446a1a116de5f08a9e, type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907496319101476079, guid: 84d861317f0392446a1a116de5f08a9e, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -383171243
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84d861317f0392446a1a116de5f08a9e, type: 3}
