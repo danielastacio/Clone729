@@ -64,8 +64,7 @@ namespace scr_Player
         private SpriteRenderer _sprite;
         private Animator _animator;
 
-        [Header("Animation Timeouts")]
-        public float meleeDuration;
+        [Header("Animation Timeouts")] public float meleeDuration;
         private WaitForSeconds _meleeTimeout;
 
         #region MonoBehavior Cycles
@@ -103,6 +102,7 @@ namespace scr_Player
             UpdatePlayerPosition();
             LaunchPlayer();
         }
+
         private void OnDrawGizmos()
         {
             Gizmos.DrawSphere(_groundCheckPos, groundCheckRadius);
@@ -158,8 +158,8 @@ namespace scr_Player
             {
                 StartCoroutine(MeleeAttack());
             }
-
         }
+
         protected IEnumerator MeleeAttack()
         {
             isMeleeing = true;
