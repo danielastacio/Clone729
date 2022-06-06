@@ -36,8 +36,13 @@ namespace scr_Weapons
             {
                 other.gameObject.GetComponent<IDamageable>().TakeDamage(bulletDamage);
             }
-            Destroy(gameObject);
+
+            if (!other.gameObject.CompareTag("Player"))
+            {
+                Destroy(gameObject);
+            }
         }
+        
         private IEnumerator BulletDestroy()
         {
             yield return new WaitForSeconds(2);
