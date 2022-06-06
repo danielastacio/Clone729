@@ -64,7 +64,8 @@ namespace scr_Player
         private SpriteRenderer _sprite;
         private Animator _animator;
 
-        [Header("Animation Timeouts")] public float meleeDuration;
+        [Header("Animation Timeouts")]
+        public float meleeDuration;
         private WaitForSeconds _meleeTimeout;
 
         #region MonoBehavior Cycles
@@ -78,7 +79,7 @@ namespace scr_Player
 
             Instance = this;
             SetRigidbodySettings();
-            SetPlayerSettings();
+            SetPlayerSettings();            
         }
 
         private void Update()
@@ -102,6 +103,7 @@ namespace scr_Player
             UpdatePlayerPosition();
             LaunchPlayer();
         }
+
 
         private void OnDrawGizmos()
         {
@@ -158,8 +160,8 @@ namespace scr_Player
             {
                 StartCoroutine(MeleeAttack());
             }
-        }
-
+            
+        } 
         protected IEnumerator MeleeAttack()
         {
             isMeleeing = true;
@@ -167,7 +169,7 @@ namespace scr_Player
             yield return _meleeTimeout;
             isMeleeing = false;
         }
-
+        
         public void TakeDamage(float damage)
         {
             currentHp -= damage;
