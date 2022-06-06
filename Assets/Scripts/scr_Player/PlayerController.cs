@@ -1,6 +1,7 @@
 using scr_Consumables;
 using scr_Interfaces;
 using scr_UI;
+using System.Collections;
 using UnityEngine;
 
 namespace scr_Player
@@ -8,7 +9,7 @@ namespace scr_Player
     public class PlayerController : MonoBehaviour, IDamageable
     {
         public static PlayerController Instance { get; private set; }
-    
+
         [Header("Stats")] public float maxHp = 100;
         public float currentHp;
 
@@ -38,7 +39,10 @@ namespace scr_Player
         protected internal bool
             isGrounded,
             isCrouching,
-            isRolling;
+            isRolling,
+            isRunning,
+            isJumping,
+            isMeleeing;
 
         private bool
             _isInputJump,
@@ -57,7 +61,13 @@ namespace scr_Player
 
         protected Rigidbody2D Rb;
         private MechController _mechController;
-        
+        private SpriteRenderer _sprite;
+        private Animator _animator;
+
+        [Header("Animation Timeouts")]
+        public float meleeDuration;
+        private WaitForSeconds _meleeTimeout;
+
         #region MonoBehavior Cycles
 
         private void Awake()
@@ -70,7 +80,6 @@ namespace scr_Player
             Instance = this;
             SetRigidbodySettings();
             SetPlayerSettings();
-            currentHp = maxHp;
         }
 
         private void Update()
@@ -81,6 +90,7 @@ namespace scr_Player
             CheckMoveInput();
             CheckMechInput();
             CheckPauseInput();
+            CheckAnimationState();
         }
 
         private void FixedUpdate()
@@ -93,12 +103,6 @@ namespace scr_Player
             UpdatePlayerPosition();
             LaunchPlayer();
         }
-
-        public void Heard()
-        {
-            print("switched");
-        }
-
         private void OnDrawGizmos()
         {
             Gizmos.DrawSphere(_groundCheckPos, groundCheckRadius);
@@ -116,13 +120,18 @@ namespace scr_Player
 
         private void SetPlayerSettings()
         {
+            _sprite = GetComponent<SpriteRenderer>();
+            _animator = GetComponent<Animator>();
+
             _playerHeight = transform.localScale.y;
             _crouchHeight = _playerHeight / 2;
-            rollTime = defaultRollTime;
-
-            speed = defaultSpeed;
-
             _isFacingLeft = false;
+            _meleeTimeout = new WaitForSeconds(meleeDuration);
+
+            meleeDuration = 0.3f;
+            rollTime = defaultRollTime;
+            speed = defaultSpeed;
+            currentHp = maxHp;
         }
 
         private void CheckIfGrounded()
@@ -134,7 +143,29 @@ namespace scr_Player
             if (groundCheck)
             {
                 isGrounded = true;
+                isJumping = false;
             }
+        }
+
+        private void CheckAnimationState()
+        {
+            _animator.SetBool("isRunning", isRunning && !isCrouching);
+            _animator.SetBool("isJumping", isJumping && !isGrounded);
+            _animator.SetBool("isCrouching", isCrouching);
+            _animator.SetBool("isRolling", isRolling);
+
+            if (Input.GetKeyDown(KeyCode.L) && !isMeleeing)
+            {
+                StartCoroutine(MeleeAttack());
+            }
+
+        }
+        protected IEnumerator MeleeAttack()
+        {
+            isMeleeing = true;
+            _animator.SetTrigger("Melee");
+            yield return _meleeTimeout;
+            isMeleeing = false;
         }
 
         public void TakeDamage(float damage)
@@ -311,20 +342,25 @@ namespace scr_Player
         {
             if (_isInputMoveLeft)
             {
+                _sprite.flipX = true;
                 _isFacingLeft = true;
+                isRunning = true;
 
                 Rb.velocity = new Vector2(-speed, Rb.velocity.y);
             }
 
             else if (_isInputMoveRight)
             {
+                _sprite.flipX = false;
                 _isFacingLeft = false;
+                isRunning = true;
 
                 Rb.velocity = new Vector2(speed, Rb.velocity.y);
             }
 
             else
             {
+                isRunning = false;
                 Rb.velocity = new Vector2(0, Rb.velocity.y);
             }
         }
@@ -334,6 +370,7 @@ namespace scr_Player
             if (_isInputJump && isGrounded && !isRolling)
             {
                 isGrounded = false;
+                isJumping = true;
                 Rb.velocity = Vector2.up * jumpForce;
             }
             else if (Rb.velocity.y < 0 && !_isInputJump)
@@ -387,7 +424,7 @@ namespace scr_Player
                 transform.localScale = new Vector2(transform.localScale.x, _playerHeight);
             }
         }
-        
+
         public void LaunchPlayer()
         {
             if (_isPlayerLaunched)
