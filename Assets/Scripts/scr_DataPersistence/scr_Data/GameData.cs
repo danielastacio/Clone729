@@ -4,5 +4,11 @@ using UnityEngine;
 public class GameData
 {
     public float playerCurrentHp;
-    public Transform playerSpawnPoint;
+    public Vector3 playerSpawnPoint;
+
+    public GameData ()
+    {
+        playerCurrentHp = 100;
+        playerSpawnPoint = Vector3.zero;
+    }
 }
