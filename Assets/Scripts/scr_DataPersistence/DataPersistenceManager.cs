@@ -51,18 +51,18 @@ public class DataPersistenceManager : MonoBehaviour
         }
 
         // push the loaded data to all other scripts that need it
-        foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
+        foreach (IDataPersistence dataObject in dataPersistenceObjects)
         {
-            dataPersistenceObj.LoadData(gameData);
+            dataObject.LoadData(gameData);
         }
     }
 
     public void SaveGame()
     {
         // pass the data to other scripts so they can update it
-        foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
+        foreach (IDataPersistence dataObject in dataPersistenceObjects)
         {
-            dataPersistenceObj.SaveData(gameData);
+            dataObject.SaveData(gameData);
         }
 
         // save that data to a file using the data handler
