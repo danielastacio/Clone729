@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace scr_Player
 {
-    public class PlayerController : MonoBehaviour, IDamageable
+    public class PlayerController : MonoBehaviour, IDamageable, IDataPersistence
     {
         public static PlayerController Instance { get; private set; }
     
@@ -110,7 +110,17 @@ namespace scr_Player
 
         #endregion
 
+        public void LoadData(GameData data)
+        {
+            currentHp = data.playerCurrentHp;
+            transform.position = data.playerSpawnPoint;
+        }
 
+        public void SaveData(GameData data)
+        {
+            data.playerCurrentHp = currentHp;
+            data.playerSpawnPoint = SpawnManager.Instance.spawnPoints[1].position;
+        }
         protected virtual void SetRigidbodySettings()
         {
             Rb = GetComponent<Rigidbody2D>();
@@ -471,7 +481,6 @@ namespace scr_Player
                 Rb.Sleep();
             }
         }
-
         #endregion
     }
 }
