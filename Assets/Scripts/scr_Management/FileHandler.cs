@@ -5,10 +5,20 @@ using UnityEngine;
 using scr_Player;
 public class FileHandler : MonoBehaviour
 {
-    private string dataDirPath => Path.Combine(Directory.GetCurrentDirectory(), "SaveData");
-    private string dataFileName = "BinaryJson.json";
-    private string fullPath => Path.Combine(dataDirPath, dataFileName);
-    private string json => File.ReadAllText(fullPath);
+    private string FullPath 
+    {
+        get 
+        {
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SaveData");
+            string fileName = "BinaryJson.json";
+            string fullPath = Path.Combine(filePath, fileName);
+
+            return fullPath;
+        }
+    }
+
+    private void CreateFolderPath() => Directory.CreateDirectory(Path.GetDirectoryName(FullPath));
+
     public class GameData 
     {
         public float playerCurrentHp;
@@ -17,52 +27,62 @@ public class FileHandler : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Equals)) Save();
-        //if (Input.GetKeyDown(KeyCode.Minus)) Load();
+        if (Input.GetKeyDown(KeyCode.Minus)) Load();
     }
     public void Save()
     {
-        GameData data = new GameData();
-        data.playerCurrentHp = PlayerController.Instance.currentHp;
-        data.playerSpawnPoint = SpawnManager.Instance.spawnPoints[1];
-        // use Path.Combine to account for different OS's having different path separators
+        var data = new GameData
+        {
+            playerCurrentHp = PlayerController.Instance.currentHp,
+            playerSpawnPoint = SpawnManager.Instance.spawnPoints[1]
+        };
+
         try
         {
-            // create the directory the file will be written to if it doesn't already exist
-            Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+            CreateFolderPath();
+            
+            string json = JsonUtility.ToJson(data, true);
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(json);
+            var base64 = System.Convert.ToBase64String(plainTextBytes);
 
-            string dataToStore = JsonUtility.ToJson(data, true);
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(dataToStore);
-            var encryptData = System.Convert.ToBase64String(plainTextBytes);
-
-            using (var stream = File.Open(fullPath, FileMode.Create))
+            using (var stream = File.Open(FullPath, FileMode.Create))
             {
-                using (var writer = new StreamWriter(stream))
-                {
-                    writer.Write(encryptData);
-                }
+                using var writer = new StreamWriter(stream); 
+                writer.Write(base64);
             }
-
             Debug.Log("Saved Data!");
 
         }
         catch (System.Exception e)
         {
-            Debug.LogError("Error occured when trying to save data to file: " + fullPath + "\n" + e);
+            Debug.LogError("Error occured when trying to save data to file: " + FullPath + "\n" + e);
         }
     }
     public void Load()
     {
-        if (File.Exists(fullPath))
+        GameData data = null;
+        if (File.Exists(FullPath))
         {
-            GameData data = JsonUtility.FromJson<GameData>(json);
+            try
+            {
+                using var streamReader = new StreamReader(FullPath);
+
+                var dataToLoad = streamReader.ReadToEnd();
+                var plainTextBytes = System.Convert.FromBase64String(dataToLoad);
+                var json = System.Text.Encoding.UTF8.GetString(plainTextBytes);
+
+                data = JsonUtility.FromJson<GameData>(json);
+            }
+
+            catch (System.Exception e)
+            {
+                Debug.LogError("Error occured when trying to load data from file: " + FullPath + "\n" + e);
+            }
 
             PlayerController.Instance.currentHp = data.playerCurrentHp;
             PlayerController.Instance.transform.position = data.playerSpawnPoint.position;
         }
 
         Debug.Log("Loaded Saved Data!");
-    }
-
-
-
+    }    
 }
