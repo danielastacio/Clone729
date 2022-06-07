@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace scr_Interface
+namespace scr_Interfaces
 { 
- interface IDataPersistence
+ public interface IDataPersistence
     {
         public void LoadData(GameData data);
 
