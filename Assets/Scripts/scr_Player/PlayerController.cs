@@ -1,11 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using MetroidvaniaJam.Player;
 using scr_Consumables;
 using scr_Interfaces;
 using UnityEngine;
 
-namespace MetroidvaniaJam.Player
+namespace scr_Player
 {
     public class PlayerController : MonoBehaviour, IDamageable
     {
@@ -19,7 +17,7 @@ namespace MetroidvaniaJam.Player
         [SerializeField] protected internal float defaultSpeed = 10;
         [SerializeField] private float crouchSpeed = 5;
         [SerializeField] protected internal float jumpForce = 25;
-        [SerializeField] protected internal float LaunchForce = 45;
+        [SerializeField] protected internal float launchForce = 45;
         [SerializeField] protected internal float fallMultiplier = 7;
         [SerializeField] private float rollForce = 20;
         [SerializeField] private float rollTime;
@@ -33,8 +31,8 @@ namespace MetroidvaniaJam.Player
         private Vector2 groundCheckPos;
 
         private float
-            playerHeight,
-            crouchHeight;
+            _playerHeight,
+            _crouchHeight;
 
         protected internal bool
             isGrounded,
@@ -67,8 +65,8 @@ namespace MetroidvaniaJam.Player
 
         private void SetPlayerSettings()
         {
-            playerHeight = transform.localScale.y;
-            crouchHeight = playerHeight / 2;
+            _playerHeight = transform.localScale.y;
+            _crouchHeight = _playerHeight / 2;
             rollTime = defaultRollTime;
 
             speed = defaultSpeed;
@@ -315,15 +313,15 @@ namespace MetroidvaniaJam.Player
             {
                 isCrouching = true;
 
-                if (transform.localScale.y != crouchHeight)
+                if (transform.localScale.y != _crouchHeight)
                 {
-                    transform.localScale = new Vector2(transform.localScale.x, crouchHeight);
+                    transform.localScale = new Vector2(transform.localScale.x, _crouchHeight);
                 }
                 speed = crouchSpeed;
             }
             else
             {
-                transform.localScale = new Vector2(transform.localScale.x, playerHeight);
+                transform.localScale = new Vector2(transform.localScale.x, _playerHeight);
                 speed = defaultSpeed;
 
                 isCrouching = false;
@@ -341,13 +339,13 @@ namespace MetroidvaniaJam.Player
                 if (isRolling)
                 {
                     rb.AddForce(rollDirection * rollForce, ForceMode2D.Impulse);
-                    transform.localScale = new Vector2(transform.localScale.x, crouchHeight);
+                    transform.localScale = new Vector2(transform.localScale.x, _crouchHeight);
                 }
             }
 
             else if (!isCrouching)
             {
-                transform.localScale = new Vector2(transform.localScale.x, playerHeight);
+                transform.localScale = new Vector2(transform.localScale.x, _playerHeight);
             }
         }
         #endregion
@@ -390,7 +388,7 @@ namespace MetroidvaniaJam.Player
         {
             if (isPlayerLaunched)
             {
-                rb.AddForce(Vector2.up * LaunchForce, ForceMode2D.Impulse);
+                rb.AddForce(Vector2.up * launchForce, ForceMode2D.Impulse);
 
                 isPlayerLaunched = false;
             }

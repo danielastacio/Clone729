@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using scr_Player;
 using UnityEngine;
 
 namespace MetroidvaniaJam.Player

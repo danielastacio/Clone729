@@ -12,7 +12,7 @@ namespace scr_NPCs.scr_Enemies
     {
         [Header("Stats")] 
         [SerializeField] protected float maxHp;
-        [SerializeField] private float _currentHp;
+        private float _currentHp;
         [SerializeField] protected float touchDamage; // Damage when player bumps the enemy
         [SerializeField] protected float attackDamage;
         [SerializeField] protected float timeBetweenAttacks;
@@ -59,7 +59,6 @@ namespace scr_NPCs.scr_Enemies
 
             if (_playerInSightRange && _playerSpotted)
             {
-                Debug.Log("Player spotted!");
                 PlayerPos = _playerInSightRange.transform.position;
 
                 if (_playerInRetreatRange)
@@ -78,13 +77,13 @@ namespace scr_NPCs.scr_Enemies
                 _playerSpotted = false;
                 CurrentState = State.Patrol;
                 _currentRetreatRange = retreatRange;
-                Debug.Log("Where'd he go?");
             }
         }
 
         public void TakeDamage(float damage)
         {
             _currentHp -= damage;
+            Debug.Log("Name: " + gameObject.name + " Health: " + _currentHp+ " Max Health: " + maxHp);
             if (_currentHp <= 0)
             {
                 CurrentState = State.Die;
