@@ -1,4 +1,5 @@
 using System;
+using scr_Player;
 using UnityEngine;
 
 namespace scr_UI
@@ -11,7 +12,7 @@ namespace scr_UI
         
         protected readonly Color32 DefaultColor = new Color32(159, 159, 159, 255);
         protected readonly Color32 HighlightedColor = new Color32(255, 255, 255, 255);
-        
+
         public void PauseGame()
         {
             if (!pauseMenu.gameObject.activeSelf)
