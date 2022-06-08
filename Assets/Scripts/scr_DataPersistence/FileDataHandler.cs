@@ -5,52 +5,51 @@ using UnityEngine;
 using scr_Player;
 public class FileDataHandler
 {
-    private string FullPath 
+    private string FolderPath 
     {
         get 
         {
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SaveData");
-            string fileName = DataPersistenceManager.Instance.currentSave.ToString();
-            string fullPath = Path.Combine(filePath, fileName, fileName);
+            string profileId = DataPersistenceManager.Instance.GetProfileId();
+            string fileName = profileId;
+            string folderPath = Path.Combine(filePath, profileId, fileName);
 
-            return fullPath;
+            return folderPath;
         }
     }
 
-
-    private void CreateFolderPath() => Directory.CreateDirectory(Path.GetDirectoryName(FullPath));
+    
+    private void CreateFolderPath(string value) => Directory.CreateDirectory(Path.GetDirectoryName(value));
     
     public void Save(GameData data)
     {
         try
         {
-            CreateFolderPath();
+            CreateFolderPath(FolderPath);
             
             string json = JsonUtility.ToJson(data, true);
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(json);
             var base64 = System.Convert.ToBase64String(plainTextBytes);
 
-            using (var stream = File.Open(FullPath, FileMode.Create))
+            using (var stream = File.Open(FolderPath, FileMode.Create))
             {
                 using var writer = new StreamWriter(stream); 
                 writer.Write(base64);
             }
-            Debug.Log("Saved Data!");
-
         }
         catch (System.Exception e)
         {
-            Debug.LogError("Error occured when trying to save data to file: " + FullPath + "\n" + e);
+            Debug.LogError("Error occured when trying to save data to file: " + FolderPath + "\n" + e);
         }
     }
     public GameData Load()
     {
         GameData loadedData = null;
-        if (File.Exists(FullPath))
+        if (File.Exists(FolderPath))
         {
             try
             {
-                using var streamReader = new StreamReader(FullPath);
+                using var streamReader = new StreamReader(FolderPath);
 
                 var dataToLoad = streamReader.ReadToEnd();
                 var plainTextBytes = System.Convert.FromBase64String(dataToLoad);
@@ -61,12 +60,10 @@ public class FileDataHandler
 
             catch (System.Exception e)
             {
-                Debug.LogError("Error occured when trying to load data from file: " + FullPath + "\n" + e);
+                Debug.LogError("Error occured when trying to load data from file: " + FolderPath + "\n" + e);
             }
 
         }
-
-        Debug.Log("Loaded Saved Data!");
 
         return loadedData;
 
