@@ -10,12 +10,13 @@ public class FileDataHandler
         get 
         {
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "SaveData");
-            string fileName = "profile1.json";
-            string fullPath = Path.Combine(filePath, fileName);
+            string fileName = DataPersistenceManager.Instance.currentSave.ToString();
+            string fullPath = Path.Combine(filePath, fileName, fileName);
 
             return fullPath;
         }
     }
+
 
     private void CreateFolderPath() => Directory.CreateDirectory(Path.GetDirectoryName(FullPath));
     
