@@ -119,7 +119,7 @@ namespace scr_Player
         public void SaveData(GameData data)
         {
             data.playerCurrentHp = currentHp;
-            data.playerSpawnPoint = SpawnManager.Instance.spawnPoints[1].position;
+            data.playerSpawnPoint = transform.position;
         }
         protected virtual void SetRigidbodySettings()
         {
