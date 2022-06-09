@@ -1,3 +1,5 @@
+using scr_Interfaces;
+using scr_Utilities;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,13 +10,13 @@ namespace scr_UI
     {
         public void OnPointerEnter(PointerEventData eventData)
         {
-            gameObject.GetComponent<Button>().image.color = HighlightedColor;
+            gameObject.GetComponent<Button>().image.color = Colors.HighlightedMenuButtonColor;
         }
         
         
         public void OnPointerExit(PointerEventData eventData)
         {
-            gameObject.GetComponent<Button>().image.color = DefaultColor;
+            gameObject.GetComponent<Button>().image.color = Colors.DefaultMenuButtonColor;
         }
     }
 }
