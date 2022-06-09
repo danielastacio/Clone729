@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: daaa523c7cb8b4c40992e5bc02261923
+guid: 97b6ec344beddda40bc34da2456bd0fd
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -104,13 +104,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: player_attack_sheet_0
+      name: player_Slide_sheet_0
       rect:
         serializedVersion: 2
-        x: 38
-        y: 5
-        width: 145
-        height: 212
+        x: 9
+        y: 1
+        width: 196
+        height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -118,20 +118,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 420b0a1720434dd41ba33a41ea1538f7
-      internalID: -823257715
+      spriteID: 3ce5275c2b7350c4aafe0806f89891ee
+      internalID: 447660720
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player_attack_sheet_1
+      name: player_Slide_sheet_1
       rect:
         serializedVersion: 2
-        x: 404
-        y: 5
-        width: 141
-        height: 204
+        x: 298
+        y: 11
+        width: 131
+        height: 177
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -139,71 +139,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 623515ab6ce3f894bbd7b92a762df094
-      internalID: -440273936
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: player_attack_sheet_2
-      rect:
-        serializedVersion: 2
-        x: 750
-        y: 5
-        width: 228
-        height: 226
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 20680af60f38d754d81bf974e8930feb
-      internalID: -430230355
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: player_attack_sheet_3
-      rect:
-        serializedVersion: 2
-        x: 1229
-        y: 3
-        width: 265
-        height: 240
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fe9e8dfbdf1e71a4383bf4833c8fa490
-      internalID: -2113323070
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: player_attack_sheet_4
-      rect:
-        serializedVersion: 2
-        x: 1597
-        y: 3
-        width: 273
-        height: 195
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 07b035018a3486a43aed2699a71b5a64
-      internalID: -1534603483
+      spriteID: ea86d71c89db07943935567b8ae31694
+      internalID: -1905709815
       vertices: []
       indices: 
       edges: []
@@ -219,12 +156,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      player_attack_sheet_4: -1534603483
-      player_attack_sheet_3: -2113323070
-      player_attack_sheet_0: -823257715
-      player_attack_sheet_2: -430230355
-      player_attack_sheet_5: 207871522
-      player_attack_sheet_1: -440273936
+      player_Slide_sheet_0: 447660720
+      player_Slide_sheet_1: -1905709815
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

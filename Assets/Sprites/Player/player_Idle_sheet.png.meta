@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: daaa523c7cb8b4c40992e5bc02261923
+guid: 04e39a769e07bdf4c8d69b296e9c40d4
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -104,12 +104,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: player_attack_sheet_0
+      name: player_Idle_sheet_0
       rect:
         serializedVersion: 2
-        x: 38
-        y: 5
-        width: 145
+        x: 13
+        y: 3
+        width: 107
         height: 212
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -118,62 +118,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 420b0a1720434dd41ba33a41ea1538f7
-      internalID: -823257715
+      spriteID: dde633545de0a6e4898a77d0947863ab
+      internalID: 336810461
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player_attack_sheet_1
+      name: player_Idle_sheet_1
       rect:
         serializedVersion: 2
-        x: 404
-        y: 5
-        width: 141
-        height: 204
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 623515ab6ce3f894bbd7b92a762df094
-      internalID: -440273936
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: player_attack_sheet_2
-      rect:
-        serializedVersion: 2
-        x: 750
-        y: 5
-        width: 228
-        height: 226
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 20680af60f38d754d81bf974e8930feb
-      internalID: -430230355
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: player_attack_sheet_3
-      rect:
-        serializedVersion: 2
-        x: 1229
+        x: 156
         y: 3
-        width: 265
-        height: 240
+        width: 107
+        height: 210
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -181,20 +139,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fe9e8dfbdf1e71a4383bf4833c8fa490
-      internalID: -2113323070
+      spriteID: 6d13e6e04564259438d20c356444d877
+      internalID: -1841548981
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: player_attack_sheet_4
+      name: player_Idle_sheet_2
       rect:
         serializedVersion: 2
-        x: 1597
+        x: 299
         y: 3
-        width: 273
-        height: 195
+        width: 107
+        height: 212
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -202,8 +160,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 07b035018a3486a43aed2699a71b5a64
-      internalID: -1534603483
+      spriteID: 6f1c96d95f1277c45990aecaada6fe55
+      internalID: -1201094264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: player_Idle_sheet_3
+      rect:
+        serializedVersion: 2
+        x: 442
+        y: 3
+        width: 107
+        height: 214
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a34f720198e8e854195283c2ecbcb021
+      internalID: -1237730152
       vertices: []
       indices: 
       edges: []
@@ -219,12 +198,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      player_attack_sheet_4: -1534603483
-      player_attack_sheet_3: -2113323070
-      player_attack_sheet_0: -823257715
-      player_attack_sheet_2: -430230355
-      player_attack_sheet_5: 207871522
-      player_attack_sheet_1: -440273936
+      player_Idle_sheet_1: -1841548981
+      player_Idle_sheet_3: -1237730152
+      player_Idle_sheet_2: -1201094264
+      player_Idle_sheet_0: 336810461
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
