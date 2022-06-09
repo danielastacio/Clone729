@@ -9,9 +9,6 @@ namespace scr_UI
         public static bool Paused = false;
         
         [SerializeField] private Canvas pauseMenu;
-        
-        protected readonly Color32 DefaultColor = new Color32(159, 159, 159, 255);
-        protected readonly Color32 HighlightedColor = new Color32(255, 255, 255, 255);
 
         public void PauseGame()
         {

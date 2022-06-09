@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using scr_Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace scr_UI
 {
-    public class PauseMenu : Menu
+    public class PauseMenu : MonoBehaviour
     {
         public List<Button> buttons = new List<Button>();
+        public List<Canvas> canvases = new List<Canvas>();
         private readonly List<Vector2> _buttonStartingPositions = new List<Vector2>();
         private Button _selectedButton;
 
@@ -21,7 +23,7 @@ namespace scr_UI
             foreach (var button in buttons)
             {
                 _buttonStartingPositions.Add(button.GetComponent<RectTransform>().anchoredPosition);
-                button.image.color = DefaultColor;
+                button.image.color = Colors.DefaultMenuButtonColor;
             }
         }
 
@@ -41,7 +43,7 @@ namespace scr_UI
                         {
                             StopAllCoroutines();
                             ShowHideCanvas(statsCanvas, false);
-                            MoveSelectedButton(_selectedButton);
+                            ActivateSelectedMenu(_selectedButton);
                             HideButtons();
                         }
                     }
@@ -50,10 +52,7 @@ namespace scr_UI
             
             if (Input.GetKeyDown(KeyCode.Escape) && _selectedButton != null)
             {
-                _selectedButton.GetComponent<MenuButtonHover>().enabled = true;
-                ShowHideCanvas(statsCanvas, true);
                 ResetButtonPositions();
-                _selectedButton = null;
             }
             else if (Input.GetKeyDown(KeyCode.Escape) && _selectedButton == null)
             {
@@ -67,10 +66,11 @@ namespace scr_UI
             gameObject.SetActive(false);
         }
 
-        private void MoveSelectedButton(Button btn)
+        private void ActivateSelectedMenu(Button btn)
         {
-            btn.image.color = HighlightedColor;
+            btn.image.color = Colors.HighlightedMenuButtonColor;
             _selectedButton.GetComponent<MenuButtonHover>().enabled = false;
+            ShowHideCanvas(canvases[buttons.IndexOf(btn)], true);
             StartCoroutine(MoveButtons(btn, _openMenuPos));
         }
 
@@ -89,23 +89,20 @@ namespace scr_UI
         private void ResetButtonPositions()
         {
             StopAllCoroutines();
+            ShowHideCanvas(statsCanvas, true);
+            ShowHideCanvas(canvases[buttons.IndexOf(_selectedButton)], false);
             for (int i = 0; i < buttons.Count; i++)
             {
-                buttons[i].image.color = DefaultColor;
+                buttons[i].image.color = Colors.DefaultMenuButtonColor;
                 StartCoroutine(MoveButtons(buttons[i], _buttonStartingPositions[i]));
             }
+            _selectedButton.GetComponent<MenuButtonHover>().enabled = true;
+            _selectedButton = null;
         }
 
         private void ShowHideCanvas(Canvas canvas, bool canvasActive)
         {
-            if (canvasActive)
-            {
-                canvas.gameObject.SetActive(true);
-            }
-            else
-            {
-                canvas.gameObject.SetActive(false);
-            }
+            canvas.gameObject.SetActive(canvasActive);
         }
 
         private IEnumerator MoveButtons(Button btn, Vector2 endPos)
