@@ -6,10 +6,10 @@ namespace scr_Weapons
     public class Weapon : MonoBehaviour
     {
         //Inspector Dudes/Variables
-        [Header("Debug")]
-        [SerializeField][Tooltip("if gun isn't looking at cursor keep increasing offset")] protected int offset;
-        [Header("Stats")]
-        [SerializeField] protected float damage = 1;
+        [Header("Debug")] [SerializeField] [Tooltip("if gun isn't looking at cursor keep increasing offset")]
+        protected int offset;
+
+        [Header("Stats")] [SerializeField] protected float damage = 1;
         [SerializeField] protected float speed = 5;
         [SerializeField] protected float fireRate = 0.5f;
         [SerializeField] protected GameObject bullet;
@@ -24,7 +24,7 @@ namespace scr_Weapons
         {
             LookAtCursor();
             RotateAroundMech();
-            if(Input.GetMouseButtonUp(0) && canShoot)
+            if (Input.GetMouseButtonUp(0) && canShoot)
             {
                 StartCoroutine(Shoot());
             }
@@ -39,27 +39,26 @@ namespace scr_Weapons
             angle = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
             //Rotate by said amount
             transform.rotation = Quaternion.Euler(0f, 0f, angle + offset);
-
         }
+
         protected void RotateAroundMech()
         {
             //set Position around the mech by taking which direction it's pointing at
             transform.position = transform.parent.position + difference;
         }
-    
-        protected IEnumerator  Shoot()
+
+        protected IEnumerator Shoot()
         {
             canShoot = false;
             InstantiateBullet();
             yield return new WaitForSeconds(fireRate);
             canShoot = true;
         }
-    
-        protected virtual void  InstantiateBullet()
+
+        protected virtual void InstantiateBullet()
         {
             var newBullet = Instantiate(bullet, transform.position, Quaternion.Euler(0f, 0f, angle + offset));
             newBullet.GetComponent<BulletScript>().CreateBullet("Enemy", damage, speed);
         }
-
     }
 }

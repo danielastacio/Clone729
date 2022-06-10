@@ -1,6 +1,6 @@
 using scr_Consumables;
 using scr_Interfaces;
-using scr_UI;
+using scr_UI.scr_PauseMenu;
 using System.Collections;
 using UnityEngine;
 
@@ -9,7 +9,7 @@ namespace scr_Player
     public class PlayerController : MonoBehaviour, IDamageable, IDataPersistence
     {
         public static PlayerController Instance { get; private set; }
-    
+
         [Header("Stats")] public float maxHp = 100;
         public float currentHp;
 
@@ -103,6 +103,8 @@ namespace scr_Player
             UpdatePlayerPosition();
             LaunchPlayer();
         }
+
+
         private void OnDrawGizmos()
         {
             Gizmos.DrawSphere(_groundCheckPos, groundCheckRadius);
@@ -137,7 +139,7 @@ namespace scr_Player
             _crouchHeight = _playerHeight / 2;
             _isFacingLeft = false;
             _meleeTimeout = new WaitForSeconds(meleeDuration);
-            
+
             meleeDuration = 0.3f;
             rollTime = defaultRollTime;
             speed = defaultSpeed;
@@ -322,9 +324,9 @@ namespace scr_Player
 
         private void CheckPauseInput()
         {
-            if (Input.GetKeyDown(KeyCode.Escape) && !Menu.Paused)
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                GameObject.FindGameObjectWithTag("Menu").GetComponent<Menu>().PauseGame();
+                PauseMenuCanvas.Instance.PauseGame();
             }
         }
 
@@ -434,7 +436,7 @@ namespace scr_Player
                 transform.localScale = new Vector2(transform.localScale.x, _playerHeight);
             }
         }
-        
+
         public void LaunchPlayer()
         {
             if (_isPlayerLaunched)

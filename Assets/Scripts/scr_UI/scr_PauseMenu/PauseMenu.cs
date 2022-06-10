@@ -1,28 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
+using scr_UI.scr_Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace scr_UI
+namespace scr_UI.scr_PauseMenu
 {
-    public class PauseMenu : Menu
+    public class PauseMenu : MonoBehaviour
     {
-        public Canvas selectedMenuCanvas;
-
         public List<Button> buttons = new List<Button>();
+        public List<Canvas> canvases = new List<Canvas>();
         private readonly List<Vector2> _buttonStartingPositions = new List<Vector2>();
         private Button _selectedButton;
 
         private readonly Vector2 _openMenuPos = new Vector2(394, 350);
         private Vector2 _hiddenPos;
 
+        [SerializeField] private Canvas statsCanvas;
+
+        [SerializeField] private float buttonMoveTime;
+
         public void Start()
         {
             foreach (var button in buttons)
             {
                 _buttonStartingPositions.Add(button.GetComponent<RectTransform>().anchoredPosition);
-                selectedMenuCanvas.gameObject.SetActive(false);
-                button.image.color = DefaultColor;
+                button.image.color = Colors.DefaultMenuButtonColor;
             }
         }
 
@@ -36,36 +39,40 @@ namespace scr_UI
                         _selectedButton = button;
                         if (_selectedButton.name.Equals("ExitButton"))
                         {
-                            gameObject.SetActive(false);
+                            CloseMenu();
                         }
                         else if (_selectedButton != null)
                         {
                             StopAllCoroutines();
-                            MoveSelectedButton(_selectedButton);
-                            selectedMenuCanvas.gameObject.SetActive(true);
+                            CanvasController.HideCanvas(statsCanvas);
+                            ActivateSelectedMenu(_selectedButton);
                             HideButtons();
                         }
                     }
                 );
             }
-            
+
             if (Input.GetKeyDown(KeyCode.Escape) && _selectedButton != null)
             {
-                _selectedButton.GetComponent<MenuButtonHover>().enabled = true;
                 ResetButtonPositions();
-                _selectedButton = null;
             }
             else if (Input.GetKeyDown(KeyCode.Escape) && _selectedButton == null)
             {
-                Time.timeScale = 1;
-                gameObject.SetActive(false);
+                CloseMenu();
             }
         }
 
-        private void MoveSelectedButton(Button btn)
+        private void CloseMenu()
         {
-            btn.image.color = HighlightedColor;
+            Time.timeScale = 1;
+            gameObject.SetActive(false);
+        }
+
+        private void ActivateSelectedMenu(Button btn)
+        {
+            btn.image.color = Colors.HighlightedMenuButtonColor;
             _selectedButton.GetComponent<MenuButtonHover>().enabled = false;
+            CanvasController.ShowCanvas(canvases[buttons.IndexOf(btn)]);
             StartCoroutine(MoveButtons(btn, _openMenuPos));
         }
 
@@ -84,12 +91,15 @@ namespace scr_UI
         private void ResetButtonPositions()
         {
             StopAllCoroutines();
-            selectedMenuCanvas.gameObject.SetActive(false);
+            CanvasController.ShowCanvas(statsCanvas);
+            CanvasController.HideCanvas(canvases[buttons.IndexOf(_selectedButton)]);
             for (int i = 0; i < buttons.Count; i++)
             {
-                buttons[i].image.color = DefaultColor;
+                buttons[i].image.color = Colors.DefaultMenuButtonColor;
                 StartCoroutine(MoveButtons(buttons[i], _buttonStartingPositions[i]));
             }
+            _selectedButton.GetComponent<MenuButtonHover>().enabled = true;
+            _selectedButton = null;
         }
 
         private IEnumerator MoveButtons(Button btn, Vector2 endPos)
@@ -100,11 +110,9 @@ namespace scr_UI
 
             while (Vector2.Distance(startPos, endPos) > 0.1f)
             {
-                currentPos = btn.GetComponent<RectTransform>().anchoredPosition;
-
                 currentPos = Vector2.Lerp(startPos, endPos, transitionTime);
 
-                transitionTime += 0.1f;
+                transitionTime += buttonMoveTime;
 
                 btn.GetComponent<RectTransform>().anchoredPosition = currentPos;
 
