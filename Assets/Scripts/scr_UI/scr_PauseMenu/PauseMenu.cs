@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using scr_Utilities;
+using scr_UI.scr_Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace scr_UI
+namespace scr_UI.scr_PauseMenu
 {
     public class PauseMenu : MonoBehaviour
     {
@@ -17,6 +17,8 @@ namespace scr_UI
         private Vector2 _hiddenPos;
 
         [SerializeField] private Canvas statsCanvas;
+
+        [SerializeField] private float buttonMoveTime;
 
         public void Start()
         {
@@ -42,14 +44,14 @@ namespace scr_UI
                         else if (_selectedButton != null)
                         {
                             StopAllCoroutines();
-                            ShowHideCanvas(statsCanvas, false);
+                            CanvasController.HideCanvas(statsCanvas);
                             ActivateSelectedMenu(_selectedButton);
                             HideButtons();
                         }
                     }
                 );
             }
-            
+
             if (Input.GetKeyDown(KeyCode.Escape) && _selectedButton != null)
             {
                 ResetButtonPositions();
@@ -70,7 +72,7 @@ namespace scr_UI
         {
             btn.image.color = Colors.HighlightedMenuButtonColor;
             _selectedButton.GetComponent<MenuButtonHover>().enabled = false;
-            ShowHideCanvas(canvases[buttons.IndexOf(btn)], true);
+            CanvasController.ShowCanvas(canvases[buttons.IndexOf(btn)]);
             StartCoroutine(MoveButtons(btn, _openMenuPos));
         }
 
@@ -89,8 +91,8 @@ namespace scr_UI
         private void ResetButtonPositions()
         {
             StopAllCoroutines();
-            ShowHideCanvas(statsCanvas, true);
-            ShowHideCanvas(canvases[buttons.IndexOf(_selectedButton)], false);
+            CanvasController.ShowCanvas(statsCanvas);
+            CanvasController.HideCanvas(canvases[buttons.IndexOf(_selectedButton)]);
             for (int i = 0; i < buttons.Count; i++)
             {
                 buttons[i].image.color = Colors.DefaultMenuButtonColor;
@@ -98,11 +100,6 @@ namespace scr_UI
             }
             _selectedButton.GetComponent<MenuButtonHover>().enabled = true;
             _selectedButton = null;
-        }
-
-        private void ShowHideCanvas(Canvas canvas, bool canvasActive)
-        {
-            canvas.gameObject.SetActive(canvasActive);
         }
 
         private IEnumerator MoveButtons(Button btn, Vector2 endPos)
@@ -113,11 +110,9 @@ namespace scr_UI
 
             while (Vector2.Distance(startPos, endPos) > 0.1f)
             {
-                currentPos = btn.GetComponent<RectTransform>().anchoredPosition;
-
                 currentPos = Vector2.Lerp(startPos, endPos, transitionTime);
 
-                transitionTime += 0.1f;
+                transitionTime += buttonMoveTime;
 
                 btn.GetComponent<RectTransform>().anchoredPosition = currentPos;
 

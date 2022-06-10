@@ -1,6 +1,6 @@
 using scr_Consumables;
 using scr_Interfaces;
-using scr_UI;
+using scr_UI.scr_PauseMenu;
 using System.Collections;
 using UnityEngine;
 
@@ -314,9 +314,9 @@ namespace scr_Player
 
         private void CheckPauseInput()
         {
-            if (Input.GetKeyDown(KeyCode.Escape) && !Menu.Paused)
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                GameObject.FindGameObjectWithTag("Menu").GetComponent<Menu>().PauseGame();
+                PauseMenuCanvas.Instance.PauseGame();
             }
         }
 
