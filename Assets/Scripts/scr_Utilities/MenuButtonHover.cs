@@ -1,12 +1,10 @@
-using scr_Interfaces;
-using scr_Utilities;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace scr_UI
+namespace scr_Utilities
 {
-    public class MenuButtonHover : Menu, IPointerEnterHandler, IPointerExitHandler
+    public class MenuButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         public void OnPointerEnter(PointerEventData eventData)
         {

@@ -4,7 +4,7 @@ using scr_Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace scr_UI
+namespace scr_UI.scr_PauseMenu
 {
     public class PauseMenu : MonoBehaviour
     {
@@ -17,6 +17,8 @@ namespace scr_UI
         private Vector2 _hiddenPos;
 
         [SerializeField] private Canvas statsCanvas;
+
+        [SerializeField] private float buttonMoveTime;
 
         public void Start()
         {
@@ -117,7 +119,7 @@ namespace scr_UI
 
                 currentPos = Vector2.Lerp(startPos, endPos, transitionTime);
 
-                transitionTime += 0.1f;
+                transitionTime += buttonMoveTime;
 
                 btn.GetComponent<RectTransform>().anchoredPosition = currentPos;
 

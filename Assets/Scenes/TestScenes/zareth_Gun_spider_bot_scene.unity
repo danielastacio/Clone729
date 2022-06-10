@@ -8794,9 +8794,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3865999993472755932, guid: db4de09f500a0084b8e6b834e6cfd38a, type: 3}
+      propertyPath: buttonMoveTime
+      value: 0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 4747408616449548280, guid: db4de09f500a0084b8e6b834e6cfd38a, type: 3}
       propertyPath: m_Name
-      value: GameCanvas
+      value: PauseMenuCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 6647123805660110732, guid: db4de09f500a0084b8e6b834e6cfd38a, type: 3}
       propertyPath: m_RootOrder

@@ -1,10 +1,8 @@
-using System;
-using scr_Player;
 using UnityEngine;
 
-namespace scr_UI
+namespace scr_UI.scr_PauseMenu
 {
-    public class Menu : MonoBehaviour
+    public class PauseMenuCanvas : MonoBehaviour
     {
         public static bool Paused = false;
         

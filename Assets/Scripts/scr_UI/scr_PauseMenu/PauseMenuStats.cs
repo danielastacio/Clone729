@@ -1,9 +1,8 @@
-using System;
 using scr_Player;
 using TMPro;
 using UnityEngine;
 
-namespace scr_UI
+namespace scr_UI.scr_PauseMenu
 {
     public class PauseMenuStats : MonoBehaviour
     {
