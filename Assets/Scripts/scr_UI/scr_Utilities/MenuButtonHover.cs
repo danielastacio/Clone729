@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace scr_Utilities
+namespace scr_UI.scr_Utilities
 {
     public class MenuButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {

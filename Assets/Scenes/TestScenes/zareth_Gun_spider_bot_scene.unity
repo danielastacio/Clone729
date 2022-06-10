@@ -8796,7 +8796,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3865999993472755932, guid: db4de09f500a0084b8e6b834e6cfd38a, type: 3}
       propertyPath: buttonMoveTime
-      value: 0.05
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 4747408616449548280, guid: db4de09f500a0084b8e6b834e6cfd38a, type: 3}
       propertyPath: m_Name

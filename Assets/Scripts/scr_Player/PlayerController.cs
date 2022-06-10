@@ -314,9 +314,9 @@ namespace scr_Player
 
         private void CheckPauseInput()
         {
-            if (Input.GetKeyDown(KeyCode.Escape) && !PauseMenuCanvas.Paused)
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                GameObject.FindGameObjectWithTag("Menu").GetComponent<PauseMenuCanvas>().PauseGame();
+                PauseMenuCanvas.Instance.PauseGame();
             }
         }
 

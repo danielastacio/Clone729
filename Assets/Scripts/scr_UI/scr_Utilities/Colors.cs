@@ -1,7 +1,6 @@
-﻿using scr_Interfaces;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace scr_Utilities
+namespace scr_UI.scr_Utilities
 {
     public static class Colors
     {
