@@ -2,21 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using TMPro;
 using scr_Interfaces;
 public class DataPersistenceManager : MonoBehaviour
 {
     public static DataPersistenceManager Instance { get; private set; }
-    private GameData gameData = new();
+    private GameData gameData;
     private List<IDataPersistence> dataPersistenceObjects;
     private FileDataHandler dataHandler;
-    private readonly string mostRecentProfile = "mostRecentProfile";
-    private enum ProfileIds
+    private string mostRecentProfile = "mostRecentProfile";
+    public TextMeshProUGUI message;
+    public enum ProfileIds
     {
         profile1,
         profile2,
         profile3
     }
 
+    private int totalProfiles = System.Enum.GetNames(typeof(ProfileIds)).Length;
     private ProfileIds selectedProfileId;
     public string GetProfileId()
     {
@@ -25,13 +28,12 @@ public class DataPersistenceManager : MonoBehaviour
 
     private void SetProfileId(int selectedProfileId)
     {
-        int totalProfiles = System.Enum.GetNames(typeof(ProfileIds)).Length;
-
         if (selectedProfileId >= 0 && selectedProfileId <= totalProfiles)
         {
             this.selectedProfileId = (ProfileIds)selectedProfileId;
         }
     }
+
     private void Awake()
     {
         if (Instance != null)
@@ -39,17 +41,24 @@ public class DataPersistenceManager : MonoBehaviour
             Debug.LogError("Found more than one Data Persistence Manager in the scene.");
         }
         Instance = this;
+
     }
     private void Start()
     {
         this.dataHandler = new FileDataHandler();
         this.dataPersistenceObjects = FindAllDataPersistenceObjects();
-        //LoadGame((int)selectedProfileId);
-    }
 
+        //Continue();
+
+        for(int i = 0; i <= totalProfiles; i++)
+        {
+            LoadGame(i);
+        }
+        
+    }
     private void OnApplicationQuit()
     {
-        SaveGame((int)selectedProfileId);
+        //SaveGame((int)selectedProfileId);
     }
     public void NewGame()
     {
@@ -59,9 +68,11 @@ public class DataPersistenceManager : MonoBehaviour
     public void Continue()
     {
         LoadGame(PlayerPrefs.GetInt(mostRecentProfile, default));
+        message.text = "Loaded most recent save: " + selectedProfileId;
     }
     public void LoadGame(int selectedProfileId)
     { 
+        message.text = "Loaded Save File: " + (ProfileIds)selectedProfileId;
         //Get the selected profile Id before loading any saved data
         SetProfileId(selectedProfileId);
 
@@ -72,6 +83,7 @@ public class DataPersistenceManager : MonoBehaviour
         if (this.gameData == null)
         {
             Debug.Log("No data was found. Initializing data to defaults.");
+            message.text = "No data was found. Initializing data to defaults.";
             NewGame();
         }
 
@@ -83,6 +95,7 @@ public class DataPersistenceManager : MonoBehaviour
     }
     public void SaveGame(int selectedProfileId)
     {
+        message.text = "Saved game to: " + (ProfileIds)selectedProfileId;
         // pass the data to other scripts so they can update it
         foreach (IDataPersistence dataObject in dataPersistenceObjects)
         {
@@ -102,6 +115,7 @@ public class DataPersistenceManager : MonoBehaviour
         PlayerPrefs.SetInt(mostRecentProfile, selectedProfileId);
         // save that data to a file using the data handler
         dataHandler.Save(gameData);
+
     }
     private List<IDataPersistence> FindAllDataPersistenceObjects()
     {
@@ -109,5 +123,15 @@ public class DataPersistenceManager : MonoBehaviour
             .OfType<IDataPersistence>();
 
         return new List<IDataPersistence>(dataPersistenceObjects);
+    }
+
+    public Dictionary<string, GameData> GetAllProfiles()
+    {
+        return dataHandler.LoadAllProfiles();
+    }
+
+    public bool HasGameData()
+    {
+        return gameData != null;
     }
 }
