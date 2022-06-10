@@ -51,7 +51,7 @@ namespace scr_UI.scr_PauseMenu
                     }
                 );
             }
-            
+
             if (Input.GetKeyDown(KeyCode.Escape) && _selectedButton != null)
             {
                 ResetButtonPositions();
@@ -64,7 +64,7 @@ namespace scr_UI.scr_PauseMenu
 
         private void CloseMenu()
         {
-            Time.timeScale = 1; 
+            Time.timeScale = 1;
             gameObject.SetActive(false);
         }
 
