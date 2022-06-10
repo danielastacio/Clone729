@@ -1,15 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace MetroidvaniaJam.Player
+namespace scr_Player
 {
     public class MechController : PlayerController
     {
         protected override void SetRigidbodySettings()
         {            
-            rb = GetComponent<Rigidbody2D>();
-            rb.gravityScale = 2;
+            Rb = GetComponent<Rigidbody2D>();
+            Rb.gravityScale = 2;
 
             fallMultiplier = 17;
             jumpForce = 12;
