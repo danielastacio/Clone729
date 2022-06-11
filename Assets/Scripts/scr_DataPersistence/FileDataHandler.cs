@@ -16,13 +16,12 @@ public class FileDataHandler
             return Path.Combine(FilePath, profileId, fileName);
         }
     }
-    private void CreateFullPath(string value) => Directory.CreateDirectory(Path.GetDirectoryName(value));
     
     public void Save(GameData data)
     {
         try
         {
-            CreateFullPath(FullPath);
+            Directory.CreateDirectory(Path.GetDirectoryName(FullPath));
             
             string json = JsonUtility.ToJson(data, true);
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(json);
@@ -37,34 +36,7 @@ public class FileDataHandler
             Debug.LogError("Error occured when trying to save data to file: " + FullPath + "\n" + e);
         }
     }
-    public GameData Load()
-    {
-        GameData loadedData = null;
-        if (File.Exists(FullPath))
-        {
-            try
-            {
-                using var streamReader = new StreamReader(FullPath);
-
-                var dataToLoad = streamReader.ReadToEnd();
-                var plainTextBytes = System.Convert.FromBase64String(dataToLoad);
-                var json = System.Text.Encoding.UTF8.GetString(plainTextBytes);
-
-                loadedData = JsonUtility.FromJson<GameData>(json);
-            }
-
-            catch (System.Exception e)
-            {
-                Debug.LogError("Error occured when trying to load data from file: " + FullPath + "\n" + e);
-            }
-
-        }
-
-        return loadedData;
-
-    }
-
-    public Dictionary<string, GameData> LoadAllProfiles()
+    public Dictionary<string, GameData> Load()
     {
         Dictionary<string, GameData> profileDictionary = new Dictionary<string, GameData>();
 
@@ -73,30 +45,38 @@ public class FileDataHandler
         foreach (DirectoryInfo dirInfo in dirInfos)
         {
             string profileId = dirInfo.Name;
-
+            GameData profileData;
             // defensive programming - check if the data file exists
             // if it doesn't, then this folder isn't a profile and should be skipped
-            if (!File.Exists(FullPath))
+
+            if (File.Exists(FullPath))
+            {
+                try
+                {
+                    using var streamReader = new StreamReader(FullPath);
+
+                    var dataToLoad = streamReader.ReadToEnd();
+                    var plainTextBytes = System.Convert.FromBase64String(dataToLoad);
+                    var json = System.Text.Encoding.UTF8.GetString(plainTextBytes);
+
+                    profileData = JsonUtility.FromJson<GameData>(json);
+                    profileDictionary.Add(profileId, profileData);  
+                }
+
+                catch (System.Exception e)
+                {
+                    Debug.LogError("Error occured when trying to load data from file: " + FullPath + "\n" + e);
+                }
+            }
+
+            else
             {
                 Debug.LogWarning("Skipping directory when loading all profiles because it does not contain data: "
                     + profileId);
                 continue;
-            }
 
-            // load the game data for this profile and put it in the dictionary
-            GameData profileData = Load();
-            // defensive programming - ensure the profile data isn't null,
-            // because if it is then something went wrong and we should let ourselves know
-            if (profileData != null)
-            {
-                profileDictionary.Add(profileId, profileData);
-            }
-            else
-            {
-                Debug.LogError("Tried to load profile but something went wrong. ProfileId: " + profileId);
             }
         }
-
         return profileDictionary;
     }
 }
