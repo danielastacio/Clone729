@@ -9,9 +9,12 @@ EditorBuildSettings:
     path: Assets/Scenes/MainScene.unity
     guid: f3b47e420aeb8304fb2030896d5bbc01
   - enabled: 0
-    path: Assets/Scenes/Scene_Game.unity
-    guid: bc4fc2ce950b0224fb6dd8812d4425a2
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Scenes/TestScenes/zareth_Gun_spider_bot_scene.unity
-    guid: 631b3c4c23001994fa679a2ac195a0c8
+    path: Assets/Scenes/MainMenuScene.unity
+    guid: 9bf7756b61a0da741907211fd5977e70
+  - enabled: 1
+    path: Assets/Scenes/TestScenes/dastacio_player_controller_scene.unity
+    guid: 5cce4eac063dc66428db486ad6e28a93
   m_configObjects: {}

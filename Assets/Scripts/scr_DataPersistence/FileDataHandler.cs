@@ -24,12 +24,12 @@ public class FileDataHandler
             Directory.CreateDirectory(Path.GetDirectoryName(FullPath));
             
             string json = JsonUtility.ToJson(data, true);
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(json);
-            var base64 = System.Convert.ToBase64String(plainTextBytes);
+            //var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(json);
+            //var base64 = System.Convert.ToBase64String(plainTextBytes);
 
             using var stream = File.Open(FullPath, FileMode.Create);
             using var writer = new StreamWriter(stream);
-            writer.Write(base64);
+            writer.Write(json);
         }
         catch (System.Exception e)
         {
@@ -56,25 +56,25 @@ public class FileDataHandler
                     using var streamReader = new StreamReader(FullPath);
 
                     var dataToLoad = streamReader.ReadToEnd();
-                    var plainTextBytes = System.Convert.FromBase64String(dataToLoad);
-                    var json = System.Text.Encoding.UTF8.GetString(plainTextBytes);
+                   // var plainTextBytes = System.Convert.FromBase64String(dataToLoad);
+                   // var json = System.Text.Encoding.UTF8.GetString(plainTextBytes);
 
-                    profileData = JsonUtility.FromJson<GameData>(json);
-                    profileDictionary.Add(profileId, profileData);  
+                    profileData = JsonUtility.FromJson<GameData>(dataToLoad);
+                    profileDictionary.Add(profileId, profileData);
                 }
 
                 catch (System.Exception e)
                 {
                     Debug.LogError("Error occured when trying to load data from file: " + FullPath + "\n" + e);
                 }
+
             }
 
             else
             {
                 Debug.LogWarning("Skipping directory when loading all profiles because it does not contain data: "
-                    + profileId);
+                    + DataPersistenceManager.Instance.GetProfileId());
                 continue;
-
             }
         }
         return profileDictionary;
