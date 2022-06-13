@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace scr_Interfaces
+﻿namespace scr_Interfaces
 { 
  public interface IDataPersistence
     {
