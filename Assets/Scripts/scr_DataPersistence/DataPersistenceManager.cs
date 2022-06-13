@@ -6,14 +6,9 @@ using UnityEngine.SceneManagement;
 using scr_Interfaces;
 public class DataPersistenceManager : MonoBehaviour
 {
-    [Header("Debugging")]
-    [SerializeField] private bool disableDataPersistence = false;
-    [SerializeField] private bool initializeDataIfNull = false;
-    [SerializeField] private bool overrideSelectedProfileId = false;
-    [SerializeField] private string testSelectedProfileId = "test";
 
     [Header("File Storage Config")]
-    [SerializeField] private string fileName;
+    private readonly string fileName = "gamedata.json";
     [SerializeField] private bool useEncryption;
 
     private GameData gameData;
@@ -35,19 +30,12 @@ public class DataPersistenceManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(this.gameObject);
 
-        if (disableDataPersistence)
-        {
-            Debug.LogWarning("Data Persistence is currently disabled!");
-        }
+
 
         this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, useEncryption);
 
         this.selectedProfileId = dataHandler.GetMostRecentlyUpdatedProfileId();
-        if (overrideSelectedProfileId)
-        {
-            this.selectedProfileId = testSelectedProfileId;
-            Debug.LogWarning("Overrode selected profile id with test id: " + testSelectedProfileId);
-        }
+
     }
 
     private void OnEnable()
@@ -88,20 +76,8 @@ public class DataPersistenceManager : MonoBehaviour
 
     public void LoadGame()
     {
-        // return right away if data persistence is disabled
-        if (disableDataPersistence)
-        {
-            return;
-        }
-
         // load any saved data from a file using the data handler
         this.gameData = dataHandler.Load(selectedProfileId);
-
-        // start a new game if the data is null and we're configured to initialize data for debugging purposes
-        if (this.gameData == null && initializeDataIfNull)
-        {
-            NewGame();
-        }
 
         // if no data can be loaded, don't continue
         if (this.gameData == null)
@@ -119,12 +95,6 @@ public class DataPersistenceManager : MonoBehaviour
 
     public void SaveGame()
     {
-        // return right away if data persistence is disabled
-        if (disableDataPersistence)
-        {
-            return;
-        }
-
         // if we don't have any data to save, log a warning here
         if (this.gameData == null)
         {
