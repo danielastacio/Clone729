@@ -4,6 +4,7 @@ using UnityEngine;
 public class GameData
 {
     public long lastUpdated;
+    public string lastUpdatedString;
     public float playerCurrentHp;
     public Vector3 playerSpawnPoint;
 

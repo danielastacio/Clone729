@@ -32,7 +32,7 @@ public class DataPersistenceManager : MonoBehaviour
 
 
 
-        this.dataHandler = new FileDataHandler(Application.persistentDataPath, fileName, useEncryption);
+        this.dataHandler = new FileDataHandler();
 
         this.selectedProfileId = dataHandler.GetMostRecentlyUpdatedProfileId();
 
@@ -67,6 +67,11 @@ public class DataPersistenceManager : MonoBehaviour
         this.selectedProfileId = newProfileId;
         // load the game, which will use that profile, updating our game data accordingly
         LoadGame();
+    }
+
+    public string GetProfileId()
+    {
+        return selectedProfileId;
     }
 
     public void NewGame()
@@ -110,6 +115,7 @@ public class DataPersistenceManager : MonoBehaviour
 
         // timestamp the data so we know when it was last saved
         gameData.lastUpdated = System.DateTime.Now.ToBinary();
+        gameData.lastUpdatedString = System.DateTime.Now.ToString();
 
         // save that data to a file using the data handler
         dataHandler.Save(gameData, selectedProfileId);

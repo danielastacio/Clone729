@@ -37,7 +37,7 @@ public class SaveSlot : MonoBehaviour
             noDataContent.SetActive(false);
             hasDataContent.SetActive(true);
 
-            lastUpdatedText.text = data.lastUpdated + "";
+            lastUpdatedText.text = data.lastUpdatedString + "";
             playerHealthText.text = "HP: " + data.playerCurrentHp;
         }
     }

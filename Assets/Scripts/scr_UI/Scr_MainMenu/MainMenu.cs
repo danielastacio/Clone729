@@ -25,8 +25,18 @@ public class MainMenu : MonoBehaviour
 
     public void OnNewGameClicked() 
     {
-        saveSlotsMenu.ActivateMenu(false);
-        this.DeactivateMenu();
+        if (DataPersistenceManager.instance.HasGameData())
+        {
+            saveSlotsMenu.ActivateMenu(false);
+            this.DeactivateMenu();
+        }
+
+        else
+        {
+            DataPersistenceManager.instance.ChangeSelectedProfileId("A");
+            DataPersistenceManager.instance.NewGame();
+            SceneManager.LoadSceneAsync(1);
+        }
     }
 
     public void OnLoadGameClicked() 

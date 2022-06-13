@@ -6,18 +6,7 @@ using System.IO;
 
 public class FileDataHandler
 {
-    private string dataDirPath = "";
-    private string dataFileName = "";
-    private bool useEncryption = false;
-    private readonly string encryptionCodeWord = "word";
-
-    public FileDataHandler(string dataDirPath, string dataFileName, bool useEncryption)
-    {
-        this.dataDirPath = dataDirPath;
-        this.dataFileName = dataFileName;
-        this.useEncryption = useEncryption;
-    }
-
+    private string dataDirPath = Application.persistentDataPath;
     public GameData Load(string profileId)
     {
         // base case - if the profileId is null, return right away
@@ -27,7 +16,8 @@ public class FileDataHandler
         }
 
         // use Path.Combine to account for different OS's having different path separators
-        string fullPath = Path.Combine(dataDirPath, profileId, dataFileName);
+        string fileName = profileId;
+        string fullPath = Path.Combine(dataDirPath, profileId, fileName);
         GameData loadedData = null;
         if (File.Exists(fullPath))
         {
@@ -43,11 +33,7 @@ public class FileDataHandler
                     }
                 }
 
-                // optionally decrypt the data
-                if (useEncryption)
-                {
-                    dataToLoad = EncryptDecrypt(dataToLoad);
-                }
+
 
                 // deserialize the data from Json back into the C# object
                 loadedData = JsonUtility.FromJson<GameData>(dataToLoad);
@@ -69,7 +55,8 @@ public class FileDataHandler
         }
 
         // use Path.Combine to account for different OS's having different path separators
-        string fullPath = Path.Combine(dataDirPath, profileId, dataFileName);
+        string fileName = profileId;
+        string fullPath = Path.Combine(dataDirPath, profileId, fileName);
         try
         {
             // create the directory the file will be written to if it doesn't already exist
@@ -78,11 +65,6 @@ public class FileDataHandler
             // serialize the C# game data object into Json
             string dataToStore = JsonUtility.ToJson(data, true);
 
-            // optionally encrypt the data
-            if (useEncryption)
-            {
-                dataToStore = EncryptDecrypt(dataToStore);
-            }
 
             // write the serialized data to the file
             using (FileStream stream = new FileStream(fullPath, FileMode.Create))
@@ -111,7 +93,7 @@ public class FileDataHandler
 
             // defensive programming - check if the data file exists
             // if it doesn't, then this folder isn't a profile and should be skipped
-            string fullPath = Path.Combine(dataDirPath, profileId, dataFileName);
+            string fullPath = Path.Combine(dataDirPath, profileId, profileId);
             if (!File.Exists(fullPath))
             {
                 Debug.LogWarning("Skipping directory when loading all profiles because it does not contain data: "
@@ -173,13 +155,4 @@ public class FileDataHandler
     }
 
     // the below is a simple implementation of XOR encryption
-    private string EncryptDecrypt(string data)
-    {
-        string modifiedData = "";
-        for (int i = 0; i < data.Length; i++)
-        {
-            modifiedData += (char)(data[i] ^ encryptionCodeWord[i % encryptionCodeWord.Length]);
-        }
-        return modifiedData;
-    }
 }
