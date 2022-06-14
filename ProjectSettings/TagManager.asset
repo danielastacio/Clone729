@@ -11,6 +11,7 @@ TagManager:
   - Conductor
   - Mirror
   - Trigger
+  - Menu
   layers:
   - Default
   - TransparentFX
@@ -47,4 +48,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 2119249749
+    locked: 0
+  - name: Player
+    uniqueID: 2828192017
+    locked: 0
+  - name: Foreground
+    uniqueID: 3911342201
     locked: 0
