@@ -8,15 +8,23 @@ using UnityEngine.UI;
 namespace scr_UI.scr_PauseMenu
 {
 <<<<<<<< HEAD:Assets/Scripts/scr_UI/scr_PauseMenu/PauseMenu.cs
+<<<<<<<< HEAD:Assets/Scripts/scr_UI/scr_PauseMenu/PauseMenu.cs
     public class PauseMenu : MonoBehaviour
+========
+    public class MainMenuButtons : MonoBehaviour
+>>>>>>>> dev:Assets/Scripts/scr_UI/MainMenuButtons.cs
 ========
     public class MainMenuButtons : MonoBehaviour
 >>>>>>>> dev:Assets/Scripts/scr_UI/MainMenuButtons.cs
     {
         public List<Button> buttons = new List<Button>();
 <<<<<<<< HEAD:Assets/Scripts/scr_UI/scr_PauseMenu/PauseMenu.cs
+<<<<<<<< HEAD:Assets/Scripts/scr_UI/scr_PauseMenu/PauseMenu.cs
         public List<Canvas> canvases = new List<Canvas>();
         private readonly List<Vector2> _buttonStartingPositions = new List<Vector2>();
+========
+        private List<Vector2> _buttonStartingPositions = new List<Vector2>();
+>>>>>>>> dev:Assets/Scripts/scr_UI/MainMenuButtons.cs
 ========
         private List<Vector2> _buttonStartingPositions = new List<Vector2>();
 >>>>>>>> dev:Assets/Scripts/scr_UI/MainMenuButtons.cs
@@ -26,9 +34,14 @@ namespace scr_UI.scr_PauseMenu
         private Vector2 _hiddenPos;
 
 <<<<<<<< HEAD:Assets/Scripts/scr_UI/scr_PauseMenu/PauseMenu.cs
+<<<<<<<< HEAD:Assets/Scripts/scr_UI/scr_PauseMenu/PauseMenu.cs
         [SerializeField] private Canvas statsCanvas;
 
         [SerializeField] private float buttonMoveTime;
+========
+        protected readonly Color32 DefaultColor = new Color32(159, 159, 159, 255);
+        protected readonly Color32 SelectedColor = new Color32(255, 255, 255, 255);
+>>>>>>>> dev:Assets/Scripts/scr_UI/MainMenuButtons.cs
 ========
         protected readonly Color32 DefaultColor = new Color32(159, 159, 159, 255);
         protected readonly Color32 SelectedColor = new Color32(255, 255, 255, 255);
@@ -54,7 +67,11 @@ namespace scr_UI.scr_PauseMenu
                         if (_selectedButton.name.Equals("ExitButton"))
                         {
 <<<<<<<< HEAD:Assets/Scripts/scr_UI/scr_PauseMenu/PauseMenu.cs
+<<<<<<<< HEAD:Assets/Scripts/scr_UI/scr_PauseMenu/PauseMenu.cs
                             CloseMenu();
+========
+                            Application.Quit();
+>>>>>>>> dev:Assets/Scripts/scr_UI/MainMenuButtons.cs
 ========
                             Application.Quit();
 >>>>>>>> dev:Assets/Scripts/scr_UI/MainMenuButtons.cs
@@ -73,6 +90,7 @@ namespace scr_UI.scr_PauseMenu
             if (Input.GetKeyDown(KeyCode.Escape) && _selectedButton != null)
             {
 <<<<<<<< HEAD:Assets/Scripts/scr_UI/scr_PauseMenu/PauseMenu.cs
+<<<<<<<< HEAD:Assets/Scripts/scr_UI/scr_PauseMenu/PauseMenu.cs
                 ResetButtonPositions();
             }
             else if (Input.GetKeyDown(KeyCode.Escape) && _selectedButton == null)
@@ -86,10 +104,18 @@ namespace scr_UI.scr_PauseMenu
             }
             
 >>>>>>>> dev:Assets/Scripts/scr_UI/MainMenuButtons.cs
+========
+                _selectedButton.GetComponent<MainMenuButtons>().enabled = true;
+                _selectedButton = null;
+                ResetButtonPositions();
+            }
+            
+>>>>>>>> dev:Assets/Scripts/scr_UI/MainMenuButtons.cs
         }
 
         private void CloseMenu()
         {
+<<<<<<<< HEAD:Assets/Scripts/scr_UI/scr_PauseMenu/PauseMenu.cs
 <<<<<<<< HEAD:Assets/Scripts/scr_UI/scr_PauseMenu/PauseMenu.cs
             Time.timeScale = 1;
             gameObject.SetActive(false);
@@ -100,6 +126,10 @@ namespace scr_UI.scr_PauseMenu
             btn.image.color = Colors.HighlightedMenuButtonColor;
             _selectedButton.GetComponent<MenuButtonHover>().enabled = false;
             CanvasController.ShowCanvas(canvases[buttons.IndexOf(btn)]);
+========
+            btn.image.color = SelectedColor;
+            _selectedButton.GetComponent<MainMenuButtons>().enabled = false;
+>>>>>>>> dev:Assets/Scripts/scr_UI/MainMenuButtons.cs
 ========
             btn.image.color = SelectedColor;
             _selectedButton.GetComponent<MainMenuButtons>().enabled = false;
