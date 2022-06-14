@@ -1,3 +1,4 @@
+using System;
 using scr_Consumables;
 using scr_Interfaces;
 using scr_UI.scr_PauseMenu;
@@ -27,6 +28,8 @@ namespace scr_Player
 
         [Header("Ground Check")] [SerializeField]
         protected internal float groundCheckRadius = 0.1f;
+
+        protected float InteractRadius = 1f;
 
         [SerializeField] protected internal float offsetRadius = -1f;
         [SerializeField] private LayerMask whatIsGround;
@@ -279,6 +282,11 @@ namespace scr_Player
         protected virtual void CheckCrouchInput()
         {
             _isInputCrouch = Input.GetKey(KeyCode.S);
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            throw new NotImplementedException();
         }
 
         protected virtual void CheckRollInput()
