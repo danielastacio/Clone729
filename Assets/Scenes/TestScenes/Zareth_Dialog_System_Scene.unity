@@ -5184,10 +5184,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b481e7a753d8ca940a8439941a7329ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogStrings:
+  dialogueStrings:
   - {fileID: 11400000, guid: 263ea8bd957222d49a37c18069d1bc99, type: 2}
-  - {fileID: 11400000, guid: 785a258d02997d94b91e6960d1ea79ea, type: 2}
-  - {fileID: 11400000, guid: 2af1b62c42c89cc42a0148ccd823b6fb, type: 2}
   timesInteracted: 0
 --- !u!212 &808817500
 SpriteRenderer:
@@ -5474,7 +5472,7 @@ GameObject:
   - component: {fileID: 1760725977}
   - component: {fileID: 1760725976}
   - component: {fileID: 1760725975}
-  - component: {fileID: 1760725974}
+  - component: {fileID: 1760725979}
   m_Layer: 5
   m_Name: GameCanvas
   m_TagString: Untagged
@@ -5482,20 +5480,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1760725974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1760725973}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38d8b0a9ef2dc2f478ed7bb31d2248fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dialogCanvas: {fileID: 579945773}
-  dialogText: {fileID: 484662235}
 --- !u!114 &1760725975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5578,6 +5562,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1760725979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1760725973}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38d8b0a9ef2dc2f478ed7bb31d2248fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueCanvas: {fileID: 579945773}
+  dialogueText: {fileID: 484662235}
 --- !u!1001 &1791593043
 PrefabInstance:
   m_ObjectHideFlags: 0
