@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20634c00bc71de949b01821975b20752, type: 3}
   m_Name: ThirdDialog
   m_EditorClassIdentifier: 
-  dialogStrings: []
+  dialogStrings:
+  - Please go away.

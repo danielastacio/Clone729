@@ -5187,7 +5187,8 @@ MonoBehaviour:
   dialogStrings:
   - {fileID: 11400000, guid: 263ea8bd957222d49a37c18069d1bc99, type: 2}
   - {fileID: 11400000, guid: 785a258d02997d94b91e6960d1ea79ea, type: 2}
-  timesInteracted: -1
+  - {fileID: 11400000, guid: 2af1b62c42c89cc42a0148ccd823b6fb, type: 2}
+  timesInteracted: 0
 --- !u!212 &808817500
 SpriteRenderer:
   m_ObjectHideFlags: 0

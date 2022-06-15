@@ -1,10 +1,11 @@
 using System;
-using scr_NPCs.scr_NPCDialog;
+using scr_NPCs.scr_NPCDialogue;
+using UnityEngine;
 
 namespace scr_Management.Management_Events
 {
     public static class Actions
     {
-        public static Action<NPCDialog> OnDialogTriggered;
+        public static Action<NPCDialogue> OnDialogueTriggered;
     }
 }

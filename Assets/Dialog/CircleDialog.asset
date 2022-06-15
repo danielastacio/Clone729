@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20634c00bc71de949b01821975b20752, type: 3}
   m_Name: CircleDialog
   m_EditorClassIdentifier: 
-  dialog:
-  - Hello.
+  dialogStrings:
+  - Hello Clone729.
   - Welcome to the game.
-  - Have a pleasant stay.

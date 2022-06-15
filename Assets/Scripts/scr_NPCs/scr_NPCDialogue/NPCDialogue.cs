@@ -1,15 +1,14 @@
-using System;
 using System.Collections.Generic;
-using DialogSOs;
 using scr_Interfaces;
 using scr_Management.Management_Events;
+using ScriptObjs;
 using UnityEngine;
 
-namespace scr_NPCs.scr_NPCDialog
+namespace scr_NPCs.scr_NPCDialogue
 {
-    public class NPCDialog : MonoBehaviour, IInteractable
+    public class NPCDialogue : MonoBehaviour, IInteractable
     {
-        public List<Dialog> dialogStrings = new();
+        public List<Dialogue> dialogueStrings = new();
         public int timesInteracted = 0;
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -19,12 +18,12 @@ namespace scr_NPCs.scr_NPCDialog
 
         public void OnInteract()
         {
-            Actions.OnDialogTriggered(this);
+            Actions.OnDialogueTriggered(this);
         }
 
         public void IncreaseInteractCount()
         {
-            if (timesInteracted < dialogStrings.Count - 1)
+            if (timesInteracted < dialogueStrings.Count - 1)
             {
                 timesInteracted++;
             }
