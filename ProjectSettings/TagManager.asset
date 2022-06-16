@@ -12,6 +12,7 @@ TagManager:
   - Mirror
   - Trigger
   - Menu
+  - NPC
   layers:
   - Default
   - TransparentFX
