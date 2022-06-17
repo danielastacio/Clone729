@@ -1,19 +1,22 @@
-using MetroidvaniaJam.Player;
+using System;
 using scr_Consumables;
 using scr_Interfaces;
+using scr_UI.scr_PauseMenu;
+using System.Collections;
 using UnityEngine;
 
 namespace scr_Player
 {
-    public class PlayerController : MonoBehaviour, IDamageable
+    public class PlayerController : MonoBehaviour, IDamageable, IDataPersistence
     {
-        [Header("Stats")]
-        public float maxHp = 100;
+        public static PlayerController Instance { get; private set; }
+
+        [Header("Stats")] public float maxHp = 100;
         public float currentHp;
 
-        [Header("Speed and Force")]
+        [Header("Speed and Force")] [SerializeField]
+        private float speed;
 
-        [SerializeField] private float speed = 0;
         [SerializeField] protected internal float defaultSpeed = 10;
         [SerializeField] private float crouchSpeed = 5;
         [SerializeField] protected internal float jumpForce = 25;
@@ -23,12 +26,14 @@ namespace scr_Player
         [SerializeField] private float rollTime;
         [SerializeField] private float defaultRollTime = 0.5f;
 
-        [Header("Ground Check")]
+        [Header("Ground Check")] [SerializeField]
+        protected internal float groundCheckRadius = 0.1f;
 
-        [SerializeField] protected internal float groundCheckRadius = 0.1f;
+        protected float InteractRadius = 1f;
+
         [SerializeField] protected internal float offsetRadius = -1f;
         [SerializeField] private LayerMask whatIsGround;
-        private Vector2 groundCheckPos;
+        private Vector2 _groundCheckPos;
 
         private float
             _playerHeight,
@@ -37,54 +42,147 @@ namespace scr_Player
         protected internal bool
             isGrounded,
             isCrouching,
-            isRolling;
+            isRolling,
+            isRunning,
+            isJumping,
+            isMeleeing;
 
         private bool
-            isInputJump,
-            isInputCrouch,
-            isInputRoll,
-            isInputMoveLeft,
-            isInputMoveRight;
+            _isInputJump,
+            _isInputCrouch,
+            _isInputRoll,
+            _isInputMoveLeft,
+            _isInputMoveRight;
 
-        private bool isFacingLeft;
+        private bool _isFacingLeft;
 
         private bool
-            isInsideMech,
-            isReadyForMech,
-            isCollidingWithMech,
-            isPlayerLaunched;
+            _isInsideMech,
+            _isReadyForMech,
+            _isCollidingWithMech,
+            _isPlayerLaunched;
 
-        protected internal Rigidbody2D rb;
-        private MechController mechController;
+        protected Rigidbody2D Rb;
+        private MechController _mechController;
+        private SpriteRenderer _sprite;
+        private Animator _animator;
+
+        [Header("Animation Timeouts")]
+        public float meleeDuration;
+        private WaitForSeconds _meleeTimeout;
+
+        #region MonoBehavior Cycles
+
+        private void Awake()
+        {
+            if (Instance != null)
+            {
+                Destroy(gameObject);
+            }
+
+            Instance = this;
+            SetRigidbodySettings();
+            SetPlayerSettings();            
+        }
+
+        private void Update()
+        {
+            CheckRollInput();
+            CheckCrouchInput();
+            CheckJumpInput();
+            CheckMoveInput();
+            CheckMechInput();
+            CheckPauseInput();
+            CheckAnimationState();
+        }
+
+        private void FixedUpdate()
+        {
+            CheckIfGrounded();
+            Move();
+            Jump();
+            Crouch();
+            Roll();
+            UpdatePlayerPosition();
+            LaunchPlayer();
+        }
+
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawSphere(_groundCheckPos, groundCheckRadius);
+        }
+
+        #endregion
+
+        public void LoadData(GameData data)
+        {
+            currentHp = data.playerCurrentHp;
+            transform.position = data.playerSpawnPoint;
+        }
+
+        public void SaveData(GameData data)
+        {
+            data.playerCurrentHp = currentHp;
+            data.playerSpawnPoint = transform.position;
+        }
         protected virtual void SetRigidbodySettings()
         {
-            rb = GetComponent<Rigidbody2D>();
-            rb.gravityScale = 10;
-            rb.freezeRotation = true;            
+            Rb = GetComponent<Rigidbody2D>();
+            Rb.gravityScale = 10;
+            Rb.freezeRotation = true;
         }
 
         private void SetPlayerSettings()
         {
+            _sprite = GetComponent<SpriteRenderer>();
+            _animator = GetComponent<Animator>();
+
             _playerHeight = transform.localScale.y;
             _crouchHeight = _playerHeight / 2;
+            _isFacingLeft = false;
+            _meleeTimeout = new WaitForSeconds(meleeDuration);
+
+            meleeDuration = 0.3f;
             rollTime = defaultRollTime;
-
             speed = defaultSpeed;
-
-            isFacingLeft = false;
+            currentHp = maxHp;
         }
 
         private void CheckIfGrounded()
         {
-            groundCheckPos = new Vector2(transform.position.x, transform.position.y + offsetRadius);
+            _groundCheckPos = new Vector2(transform.position.x, transform.position.y + offsetRadius);
             var groundCheck =
-                Physics2D.OverlapCircle(groundCheckPos, groundCheckRadius, whatIsGround);
+                Physics2D.OverlapCircle(_groundCheckPos, groundCheckRadius, whatIsGround);
 
             if (groundCheck)
             {
                 isGrounded = true;
+                isJumping = false;
             }
         }
+
+        private void CheckAnimationState()
+        {
+            _animator.SetBool("isRunning", isRunning && !isCrouching);
+            _animator.SetBool("isJumping", isJumping && !isGrounded);
+            _animator.SetBool("isCrouching", isCrouching);
+            _animator.SetBool("isRolling", isRolling);
+
+            if (Input.GetKeyDown(KeyCode.L) && !isMeleeing)
+            {
+                StartCoroutine(MeleeAttack());
+            }
+            
+        } 
+        protected IEnumerator MeleeAttack()
+        {
+            isMeleeing = true;
+            _animator.SetTrigger("Melee");
+            yield return _meleeTimeout;
+            isMeleeing = false;
+        }
+        
         public void TakeDamage(float damage)
         {
             currentHp -= damage;
@@ -100,78 +198,45 @@ namespace scr_Player
                 currentHp = 0;
             }
         }
-        #region MonoBehavior Cycles
-        private void Awake()
-        {
 
-            SetRigidbodySettings();
-            SetPlayerSettings();
-            currentHp = maxHp;
-            
-        }
 
-        private void Update()
-        {
-            CheckRollInput();
-            CheckCrouchInput();
-            CheckJumpInput();
-            CheckMoveInput();
-            CheckMechInput();
-
-        }
-
-        private void FixedUpdate()
-        {
-            CheckIfGrounded();
-            Move();
-            Jump();
-            Crouch();
-            Roll();
-            UpdatePlayerPosition();
-            LaunchPlayer();
-        }
-
-        public void Heard()
-        {
-            print("switched");
-        }
-        private void OnDrawGizmos()
-        {
-            Gizmos.DrawSphere(groundCheckPos, groundCheckRadius);
-        }
-        #endregion
         #region Triggers
-        private void OnTriggerEnter2D(Collider2D collider)
+
+        private void OnTriggerEnter2D(Collider2D col)
         {
-            if (collider.gameObject.CompareTag("Consumable"))
+            if (col.gameObject.CompareTag("Consumable"))
             {
-                CheckConsumablePickup(collider);
+                CheckConsumablePickup(col);
             }
         }
-        protected virtual void OnCollisionEnter2D(Collision2D collision)
+
+        protected virtual void OnCollisionEnter2D(Collision2D col)
         {
-            if (collision.gameObject.GetComponent<MechController>())
+            if (col.gameObject.GetComponent<MechController>())
             {
-                isCollidingWithMech = true;
-                mechController = collision.gameObject.GetComponent<MechController>();
-            }
-            if (!isInsideMech && isCollidingWithMech)
-            {
-                isReadyForMech = true;
+                _isCollidingWithMech = true;
+                _mechController = col.gameObject.GetComponent<MechController>();
             }
 
-        }
-        protected virtual void OnCollisionExit2D(Collision2D collision)
-        {
-            if (!isInsideMech && isCollidingWithMech)
+            if (!_isInsideMech && _isCollidingWithMech)
             {
-                isReadyForMech = false;
-                isCollidingWithMech = false;
+                _isReadyForMech = true;
             }
         }
+
+        protected virtual void OnCollisionExit2D(Collision2D col)
+        {
+            if (!_isInsideMech && _isCollidingWithMech)
+            {
+                _isReadyForMech = false;
+                _isCollidingWithMech = false;
+            }
+        }
+
         #endregion
 
         #region Trigger Checks
+
         private void CheckConsumablePickup(Collider2D consumable)
         {
             if (consumable.GetComponent<HealthConsumable>() && currentHp <= maxHp)
@@ -196,26 +261,32 @@ namespace scr_Player
         #endregion
 
         #region Inputs
+
         protected virtual void CheckMechInput()
-        { 
+        {
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
-                if (isReadyForMech)
+                if (_isReadyForMech)
                 {
                     ActivateMech();
                 }
 
-                else if (isInsideMech)
+                else if (_isInsideMech)
                 {
                     DeactivateMech();
-                    isPlayerLaunched = true;
+                    _isPlayerLaunched = true;
                 }
             }
         }
+
         protected virtual void CheckCrouchInput()
         {
-            isInputCrouch = Input.GetKey(KeyCode.S);
+            _isInputCrouch = Input.GetKey(KeyCode.S);
+        }
 
+        private void OnDrawGizmosSelected()
+        {
+            throw new NotImplementedException();
         }
 
         protected virtual void CheckRollInput()
@@ -224,7 +295,7 @@ namespace scr_Player
             {
                 if (Input.GetKeyDown(KeyCode.K))
                 {
-                    isInputRoll = true;
+                    _isInputRoll = true;
                 }
             }
 
@@ -235,7 +306,7 @@ namespace scr_Player
                 {
                     rollTime = 0;
                     isRolling = false;
-                    isInputRoll = false;
+                    _isInputRoll = false;
                 }
             }
 
@@ -244,70 +315,93 @@ namespace scr_Player
                 rollTime = defaultRollTime;
             }
         }
+
         private void CheckMoveInput()
         {
             if (!isRolling)
             {
-                isInputMoveLeft = Input.GetKey(KeyCode.A);
-                isInputMoveRight = Input.GetKey(KeyCode.D);
+                _isInputMoveLeft = Input.GetKey(KeyCode.A);
+                _isInputMoveRight = Input.GetKey(KeyCode.D);
             }
         }
+
         private void CheckJumpInput()
         {
-            isInputJump = Input.GetKey(KeyCode.Space);
+            _isInputJump = Input.GetKey(KeyCode.Space);
+        }
+
+        private void CheckPauseInput()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                PauseMenuCanvas.Instance.PauseGame();
+            }
         }
 
         #endregion
+
         #region Rigidbody
+
         protected void FreezeRigidBody()
         {
-            rb.constraints = RigidbodyConstraints2D.FreezeAll;
+            Rb.constraints = RigidbodyConstraints2D.FreezeAll;
         }
 
 
         protected void UnFreezeRigidBody()
         {
-            rb.constraints = RigidbodyConstraints2D.None;
-            rb.freezeRotation = true;
+            Rb.constraints = RigidbodyConstraints2D.None;
+            Rb.freezeRotation = true;
         }
+
         #endregion
+
         #region Movement Methods
+
         protected virtual void Move()
         {
-            if (isInputMoveLeft)
+            if (_isInputMoveLeft)
             {
-                isFacingLeft = true;
+                _sprite.flipX = true;
+                _isFacingLeft = true;
+                isRunning = true;
 
-                rb.velocity = new Vector2(-speed, rb.velocity.y);
+                Rb.velocity = new Vector2(-speed, Rb.velocity.y);
             }
 
-            else if (isInputMoveRight)
+            else if (_isInputMoveRight)
             {
-                isFacingLeft = false;
+                _sprite.flipX = false;
+                _isFacingLeft = false;
+                isRunning = true;
 
-                rb.velocity = new Vector2(speed, rb.velocity.y);
+                Rb.velocity = new Vector2(speed, Rb.velocity.y);
             }
 
             else
             {
-                rb.velocity = new Vector2(0, rb.velocity.y);
+                isRunning = false;
+                Rb.velocity = new Vector2(0, Rb.velocity.y);
             }
         }
+
         private void Jump()
         {
-            if (isInputJump && isGrounded && !isRolling)
+            if (_isInputJump && isGrounded && !isRolling)
             {
                 isGrounded = false;
-                rb.velocity = Vector2.up * jumpForce;
+                isJumping = true;
+                Rb.velocity = Vector2.up * jumpForce;
             }
-            else if (rb.velocity.y < 0 && !isInputJump)
+            else if (Rb.velocity.y < 0 && !_isInputJump)
             {
-                rb.velocity += (fallMultiplier - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
+                Rb.velocity += (fallMultiplier - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
             }
         }
+
         private void Crouch()
         {
-            bool canCrouch = isInputCrouch && isGrounded && !isRolling;
+            bool canCrouch = _isInputCrouch && isGrounded && !isRolling;
 
             if (canCrouch)
             {
@@ -317,6 +411,7 @@ namespace scr_Player
                 {
                     transform.localScale = new Vector2(transform.localScale.x, _crouchHeight);
                 }
+
                 speed = crouchSpeed;
             }
             else
@@ -327,10 +422,11 @@ namespace scr_Player
                 isCrouching = false;
             }
         }
+
         private void Roll()
         {
-            Vector2 rollDirection = isFacingLeft ? Vector2.left : Vector2.right;
-            bool canRoll = isInputRoll && isGrounded && !isCrouching;
+            Vector2 rollDirection = _isFacingLeft ? Vector2.left : Vector2.right;
+            bool canRoll = _isInputRoll && isGrounded && !isCrouching;
 
             if (canRoll)
             {
@@ -338,7 +434,7 @@ namespace scr_Player
 
                 if (isRolling)
                 {
-                    rb.AddForce(rollDirection * rollForce, ForceMode2D.Impulse);
+                    Rb.AddForce(rollDirection * rollForce, ForceMode2D.Impulse);
                     transform.localScale = new Vector2(transform.localScale.x, _crouchHeight);
                 }
             }
@@ -348,51 +444,53 @@ namespace scr_Player
                 transform.localScale = new Vector2(transform.localScale.x, _playerHeight);
             }
         }
+
+        public void LaunchPlayer()
+        {
+            if (_isPlayerLaunched)
+            {
+                Rb.AddForce(Vector2.up * launchForce, ForceMode2D.Impulse);
+
+                _isPlayerLaunched = false;
+            }
+        }
+
         #endregion
+
         #region Mech Methods
+
         private void ActivateMech()
         {
-            isReadyForMech = false;
-            isInsideMech = true;
+            _isReadyForMech = false;
+            _isInsideMech = true;
 
-            rb.GetComponent<CapsuleCollider2D>().isTrigger = true;
+            Rb.GetComponent<CapsuleCollider2D>().isTrigger = true;
 
-            mechController.enabled = true;
-            mechController.rb.constraints = RigidbodyConstraints2D.None;
-            mechController.rb.freezeRotation = true;
+            _mechController.enabled = true;
+            _mechController.Rb.constraints = RigidbodyConstraints2D.None;
+            _mechController.Rb.freezeRotation = true;
         }
 
         private void DeactivateMech()
         {
-            mechController.rb.constraints = RigidbodyConstraints2D.None;
-            mechController.rb.constraints = RigidbodyConstraints2D.FreezePositionX;
-            mechController.rb.freezeRotation = true;
+            _mechController.Rb.constraints = RigidbodyConstraints2D.None;
+            _mechController.Rb.constraints = RigidbodyConstraints2D.FreezePositionX;
+            _mechController.Rb.freezeRotation = true;
 
-            rb.GetComponent<CapsuleCollider2D>().isTrigger = false;
-            mechController.enabled = false;
-            isReadyForMech = false;
-            isInsideMech = false;
+            Rb.GetComponent<CapsuleCollider2D>().isTrigger = false;
+            _mechController.enabled = false;
+            _isReadyForMech = false;
+            _isInsideMech = false;
         }
 
         private void UpdatePlayerPosition()
         {
-            if (isInsideMech)
+            if (_isInsideMech)
             {
-                transform.position = mechController.transform.position;
-                rb.Sleep();
+                transform.position = _mechController.transform.position;
+                Rb.Sleep();
             }
         }
         #endregion
-
-        public void LaunchPlayer()
-        {
-            if (isPlayerLaunched)
-            {
-                rb.AddForce(Vector2.up * launchForce, ForceMode2D.Impulse);
-
-                isPlayerLaunched = false;
-            }
-        }
-
     }
 }

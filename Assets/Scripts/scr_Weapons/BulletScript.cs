@@ -23,7 +23,7 @@ namespace scr_Weapons
             StartCoroutine(BulletDestroy());
         }
         
-        public void CreateBullet(string targetTag, float damage, float speed)
+        public virtual void CreateBullet(string targetTag, float damage, float speed)
         {
             _target = targetTag;
             bulletDamage = damage;
@@ -36,8 +36,13 @@ namespace scr_Weapons
             {
                 other.gameObject.GetComponent<IDamageable>().TakeDamage(bulletDamage);
             }
-            Destroy(gameObject);
+
+            if (!other.gameObject.CompareTag("Player"))
+            {
+                Destroy(gameObject);
+            }
         }
+        
         private IEnumerator BulletDestroy()
         {
             yield return new WaitForSeconds(2);
