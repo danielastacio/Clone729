@@ -1,18 +1,15 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace scr_Management.Management_Events
+public class GameEventListener : MonoBehaviour
 {
-    public class GameEventListener : MonoBehaviour
-    {
-        public GameEvent gameEvent;
-        public UnityEvent unityEvent;
+    [SerializeField] GameEvent gameEvent;
+    [SerializeField] UnityEvent unityEvent;
+    // Start is called before the first frame update
+    void Awake() => gameEvent.Register(this);
 
-        private void OnEnable() => gameEvent.Register(this);
+    // Update is called once per frame
+    void OnDestroy() => gameEvent.DeRegister(this);
 
-        private void OnDisable() => gameEvent.DeRegister(this);
-
-        public void RaiseEvent() => unityEvent.Invoke();
-    }
+    public void RaiseEvent() => unityEvent.Invoke();
 }

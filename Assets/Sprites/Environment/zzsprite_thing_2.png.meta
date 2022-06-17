@@ -47,7 +47,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 40
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -29052,12 +29052,12 @@ TextureImporter:
       zzsprite_thing_2_249: 765313706
       zzsprite_thing_2_439: -837693148
       zzsprite_thing_2_1156: -1732474796
-      zzsprite_thing_2_739: 141904822
       zzsprite_thing_2_488: 1412144715
       zzsprite_thing_2_43: 1614128426
-      zzsprite_thing_2_831: -2016859493
+      zzsprite_thing_2_739: 141904822
       zzsprite_thing_2_300: -135858412
       zzsprite_thing_2_425: -621972212
+      zzsprite_thing_2_831: -2016859493
       zzsprite_thing_2_819: 1594054055
       zzsprite_thing_2_308: 2083644111
       zzsprite_thing_2_83: -1757918074
@@ -29081,16 +29081,16 @@ TextureImporter:
       zzsprite_thing_2_1205: 1077752428
       zzsprite_thing_2_1204: 1438715936
       zzsprite_thing_2_448: 1096416928
-      zzsprite_thing_2_1121: 2118409790
-      zzsprite_thing_2_719: 2075498390
-      zzsprite_thing_2_1271: 1301779581
-      zzsprite_thing_2_642: 1117695221
       zzsprite_thing_2_999: 2003036276
+      zzsprite_thing_2_719: 2075498390
+      zzsprite_thing_2_1121: 2118409790
+      zzsprite_thing_2_642: 1117695221
+      zzsprite_thing_2_1271: 1301779581
       zzsprite_thing_2_346: 590161586
       zzsprite_thing_2_1305: 1436462848
       zzsprite_thing_2_996: 1494386222
-      zzsprite_thing_2_1040: 317913498
       zzsprite_thing_2_602: 1590421212
+      zzsprite_thing_2_1040: 317913498
       zzsprite_thing_2_484: 2003885700
       zzsprite_thing_2_1018: 2044333227
       zzsprite_thing_2_1140: -412979226
@@ -29207,16 +29207,16 @@ TextureImporter:
       zzsprite_thing_2_752: -1329170742
       zzsprite_thing_2_564: -1441696115
       zzsprite_thing_2_607: 1458157985
-      zzsprite_thing_2_1265: -95397370
       zzsprite_thing_2_657: -1166577303
+      zzsprite_thing_2_1265: -95397370
       zzsprite_thing_2_315: -2000649952
-      zzsprite_thing_2_505: 1095641851
       zzsprite_thing_2_498: -394295041
+      zzsprite_thing_2_505: 1095641851
+      zzsprite_thing_2_950: -1419935288
       zzsprite_thing_2_406: 521602193
       zzsprite_thing_2_107: 2143023468
       zzsprite_thing_2_677: 1572770506
       zzsprite_thing_2_1158: -817287001
-      zzsprite_thing_2_950: -1419935288
       zzsprite_thing_2_348: 586415163
       zzsprite_thing_2_138: 1077006906
       zzsprite_thing_2_1201: -1324215410
@@ -29313,8 +29313,8 @@ TextureImporter:
       zzsprite_thing_2_89: -648571921
       zzsprite_thing_2_122: 426751636
       zzsprite_thing_2_230: -1676959855
-      zzsprite_thing_2_251: 698070782
       zzsprite_thing_2_280: 1138284001
+      zzsprite_thing_2_251: 698070782
       zzsprite_thing_2_757: -1708052260
       zzsprite_thing_2_1145: -640937093
       zzsprite_thing_2_357: -1515251495
@@ -29332,8 +29332,8 @@ TextureImporter:
       zzsprite_thing_2_954: 1619290014
       zzsprite_thing_2_1369: -352367458
       zzsprite_thing_2_560: 440895060
-      zzsprite_thing_2_1019: 1401490392
       zzsprite_thing_2_961: 2131963535
+      zzsprite_thing_2_1019: 1401490392
       zzsprite_thing_2_991: -969031128
       zzsprite_thing_2_261: 935579062
       zzsprite_thing_2_942: -2061955123
@@ -29375,8 +29375,8 @@ TextureImporter:
       zzsprite_thing_2_959: 665254405
       zzsprite_thing_2_764: -1551623393
       zzsprite_thing_2_164: -646853182
-      zzsprite_thing_2_340: -1929609576
       zzsprite_thing_2_332: -1172856325
+      zzsprite_thing_2_340: -1929609576
       zzsprite_thing_2_1078: 1751574549
       zzsprite_thing_2_925: 887384229
       zzsprite_thing_2_30: 1854315280
@@ -29401,8 +29401,8 @@ TextureImporter:
       zzsprite_thing_2_1203: 882684763
       zzsprite_thing_2_1351: 1702033049
       zzsprite_thing_2_561: -2111837893
-      zzsprite_thing_2_1247: 1487426034
       zzsprite_thing_2_1059: 479545444
+      zzsprite_thing_2_1247: 1487426034
       zzsprite_thing_2_1129: 360892834
       zzsprite_thing_2_751: -1369615600
       zzsprite_thing_2_361: -1177207028
@@ -29623,11 +29623,11 @@ TextureImporter:
       zzsprite_thing_2_123: -259655912
       zzsprite_thing_2_374: -732809263
       zzsprite_thing_2_184: 1440348645
-      zzsprite_thing_2_667: 329126934
-      zzsprite_thing_2_451: -1635353434
-      zzsprite_thing_2_399: -1681394382
       zzsprite_thing_2_141: -1150704642
       zzsprite_thing_2_173: -361779037
+      zzsprite_thing_2_399: -1681394382
+      zzsprite_thing_2_451: -1635353434
+      zzsprite_thing_2_667: 329126934
       zzsprite_thing_2_1163: 1970782568
       zzsprite_thing_2_242: -63544369
       zzsprite_thing_2_1087: 40540673
@@ -29762,8 +29762,8 @@ TextureImporter:
       zzsprite_thing_2_791: 2092049555
       zzsprite_thing_2_1063: 208177244
       zzsprite_thing_2_334: 1206714931
-      zzsprite_thing_2_805: -431696051
       zzsprite_thing_2_160: 1765250885
+      zzsprite_thing_2_805: -431696051
       zzsprite_thing_2_973: -677597921
       zzsprite_thing_2_1251: 817445994
       zzsprite_thing_2_400: 1048459731
@@ -29966,8 +29966,8 @@ TextureImporter:
       zzsprite_thing_2_911: -621182682
       zzsprite_thing_2_828: 575901398
       zzsprite_thing_2_537: -546576145
-      zzsprite_thing_2_1359: -241629172
       zzsprite_thing_2_1115: -1700887141
+      zzsprite_thing_2_1359: -241629172
       zzsprite_thing_2_1355: -2107469273
       zzsprite_thing_2_788: 1647922967
       zzsprite_thing_2_373: 783684297
@@ -30033,9 +30033,9 @@ TextureImporter:
       zzsprite_thing_2_212: -1380676934
       zzsprite_thing_2_1118: -1330290063
       zzsprite_thing_2_711: -904960664
-      zzsprite_thing_2_1027: 1390635923
       zzsprite_thing_2_232: 1269828354
       zzsprite_thing_2_894: -682026524
+      zzsprite_thing_2_1027: 1390635923
       zzsprite_thing_2_990: 54866306
       zzsprite_thing_2_470: -34638347
       zzsprite_thing_2_1239: -745236639
@@ -30181,8 +30181,8 @@ TextureImporter:
       zzsprite_thing_2_199: 1051645558
       zzsprite_thing_2_1253: 1806360526
       zzsprite_thing_2_219: 1245507085
-      zzsprite_thing_2_1274: 433514555
       zzsprite_thing_2_758: 469505074
+      zzsprite_thing_2_1274: 433514555
       zzsprite_thing_2_273: -10543858
       zzsprite_thing_2_455: 1499173608
       zzsprite_thing_2_1062: -1832954622
@@ -30212,9 +30212,9 @@ TextureImporter:
       zzsprite_thing_2_354: -1051594408
       zzsprite_thing_2_975: -851687376
       zzsprite_thing_2_235: -1575190602
+      zzsprite_thing_2_691: 1666301543
       zzsprite_thing_2_982: -1678759302
       zzsprite_thing_2_1262: 1791652434
-      zzsprite_thing_2_691: 1666301543
       zzsprite_thing_2_1176: 633940362
       zzsprite_thing_2_446: 1105848440
       zzsprite_thing_2_63: 983656858

@@ -9,10 +9,9 @@ TagManager:
   - Enemy
   - Ground
   - Conductor
-  - Mirror
-  - Trigger
-  - Menu
   - NPC
+  - Menu
+  - Door
   layers:
   - Default
   - TransparentFX
@@ -25,7 +24,7 @@ TagManager:
   - Player
   - Conductor
   - Enemy
-  - MirrorTrigger
+  - 
   - 
   - 
   - 
@@ -51,11 +50,11 @@ TagManager:
     uniqueID: 0
     locked: 0
   - name: Background
-    uniqueID: 2119249749
+    uniqueID: 187637689
     locked: 0
-  - name: Player
-    uniqueID: 2828192017
+  - name: Base
+    uniqueID: 3911796053
     locked: 0
   - name: Foreground
-    uniqueID: 3911342201
+    uniqueID: 817642821
     locked: 0
