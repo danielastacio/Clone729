@@ -284,11 +284,6 @@ namespace scr_Player
             _isInputCrouch = Input.GetKey(KeyCode.S);
         }
 
-        private void OnDrawGizmosSelected()
-        {
-            throw new NotImplementedException();
-        }
-
         protected virtual void CheckRollInput()
         {
             if (!isCrouching)
