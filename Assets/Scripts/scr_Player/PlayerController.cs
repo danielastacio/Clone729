@@ -1,16 +1,15 @@
-using System;
 using scr_Consumables;
 using scr_Interfaces;
-using scr_UI.scr_PauseMenu;
+using scr_UI;
 using System.Collections;
 using UnityEngine;
 
 namespace scr_Player
 {
-    public class PlayerController : MonoBehaviour, IDamageable, IDataPersistence
+    public class PlayerController : MonoBehaviour, IDamageable
     {
         public static PlayerController Instance { get; private set; }
-
+    
         [Header("Stats")] public float maxHp = 100;
         public float currentHp;
 
@@ -29,20 +28,14 @@ namespace scr_Player
         [Header("Ground Check")] [SerializeField]
         protected internal float groundCheckRadius = 0.1f;
 
-        protected float InteractRadius = 1f;
-
         [SerializeField] protected internal float offsetRadius = -1f;
         [SerializeField] private LayerMask whatIsGround;
         private Vector2 _groundCheckPos;
 
-        private float
-            _playerHeight,
-            _crouchHeight;
-
         protected internal bool
             isGrounded,
             isCrouching,
-            isRolling,
+            isSliding,
             isRunning,
             isJumping,
             isMeleeing;
@@ -102,12 +95,10 @@ namespace scr_Player
             Move();
             Jump();
             Crouch();
-            Roll();
+            Slide();
             UpdatePlayerPosition();
             LaunchPlayer();
         }
-
-
         private void OnDrawGizmos()
         {
             Gizmos.DrawSphere(_groundCheckPos, groundCheckRadius);
@@ -115,17 +106,7 @@ namespace scr_Player
 
         #endregion
 
-        public void LoadData(GameData data)
-        {
-            currentHp = data.playerCurrentHp;
-            transform.position = data.playerSpawnPoint;
-        }
 
-        public void SaveData(GameData data)
-        {
-            data.playerCurrentHp = currentHp;
-            data.playerSpawnPoint = transform.position;
-        }
         protected virtual void SetRigidbodySettings()
         {
             Rb = GetComponent<Rigidbody2D>();
@@ -138,11 +119,12 @@ namespace scr_Player
             _sprite = GetComponent<SpriteRenderer>();
             _animator = GetComponent<Animator>();
 
-            _playerHeight = transform.localScale.y;
-            _crouchHeight = _playerHeight / 2;
+            //_playerHeight = transform.localScale.y;
+            //_crouchHeight = _playerHeight / 2;
+
             _isFacingLeft = false;
             _meleeTimeout = new WaitForSeconds(meleeDuration);
-
+            
             meleeDuration = 0.3f;
             rollTime = defaultRollTime;
             speed = defaultSpeed;
@@ -167,7 +149,7 @@ namespace scr_Player
             _animator.SetBool("isRunning", isRunning && !isCrouching);
             _animator.SetBool("isJumping", isJumping && !isGrounded);
             _animator.SetBool("isCrouching", isCrouching);
-            _animator.SetBool("isRolling", isRolling);
+            _animator.SetBool("isSliding", isSliding);
 
             if (Input.GetKeyDown(KeyCode.L) && !isMeleeing)
             {
@@ -284,11 +266,6 @@ namespace scr_Player
             _isInputCrouch = Input.GetKey(KeyCode.S);
         }
 
-        private void OnDrawGizmosSelected()
-        {
-            throw new NotImplementedException();
-        }
-
         protected virtual void CheckRollInput()
         {
             if (!isCrouching)
@@ -299,13 +276,13 @@ namespace scr_Player
                 }
             }
 
-            if (isRolling)
+            if (isSliding)
             {
                 rollTime -= Time.deltaTime;
                 if (rollTime <= 0)
                 {
                     rollTime = 0;
-                    isRolling = false;
+                    isSliding = false;
                     _isInputRoll = false;
                 }
             }
@@ -318,7 +295,7 @@ namespace scr_Player
 
         private void CheckMoveInput()
         {
-            if (!isRolling)
+            if (!isSliding)
             {
                 _isInputMoveLeft = Input.GetKey(KeyCode.A);
                 _isInputMoveRight = Input.GetKey(KeyCode.D);
@@ -332,9 +309,9 @@ namespace scr_Player
 
         private void CheckPauseInput()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) && !Menu.Paused)
             {
-                PauseMenuCanvas.Instance.PauseGame();
+                GameObject.FindGameObjectWithTag("Menu").GetComponent<Menu>().PauseGame();
             }
         }
 
@@ -387,7 +364,7 @@ namespace scr_Player
 
         private void Jump()
         {
-            if (_isInputJump && isGrounded && !isRolling)
+            if (_isInputJump && isGrounded && !isSliding)
             {
                 isGrounded = false;
                 isJumping = true;
@@ -401,50 +378,36 @@ namespace scr_Player
 
         private void Crouch()
         {
-            bool canCrouch = _isInputCrouch && isGrounded && !isRolling;
+            bool canCrouch = _isInputCrouch && isGrounded && !isSliding;
 
             if (canCrouch)
             {
                 isCrouching = true;
-
-                if (transform.localScale.y != _crouchHeight)
-                {
-                    transform.localScale = new Vector2(transform.localScale.x, _crouchHeight);
-                }
-
                 speed = crouchSpeed;
             }
             else
             {
-                transform.localScale = new Vector2(transform.localScale.x, _playerHeight);
-                speed = defaultSpeed;
-
                 isCrouching = false;
+                speed = defaultSpeed;
             }
         }
 
-        private void Roll()
+        private void Slide()
         {
-            Vector2 rollDirection = _isFacingLeft ? Vector2.left : Vector2.right;
-            bool canRoll = _isInputRoll && isGrounded && !isCrouching;
+            Vector2 slideDirection = _isFacingLeft ? Vector2.left : Vector2.right;
+            bool canSlide = _isInputRoll && isGrounded && !isCrouching;
 
-            if (canRoll)
+            if (canSlide)
             {
-                isRolling = true;
+                isSliding = true;
 
-                if (isRolling)
+                if (isSliding)
                 {
-                    Rb.AddForce(rollDirection * rollForce, ForceMode2D.Impulse);
-                    transform.localScale = new Vector2(transform.localScale.x, _crouchHeight);
+                    Rb.AddForce(slideDirection * rollForce, ForceMode2D.Impulse);
                 }
             }
-
-            else if (!isCrouching)
-            {
-                transform.localScale = new Vector2(transform.localScale.x, _playerHeight);
-            }
         }
-
+        
         public void LaunchPlayer()
         {
             if (_isPlayerLaunched)
@@ -491,6 +454,7 @@ namespace scr_Player
                 Rb.Sleep();
             }
         }
+
         #endregion
     }
 }
