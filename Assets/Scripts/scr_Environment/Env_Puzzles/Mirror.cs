@@ -1,52 +1,49 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using scr_Environment;
 public class Mirror : MonoBehaviour
 {
-    [SerializeField] private bool reflectRight = true;
-    [HideInInspector] public LayerMask whatisMirror;
     [SerializeField] private LineRenderer beam;
-    public void Reflect(Vector3 position)
+    [HideInInspector] public LayerMask whatIsMirror;
+    public Vector2 beamDirection;
+    public bool isReflecting;
+    private Mirror mirror;
+    public enum BeamDirections { left,right,up,down};
+    public BeamDirections currentDirection;
+
+    private void Update()
     {
-        Debug.Log("Reflect Activated!");
-        Vector2 direction = (position - transform.position).normalized;
-        if (Mathf.Round(direction.x) ==  -1)
-        { 
-            Debug.Log("Left");
-            if(reflectRight)
-            ShootBeam(Vector2.down);
-            else
-                ShootBeam(Vector2.up);
+        if(isReflecting)
+        {
+            ShootBeam(beamDirection);
+        }
 
-        }
-        else if (Mathf.Round(direction.x) == 1)
+        else
         {
-            Debug.Log("Right");
-            if (reflectRight)
-                ShootBeam(Vector2.up);
-            else
-                ShootBeam(Vector2.down);
+            DrawBeam(false);
         }
-        else if (Mathf.Round(direction.y) == -1)
-        {
-            Debug.Log("Down");
-            if (reflectRight)
-                ShootBeam(Vector2.right);
-            else
-                ShootBeam(Vector2.left);
-        }
-        else if (Mathf.Round(direction.y) == 1)
-        {
-            Debug.Log("Up");
-            if (reflectRight)
-                ShootBeam(Vector2.left);
-            else
-                ShootBeam(Vector2.right);
-        }
-        
+
+        SetBeamDirection();
     }
-
+    public void SetBeamDirection()
+    {
+        switch (currentDirection)
+        {
+            case BeamDirections.left:
+                beamDirection = Vector2.left;
+                break;
+            case BeamDirections.right:
+                beamDirection = Vector2.right;
+                break;
+            case BeamDirections.up:
+                beamDirection = Vector2.up;
+                break;
+            case BeamDirections.down:
+                beamDirection = Vector2.down;
+                break;
+        }
+    }
     private void DrawBeam(Vector2 startPos, Vector2 endPos)
     {
         beam.SetPosition(0, startPos);
@@ -60,42 +57,46 @@ public class Mirror : MonoBehaviour
         else
             beam.enabled = false;
     }
-    private void ShootBeam(Vector2 position)
+    public void ShootBeam(Vector2 position)
     {
 
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, position, 100,whatisMirror);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, position, 100, whatIsMirror);
         if (hit)
         {
+
             DrawBeam(true);
             DrawBeam(transform.position, hit.point);
 
             Debug.Log("Mirror Name:" + hit.collider.name + hit.collider.transform.position);
-         Debug.DrawRay(transform.position, hit.transform.position - transform.position);
+            Debug.DrawRay(transform.position, hit.transform.position - transform.position);
+
             if (hit.collider.CompareTag("Mirror"))
             {
-                hit.collider.GetComponent<Mirror>().whatisMirror = whatisMirror;
-                hit.collider.GetComponent<Mirror>().Reflect(transform.position);
+                mirror = hit.collider.GetComponent<Mirror>();
+                mirror.whatIsMirror = whatIsMirror;
+                mirror.isReflecting = true;
             }
-            else if (hit.collider.CompareTag("Trigger"))
+            else if (hit.collider.CompareTag("DoorTrigger"))
             {
-                hit.collider.GetComponent<Trigger>().UnlockDoor();
-            }
-
-            else
-            {
-                DrawBeam(false);
+                if (!DoorTrigger.isDoorTriggered)
+                {
+                    hit.collider.GetComponent<DoorTrigger>().OnTriggeredDoor();
+                    DoorTrigger.isDoorTriggered = true;
+                }
             }
         }
 
-
-    }
-
-    public void Toggle()
-    {
-        if (reflectRight)
-            reflectRight = false;
         else
-            reflectRight = true;
+        {
+            isReflecting = false;
+            DrawBeam(false);
+
+            if(mirror != null)
+            {
+                mirror.isReflecting = false;
+            }
+
+        }
     }
 
 }

@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using scr_Environment;
 
 public class Beam : MonoBehaviour
 {
     [SerializeField] private int distance;
-    [SerializeField] private LayerMask whatisMirror;
+    [SerializeField] private LayerMask whatIsMirror;
     [SerializeField] private LineRenderer beam;
     // Update is called once per frame
     void Update()
@@ -15,19 +16,28 @@ public class Beam : MonoBehaviour
 
     private void ShootBeam()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, distance,whatisMirror);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, distance,whatIsMirror);
         if (hit)
         {
             DrawBeam(true);
             DrawBeam(transform.position, hit.point);
             Debug.DrawRay(transform.position,hit.transform.position - transform.position);
-            Debug.Log("Mirror Name:" + hit.collider.name);
 
             if (hit.collider.CompareTag("Mirror"))
             {
-                hit.collider.GetComponent<Mirror>().whatisMirror = whatisMirror;
-                hit.collider.GetComponent<Mirror>().Reflect(transform.position);
-            }            
+                hit.collider.GetComponent<Mirror>().whatIsMirror = whatIsMirror;
+                hit.collider.GetComponent<Mirror>().isReflecting = true;
+            }
+
+            else if (hit.collider.CompareTag("DoorTrigger"))
+            {
+                if (!DoorTrigger.isDoorTriggered)
+                {
+                    hit.collider.GetComponent<DoorTrigger>().OnTriggeredDoor();
+
+                    DoorTrigger.isDoorTriggered = true;
+                }
+            }
         }
         else
         {
