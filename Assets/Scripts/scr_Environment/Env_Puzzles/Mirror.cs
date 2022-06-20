@@ -6,6 +6,7 @@ public class Mirror : MonoBehaviour
 {
     [SerializeField] private bool reflectRight = true;
     [HideInInspector] public LayerMask whatisMirror;
+    [SerializeField] private LineRenderer beam;
     public void Reflect(Vector3 position)
     {
         Debug.Log("Reflect Activated!");
@@ -45,13 +46,30 @@ public class Mirror : MonoBehaviour
         }
         
     }
+
+    private void DrawBeam(Vector2 startPos, Vector2 endPos)
+    {
+        beam.SetPosition(0, startPos);
+        beam.SetPosition(1, endPos);
+    }
+
+    private void DrawBeam(bool isDrawing)
+    {
+        if (isDrawing)
+            beam.enabled = true;
+        else
+            beam.enabled = false;
+    }
     private void ShootBeam(Vector2 position)
     {
 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, position, 100,whatisMirror);
         if (hit)
         {
-         Debug.Log("Mirror Name:" + hit.collider.name + hit.collider.transform.position);
+            DrawBeam(true);
+            DrawBeam(transform.position, hit.point);
+
+            Debug.Log("Mirror Name:" + hit.collider.name + hit.collider.transform.position);
          Debug.DrawRay(transform.position, hit.transform.position - transform.position);
             if (hit.collider.CompareTag("Mirror"))
             {
@@ -60,12 +78,18 @@ public class Mirror : MonoBehaviour
             }
             else if (hit.collider.CompareTag("Trigger"))
             {
-              //  hit.collider.GetComponent<Trigger>().Unlock();
+                hit.collider.GetComponent<Trigger>().UnlockDoor();
+            }
+
+            else
+            {
+                DrawBeam(false);
             }
         }
 
 
     }
+
     public void Toggle()
     {
         if (reflectRight)
