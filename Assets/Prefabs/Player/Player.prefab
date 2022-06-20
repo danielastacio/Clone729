@@ -61,10 +61,14 @@ MonoBehaviour:
   rollTime: 0.5
   defaultRollTime: 0.4
   groundCheckRadius: 0.1
+  interactRange: 15
   offsetRadius: -1.4
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
+  whatIsInteractable:
+    serializedVersion: 2
+    m_Bits: 4096
   meleeDuration: 0.3
 --- !u!212 &258669944946299381
 SpriteRenderer:
@@ -251,6 +255,10 @@ PrefabInstance:
     - target: {fileID: 5907496319101476079, guid: 84d861317f0392446a1a116de5f08a9e, type: 3}
       propertyPath: m_SortingLayer
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5907496319101476079, guid: 84d861317f0392446a1a116de5f08a9e, type: 3}
+      propertyPath: m_SortingOrder
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 5907496319101476079, guid: 84d861317f0392446a1a116de5f08a9e, type: 3}
       propertyPath: m_SortingLayerID

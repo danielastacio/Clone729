@@ -178,6 +178,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4506025200274604558, guid: 89a23ae0e2c9db448a197fb8c3c25598, type: 3}
+      propertyPath: interactRange
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4506025200274604558, guid: 89a23ae0e2c9db448a197fb8c3c25598, type: 3}
+      propertyPath: whatIsInteractable.m_Bits
+      value: 4096
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89a23ae0e2c9db448a197fb8c3c25598, type: 3}
 --- !u!4 &108776446 stripped
@@ -5068,7 +5076,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 808817498}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.8806833, y: -5.577739, z: 0}
+  m_LocalPosition: {x: 1.8806833, y: -6.36, z: 0}
   m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_ConstrainProportionsScale: 1
   m_Children: []
