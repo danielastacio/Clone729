@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Trigger : MonoBehaviour
 {
-    [SerializeField] private GameObject door;
-
-    public void Unlock()
+    //[SerializeField] private GameObject door;
+    public bool doorIsUnlocked;
+    public void UnlockDoor()
     {
+        doorIsUnlocked = true;
        // door.getComponent<>().doorLocked = false;
     }
 }
