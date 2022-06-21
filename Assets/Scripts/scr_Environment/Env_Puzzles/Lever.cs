@@ -4,12 +4,22 @@ using UnityEngine;
 
 public class Lever : MonoBehaviour
 {
-    [SerializeField] private GameObject mirror;
-    [SerializeField] private LayerMask whatisPlayer;
-    private void OnMouseUp()
+    [SerializeField] private Mirror mirror;
+    [SerializeField] private LayerMask whatIsPlayer;
+    private void Update()
     {
-        Collider2D player = Physics2D.OverlapCircle(transform.position, 1, whatisPlayer);
-            if (player.CompareTag("Player"))
-                mirror.GetComponent<Mirror>().Toggle();
+        if(Input.GetKeyDown(KeyCode.E))
+        {
+
+            if (mirror.currentDirection != Mirror.BeamDirections.right)
+            {
+                mirror.currentDirection = Mirror.BeamDirections.right;
+            }
+
+            else 
+            {
+                mirror.currentDirection = Mirror.BeamDirections.left;
+            }
+        }
     }
 }
