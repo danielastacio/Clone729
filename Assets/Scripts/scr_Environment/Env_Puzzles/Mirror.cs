@@ -9,14 +9,8 @@ public class Mirror : MonoBehaviour
     [HideInInspector] public Vector2 beamDirection;
     public bool isReflecting;
     private Mirror mirror;
-
     public enum BeamDirections { left, right, up, down };
     public BeamDirections currentDirection;
-
-    private void Update()
-    {
-        SetBeamDirection();
-    }
     public void SetBeamDirection()
     {
         switch (currentDirection)
@@ -34,12 +28,23 @@ public class Mirror : MonoBehaviour
                 beamDirection = Vector2.down;
                 break;
         }
+    }
 
+    private void FixedUpdate()
+    {
+        SetBeamDirection();
+        DisableOtherMirror();
+    }
+
+
+    public void DisableOtherMirror()
+    {
         if (mirror != null)
         {
             mirror.DrawBeam(false);
         }
     }
+
     private void DrawBeam(Vector2 startPos, Vector2 endPos)
     {
         beam.SetPosition(0, startPos);
@@ -68,7 +73,6 @@ public class Mirror : MonoBehaviour
 
             if (hit.collider.CompareTag("Mirror"))
             {
-                //mirror.previousMirror = this.GetComponent<Mirror>();
                 mirror = hit.collider.GetComponent<Mirror>();
 
                 mirror.whatIsMirror = whatIsMirror;
@@ -88,6 +92,7 @@ public class Mirror : MonoBehaviour
 
         else
         {
+
             DrawBeam(false);
         }
     }

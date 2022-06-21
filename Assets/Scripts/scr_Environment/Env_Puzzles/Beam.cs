@@ -28,8 +28,9 @@ public class Beam : MonoBehaviour
             {
                 mirror = hit.collider.GetComponent<Mirror>();
                 mirror.whatIsMirror = whatIsMirror;
+                mirror.isReflecting = true;
                 mirror.ShootBeam(mirror.beamDirection);
-                
+
             }
 
             else if (hit.collider.CompareTag("DoorTrigger"))
