@@ -55,7 +55,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 53f34bfb328189247b3fb40c4d9770ed, type: 2}
+  - {fileID: 2100000, guid: 1deb1a741cbbaf444b12c7e9b661d65b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -133,7 +133,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 53f34bfb328189247b3fb40c4d9770ed, type: 2}
+  - {fileID: 2100000, guid: 375e5bc53d3ad7f4aaaf58b5efdc2113, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -156,7 +156,7 @@ LineRenderer:
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
-  - {x: 5.03, y: 0, z: 1}
+  - {x: 0, y: 0, z: 1}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -225,6 +225,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reflectRight: 1
-  whatisMirror:
+  whatIsMirror:
     serializedVersion: 2
     m_Bits: 0
+  beam: {fileID: 0}
+  beamDirection: {x: 0, y: 0}
