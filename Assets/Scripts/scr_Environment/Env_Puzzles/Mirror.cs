@@ -6,24 +6,15 @@ public class Mirror : MonoBehaviour
 {
     [SerializeField] private LineRenderer beam;
     [HideInInspector] public LayerMask whatIsMirror;
-    public Vector2 beamDirection;
+    [HideInInspector] public Vector2 beamDirection;
     public bool isReflecting;
     private Mirror mirror;
-    public enum BeamDirections { left,right,up,down};
+
+    public enum BeamDirections { left, right, up, down };
     public BeamDirections currentDirection;
 
     private void Update()
     {
-        if(isReflecting)
-        {
-            ShootBeam(beamDirection);
-        }
-
-        else
-        {
-            DrawBeam(false);
-        }
-
         SetBeamDirection();
     }
     public void SetBeamDirection()
@@ -42,6 +33,11 @@ public class Mirror : MonoBehaviour
             case BeamDirections.down:
                 beamDirection = Vector2.down;
                 break;
+        }
+
+        if (mirror != null)
+        {
+            mirror.DrawBeam(false);
         }
     }
     private void DrawBeam(Vector2 startPos, Vector2 endPos)
@@ -72,9 +68,13 @@ public class Mirror : MonoBehaviour
 
             if (hit.collider.CompareTag("Mirror"))
             {
+                //mirror.previousMirror = this.GetComponent<Mirror>();
                 mirror = hit.collider.GetComponent<Mirror>();
+
                 mirror.whatIsMirror = whatIsMirror;
                 mirror.isReflecting = true;
+                mirror.ShootBeam(mirror.beamDirection);
+
             }
             else if (hit.collider.CompareTag("DoorTrigger"))
             {
@@ -88,14 +88,7 @@ public class Mirror : MonoBehaviour
 
         else
         {
-            isReflecting = false;
             DrawBeam(false);
-
-            if(mirror != null)
-            {
-                mirror.isReflecting = false;
-            }
-
         }
     }
 

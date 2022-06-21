@@ -8,6 +8,7 @@ public class Beam : MonoBehaviour
     [SerializeField] private int distance;
     [SerializeField] private LayerMask whatIsMirror;
     [SerializeField] private LineRenderer beam;
+    private Mirror mirror;
     // Update is called once per frame
     void Update()
     {
@@ -25,8 +26,10 @@ public class Beam : MonoBehaviour
 
             if (hit.collider.CompareTag("Mirror"))
             {
-                hit.collider.GetComponent<Mirror>().whatIsMirror = whatIsMirror;
-                hit.collider.GetComponent<Mirror>().isReflecting = true;
+                mirror = hit.collider.GetComponent<Mirror>();
+                mirror.whatIsMirror = whatIsMirror;
+                mirror.ShootBeam(mirror.beamDirection);
+                
             }
 
             else if (hit.collider.CompareTag("DoorTrigger"))
