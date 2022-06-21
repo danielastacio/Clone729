@@ -10,6 +10,15 @@ namespace scr_Environment
         private Animator _anim;
         private BoxCollider2D _bc2d;
 
+        private void OnEnable()
+        {
+            DoorTrigger.TriggeredDoor += UnlockDoor;
+        }
+
+        private void OnDisable()
+        {
+            DoorTrigger.TriggeredDoor -= UnlockDoor;
+        }
         private void Awake()
         {
             _anim = gameObject.GetComponent<Animator>();
