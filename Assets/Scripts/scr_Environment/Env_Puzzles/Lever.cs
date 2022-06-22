@@ -1,59 +1,55 @@
-using System.Collections;
-using System.Collections.Generic;
 using scr_Interfaces;
+using scr_Management;
 using scr_Management.Management_Events;
 using UnityEngine;
 
-public class Lever : MonoBehaviour, IInteractable
+namespace scr_Environment.Env_Puzzles
 {
-    public enum LeverType
+    public class Lever : MonoBehaviour, IInteractable
     {
-        Mirror,
-        Door
-    }
-
-    public LeverType interaction;
-    [SerializeField] private string interactableId;
+        public TriggerType interaction;
+        [SerializeField] private string interactableId;
     
-    [SerializeField] private Mirror mirror;
-    [SerializeField] private LayerMask whatIsPlayer;
+        [SerializeField] private Mirror mirror;
+        [SerializeField] private LayerMask whatIsPlayer;
 
-    private void LeverInteract()
-    {
-        if (interaction == LeverType.Mirror)
+        private void LeverInteract()
         {
-            FlipMirror();
-        }
-        else if (interaction == LeverType.Door)
-        {
-            ChangeDoorState();
-        }
-    }
-    
-    private void FlipMirror()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            if (mirror.currentDirection != Mirror.BeamDirections.right)
+            if (interaction == TriggerType.Mirror)
             {
-                mirror.currentDirection = Mirror.BeamDirections.right;
+                FlipMirror();
             }
-
-            else
+            else if (interaction == TriggerType.Door)
             {
-                mirror.currentDirection = Mirror.BeamDirections.left;
+                ChangeDoorState();
             }
         }
-    }
+    
+        private void FlipMirror()
+        {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (mirror.currentDirection != Mirror.BeamDirections.right)
+                {
+                    mirror.currentDirection = Mirror.BeamDirections.right;
+                }
 
-    private void ChangeDoorState()
-    {
-        Actions.OnDoorTriggered(interactableId);
-        GetComponent<SpriteRenderer>().color = Color.green;
-    }
+                else
+                {
+                    mirror.currentDirection = Mirror.BeamDirections.left;
+                }
+            }
+        }
 
-    public void OnInteract()
-    {
-        LeverInteract();
+        private void ChangeDoorState()
+        {
+            Actions.OnDoorTriggered(interactableId);
+            GetComponent<SpriteRenderer>().color = Color.green;
+        }
+
+        public void OnInteract()
+        {
+            LeverInteract();
+        }
     }
 }

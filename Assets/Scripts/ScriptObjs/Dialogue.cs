@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using scr_Management;
+using scr_Management.Management_Events;
 using UnityEngine;
 
 namespace ScriptObjs
@@ -6,13 +8,40 @@ namespace ScriptObjs
     [CreateAssetMenu(menuName = "New Dialogue", fileName = "New Dialogue")]
     public class Dialogue : ScriptableObject
     {
+        private enum DialogueType
+        {
+            Bubble,
+            TextBox
+        }
+        
         [System.Serializable]
         public class DialogueString
         {
             public string dialogueText;
             public bool interactable;
+            
+            [Header("Confirm Button")]
             public string confirmText;
+            public TriggerType confirmInteraction;
+            [SerializeField] private string confirmInteractableId;
+            
+            [Header("Decline Button")]
             public string declineText;
+            public TriggerType declineInteraction;
+            [SerializeField] private string declineInteractableId;
+
+            public void OnConfirmInteraction()
+            {
+                if (confirmInteraction == TriggerType.Door)
+                {
+                    Actions.OnDoorTriggered(confirmInteractableId);
+                }
+            }
+
+            public void OnDeclineInteraction()
+            {
+                // Set up declined interactions
+            }
         }
 
         public List<DialogueString> dialogueStrings = new();
