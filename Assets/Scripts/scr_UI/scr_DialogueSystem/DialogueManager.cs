@@ -13,29 +13,147 @@ namespace scr_UI.scr_DialogueSystem
     public class DialogueManager : MonoBehaviour
     {
         [SerializeField] private Canvas dialogueCanvas;
-        [SerializeField] private Canvas interactableDialogueCanvas;
         [SerializeField] private TextMeshProUGUI dialogueText;
         [SerializeField] private Button confirmButton;
         [SerializeField] private TextMeshProUGUI confirmText;
         [SerializeField] private Button declineButton;
         [SerializeField] private TextMeshProUGUI declineText;
 
-        private bool _dialogueEnabled = false;
-        private IEnumerator _activeDialogue = null;
-        private IEnumerator _activePrinter = null;
+        private int currentLine = 0;
         private WaitForSeconds _textSpeed = new(0.05f);
+        private bool _dialogueEnabled;
+        private IEnumerator _activeDialogue;
+        private IEnumerator _activePrinter;
+        private bool _selecting;
 
         private void OnEnable()
         {
-            Actions.OnDialogueTriggered += DisplayDialogue;
+            Actions.OnDialogueTriggered += ActivateDialogueSystem;
             Actions.OnTextSpeedChanged += SetTextSpeed;
         }
 
         private void OnDisable()
         {
-            Actions.OnDialogueTriggered -= DisplayDialogue;
+            Actions.OnDialogueTriggered -= ActivateDialogueSystem;
             Actions.OnTextSpeedChanged -= SetTextSpeed;
         }
+
+        private void ActivateDialogueSystem(CharacterDialogue dialogue)
+        {
+            var currentList = dialogue.characterDialogueStrings[dialogue.timesInteracted];
+            _activeDialogue = CreateNewDialogue(currentList);
+            StartCoroutine(_activeDialogue);
+        }
+        
+        private void SetTextSpeed(float speed)
+        {
+            _textSpeed = new WaitForSeconds(speed);
+        }
+
+        private IEnumerator CreateNewDialogue(Dialogue currentList)
+        {
+            currentLine = 0;
+            _dialogueEnabled = true;
+
+            var currentItem = currentList.dialogueStrings[currentLine];
+            char[] currentSentence = currentItem.dialogueText.ToCharArray();
+
+            CanvasController.ShowCanvas(dialogueCanvas);
+            if (_activePrinter == null)
+            {
+                _activePrinter = PrintDialogue(currentSentence);
+                StartCoroutine(_activePrinter);
+            }
+            
+            while (_dialogueEnabled)
+            {
+                if (currentItem.interactable)
+                {
+                    currentItem = currentList.dialogueStrings[currentLine];
+                    currentSentence = currentItem.dialogueText.ToCharArray();
+                    _activePrinter = PrintDialogue(currentSentence);
+                    yield return StartCoroutine(_activePrinter);
+                    yield return StartCoroutine(ShowButtons(currentItem));
+                }
+                else if (Input.GetKeyDown(KeyCode.E))
+                {
+                    StopCoroutine(_activePrinter);
+                    currentLine++;
+                    
+                    currentItem = currentList.dialogueStrings[currentLine];
+                    currentSentence = currentItem.dialogueText.ToCharArray();
+                    _activePrinter = PrintDialogue(currentSentence);
+                    yield return StartCoroutine(_activePrinter);
+                }
+                else if (currentLine == currentList.dialogueStrings.Count)
+                {
+                    HideDialog();
+                    _activePrinter = null;
+                    yield break;
+                }
+
+                yield return null;
+            }
+        }
+        
+        private IEnumerator PrintDialogue(char[] currentSentence)
+        {
+            dialogueText.text = "";
+            foreach (var chara in currentSentence)
+            {
+                dialogueText.text += chara;
+                yield return _textSpeed;
+            }
+        }
+        
+        private void HideDialog()
+        {
+            _dialogueEnabled = false;
+            _activeDialogue = null;
+            CanvasController.HideCanvas(dialogueCanvas);
+        }
+
+        private IEnumerator ShowButtons(Dialogue.DialogueString currentItem)
+        {
+            _selecting = true;
+            confirmButton.gameObject.SetActive(true); 
+            declineButton.gameObject.SetActive(true);
+            confirmText.text = currentItem.confirmText;
+            declineText.text = currentItem.declineText;
+
+            while (_selecting)
+            {
+                confirmButton.onClick.AddListener(() =>
+                {
+                    Debug.Log("Confirm Pressed!");
+                    currentLine++;
+                    _selecting = false;
+                });
+                declineButton.onClick.AddListener(() =>
+                {
+                    Debug.Log("Decline Pressed");
+                    currentLine++;
+                    _selecting = false;
+                });
+                yield return null;
+            }
+        }
+
+        private void HideButtons()
+        {
+            confirmButton.gameObject.SetActive(false);
+            declineButton.gameObject.SetActive(false);
+        }
+
+        
+        /*
+        [SerializeField] private Canvas interactableDialogueCanvas;
+        
+
+        private bool _dialogueEnabled = false;
+        private IEnumerator _activePrinter = null;
+
+        
 
         private void DisplayDialogue(NPCDialogue dialogueObj)
         {
@@ -71,24 +189,14 @@ namespace scr_UI.scr_DialogueSystem
             }
         }
 
-        private void HideDialog()
-        {
-            _dialogueEnabled = false;
-            _activeDialogue = null;
-            CanvasController.HideCanvas(dialogueCanvas);
-        }
+
 
         private IEnumerator UpdateDialogText(List<string> dialogue, Canvas canvas)
         {
             var currentString = 0;
             char[] currentSentence = dialogue[currentString].ToCharArray();
 
-            CanvasController.ShowCanvas(canvas);
-            if (_activePrinter == null)
-            {
-                _activePrinter = PrintDialogue(currentSentence);
-                StartCoroutine(_activePrinter);
-            }
+            
             
             while (_dialogueEnabled)
             {
@@ -112,7 +220,7 @@ namespace scr_UI.scr_DialogueSystem
         
         private IEnumerator UpdateDialogText(Dialogue dObj, List<string> dialogue, Canvas canvas)
         {
-            var currentString = 0;
+             var currentString = 0;
             char[] currentSentence = dialogue[currentString].ToCharArray();
             confirmText.text = dObj.confirm;
             declineText.text = dObj.decline;
@@ -145,20 +253,6 @@ namespace scr_UI.scr_DialogueSystem
                 yield return null;
             }
         }
-
-        private IEnumerator PrintDialogue(char[] currentSentence)
-        {
-            dialogueText.text = "";
-            foreach (var chara in currentSentence)
-            {
-                dialogueText.text += chara;
-                yield return _textSpeed;
-            }
-        }
-
-        private void SetTextSpeed(float speed)
-        {
-            _textSpeed = new WaitForSeconds(speed);
-        }
+*/
     }
 }

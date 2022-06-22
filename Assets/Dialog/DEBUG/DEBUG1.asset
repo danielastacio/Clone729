@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20634c00bc71de949b01821975b20752, type: 3}
   m_Name: DEBUG1
   m_EditorClassIdentifier: 
-  dialogueStrings: []
-  dialogueType: 0
-  confirm: 
-  decline: 
+  dialogueStrings:
+  - dialogueText: Welcome to the DEBUG level for Clone729.
+    interactable: 0
+    confirmText: 
+    declineText: 
+  - dialogueText: Are you ready to proceed?
+    interactable: 1
+    confirmText: Yes
+    declineText: No
