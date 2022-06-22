@@ -17,11 +17,15 @@ MonoBehaviour:
     interactable: 0
     confirmText: 
     declineText: 
+    confirmInteraction: 0
+    confirmInteractableId: 
+    declineInteraction: 0
+    declineInteractableId: 
   - dialogueText: It is good to see you.
     interactable: 1
     confirmText: Beep
     declineText: Boop
-  - dialogueText: AAAAAAAAAAAAAAAA
-    interactable: 0
-    confirmText: Beep
-    declineText: Boop
+    confirmInteraction: 2
+    confirmInteractableId: DEBUG5
+    declineInteraction: 0
+    declineInteractableId: 
