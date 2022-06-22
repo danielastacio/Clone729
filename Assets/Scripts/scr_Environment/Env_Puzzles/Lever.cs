@@ -17,10 +17,6 @@ public class Lever : MonoBehaviour, IInteractable
     
     [SerializeField] private Mirror mirror;
     [SerializeField] private LayerMask whatIsPlayer;
-    private void Update()
-    {
-        
-    }
 
     private void LeverInteract()
     {
@@ -53,6 +49,7 @@ public class Lever : MonoBehaviour, IInteractable
     private void ChangeDoorState()
     {
         Actions.OnDoorTriggered(interactableId);
+        GetComponent<SpriteRenderer>().color = Color.green;
     }
 
     public void OnInteract()
