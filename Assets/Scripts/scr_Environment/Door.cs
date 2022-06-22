@@ -6,22 +6,20 @@ using UnityEngine;
 
 namespace scr_Environment
 {
-    public class Door : MonoBehaviour, IUnlockable
+    public class Door : MonoBehaviour
     {
         [SerializeField] private string doorID;
-        private bool _doorLocked = true;
+        [SerializeField] private bool doorLocked;
         private Animator _anim;
         private BoxCollider2D _bc2d;
 
         private void OnEnable()
         {
-            DoorTrigger.TriggeredDoor += UnlockDoor;
             Actions.OnDoorTriggered += CheckDoorState;
         }
 
         private void OnDisable()
         {
-            DoorTrigger.TriggeredDoor -= UnlockDoor;
             Actions.OnDoorTriggered -= CheckDoorState;
 
         }
@@ -29,38 +27,29 @@ namespace scr_Environment
         {
             _anim = gameObject.GetComponent<Animator>();
             _bc2d = gameObject.GetComponent<BoxCollider2D>();
+            StartingDoorState();
         }
 
-        /*public void UnlockDoor()
-        { 
-            _anim.SetBool("IsOpen", true);
-            _bc2d.enabled = false;
-        }*/
-
+        private void StartingDoorState()
+        {
+            _anim.SetBool("IsClosed", doorLocked);
+            _bc2d.enabled = doorLocked;
+        }
+        
         private void CheckDoorState(string id)
         {
-            if (doorID.Equals(id) && !_doorLocked)
+            if (doorID.Equals(id))
             {
-                LockDoor();
+                ChangeDoorState();
             }
-            else if (doorID.Equals(id) && _doorLocked)
-            {
-                UnlockDoor();
-            }
+            
         }
 
-        private void LockDoor()
+        private void ChangeDoorState()
         {
-            _anim.SetBool("IsOpen", false);
-            _bc2d.enabled = true;
-            _doorLocked = true;
-        }
-
-        public void UnlockDoor()
-        {
-            _anim.SetBool("IsOpen", true);
-            _bc2d.enabled = false;
-            _doorLocked = false;
+            doorLocked = !doorLocked;
+            _anim.SetBool("IsClosed", doorLocked);
+            _bc2d.enabled = doorLocked;
         }
     }
 }
