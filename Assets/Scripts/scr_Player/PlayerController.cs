@@ -29,11 +29,13 @@ namespace scr_Player
         [Header("Ground Check")] [SerializeField]
         protected internal float groundCheckRadius = 0.1f;
 
-        protected float InteractRadius = 1f;
+        [SerializeField] protected float interactRange = 5f;
 
         [SerializeField] protected internal float offsetRadius = -1f;
         [SerializeField] private LayerMask whatIsGround;
         private Vector2 _groundCheckPos;
+
+        [SerializeField] private LayerMask whatIsInteractable;
 
         private float
             _playerHeight,
@@ -87,6 +89,7 @@ namespace scr_Player
 
         private void Update()
         {
+            CheckInteractInput();
             CheckRollInput();
             CheckCrouchInput();
             CheckJumpInput();
@@ -283,6 +286,20 @@ namespace scr_Player
         {
             _isInputCrouch = Input.GetKey(KeyCode.S);
         }
+
+        private void CheckInteractInput()
+        {
+            var direction = _isFacingLeft ? Vector2.left : Vector2.right;
+            var interactRay = 
+                Physics2D.Raycast(transform.position, direction, interactRange);
+            
+            if (interactRay && Input.GetKeyDown(KeyCode.E))
+            {
+                interactRay.transform.gameObject.GetComponent<IInteractable>().OnInteract();
+            }
+            
+        }
+        
 
         protected virtual void CheckRollInput()
         {

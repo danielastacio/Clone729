@@ -9,6 +9,7 @@ public class Beam : MonoBehaviour
     [SerializeField] private LayerMask whatIsMirror;
     [SerializeField] private LineRenderer beam;
     private Mirror mirror;
+    
     // Update is called once per frame
     void Update()
     {

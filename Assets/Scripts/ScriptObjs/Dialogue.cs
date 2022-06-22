@@ -3,17 +3,18 @@ using UnityEngine;
 
 namespace ScriptObjs
 {
-    public enum DialogueType
-    {
-        Bubble,
-        TextBox,
-        InteractableTextBox
-    }
-    
-    [CreateAssetMenu (menuName = "New Dialogue", fileName = "New Dialogue")]
+    [CreateAssetMenu(menuName = "New Dialogue", fileName = "New Dialogue")]
     public class Dialogue : ScriptableObject
     {
-        public List<string> dialogueStrings = new();
-        public DialogueType dialogueType;
+        [System.Serializable]
+        public class DialogueString
+        {
+            public string dialogueText;
+            public bool interactable;
+            public string confirmText;
+            public string declineText;
+        }
+
+        public List<DialogueString> dialogueStrings = new();
     }
 }

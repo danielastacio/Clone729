@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scripts/ScriptObjs/Dialogue.cs.meta
+guid: f7457ec08002b05449ef2bc941de44d8
+========
 guid: 06896d5017471d542a1adced9ecb85fa
+>>>>>>>> origin/dev:Assets/CircuitBoard.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

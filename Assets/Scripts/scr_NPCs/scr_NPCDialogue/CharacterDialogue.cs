@@ -6,9 +6,9 @@ using UnityEngine;
 
 namespace scr_NPCs.scr_NPCDialogue
 {
-    public class NPCDialogue : MonoBehaviour, IInteractable
+    public class CharacterDialogue : MonoBehaviour, IInteractable
     {
-        public List<Dialogue> dialogueStrings = new();
+        public List<Dialogue> characterDialogueStrings = new();
         public int timesInteracted = 0;
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -23,7 +23,7 @@ namespace scr_NPCs.scr_NPCDialogue
 
         public void IncreaseInteractCount()
         {
-            if (timesInteracted < dialogueStrings.Count - 1)
+            if (timesInteracted < characterDialogueStrings.Count - 1)
             {
                 timesInteracted++;
             }
