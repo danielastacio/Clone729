@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 258669944946299381}
   - component: {fileID: 258669944946299383}
   - component: {fileID: 7679430979406031352}
-  - component: {fileID: 7605783861709292958}
+  - component: {fileID: 1734408172656939488}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -54,14 +54,14 @@ MonoBehaviour:
   speed: 0
   defaultSpeed: 10
   crouchSpeed: 5
-  jumpForce: 35
+  jumpForce: 40
   launchForce: 45
   fallMultiplier: 7
   rollForce: 20
   rollTime: 0.5
   defaultRollTime: 0.4
   groundCheckRadius: 0.1
-  interactRange: 15
+  interactRange: 2.5
   offsetRadius: -1.4
   whatIsGround:
     serializedVersion: 2
@@ -109,7 +109,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1466775279
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -1419292932, guid: 6c517bd3ec0cecb4e89b8e6f61561a1e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -163,8 +163,8 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!61 &7605783861709292958
-BoxCollider2D:
+--- !u!70 &1734408172656939488
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -177,18 +177,8 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.66, y: 1.4266666}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
   m_Size: {x: 0.66, y: 1.4266666}
-  m_EdgeRadius: 0
+  m_Direction: 0
 --- !u!1001 &1350167391891522218
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -198,7 +188,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5907496318065215594, guid: 84d861317f0392446a1a116de5f08a9e, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5907496318065215594, guid: 84d861317f0392446a1a116de5f08a9e, type: 3}
       propertyPath: m_SortingLayerID
@@ -254,7 +244,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5907496319101476079, guid: 84d861317f0392446a1a116de5f08a9e, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5907496319101476079, guid: 84d861317f0392446a1a116de5f08a9e, type: 3}
       propertyPath: m_SortingOrder

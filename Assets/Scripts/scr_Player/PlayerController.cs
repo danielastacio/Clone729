@@ -289,9 +289,10 @@ namespace scr_Player
 
         private void CheckInteractInput()
         {
+            var direction = _isFacingLeft ? Vector2.left : Vector2.right;
             var interactRay = 
-                Physics2D.Raycast(transform.position, Vector2.right);
-
+                Physics2D.Raycast(transform.position, direction, interactRange);
+            
             if (interactRay && Input.GetKeyDown(KeyCode.E))
             {
                 interactRay.transform.gameObject.GetComponent<IInteractable>().OnInteract();
