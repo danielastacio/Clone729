@@ -11,6 +11,7 @@ public class Mirror : MonoBehaviour
     private Mirror mirror;
     public enum BeamDirections { left, right, up, down };
     public BeamDirections currentDirection;
+    
     public void SetBeamDirection()
     {
         switch (currentDirection)

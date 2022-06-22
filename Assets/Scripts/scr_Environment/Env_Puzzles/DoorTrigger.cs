@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using scr_Management.Management_Events;
 using UnityEngine;
 
 public class DoorTrigger: MonoBehaviour 
@@ -12,6 +13,7 @@ public class DoorTrigger: MonoBehaviour
     public void OnTriggeredDoor()
     {
         TriggeredDoor?.Invoke();
+        Actions.OnDoorTriggered(interactableId);
         ChangeMaterial();
     }
 
