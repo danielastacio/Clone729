@@ -14,10 +14,9 @@ namespace scr_UI.scr_DialogueSystem
     {
         [SerializeField] private Canvas dialogueCanvas;
         [SerializeField] private TextMeshProUGUI dialogueText;
-        [SerializeField] private Button confirmButton;
         [SerializeField] private TextMeshProUGUI confirmText;
-        [SerializeField] private Button declineButton;
         [SerializeField] private TextMeshProUGUI declineText;
+        [SerializeField] private List<Button> buttons = new();
 
         private int currentLine = 0;
         private WaitForSeconds _textSpeed = new(0.05f);
@@ -58,6 +57,8 @@ namespace scr_UI.scr_DialogueSystem
             var currentItem = currentList.dialogueStrings[currentLine];
             char[] currentSentence = currentItem.dialogueText.ToCharArray();
 
+            IEnumerator showButtons;
+
             CanvasController.ShowCanvas(dialogueCanvas);
             if (_activePrinter == null)
             {
@@ -67,31 +68,38 @@ namespace scr_UI.scr_DialogueSystem
             
             while (_dialogueEnabled)
             {
+                Debug.Log(currentLine);
                 if (currentItem.interactable)
                 {
-                    currentItem = currentList.dialogueStrings[currentLine];
-                    currentSentence = currentItem.dialogueText.ToCharArray();
-                    _activePrinter = PrintDialogue(currentSentence);
-                    yield return StartCoroutine(_activePrinter);
-                    yield return StartCoroutine(ShowButtons(currentItem));
+                    if (currentLine == currentList.dialogueStrings.Count)
+                    {
+                        HideDialog();
+                        yield break;
+                    }
+                    showButtons = ShowButtons(currentItem);
+                    yield return StartCoroutine(showButtons);
+                    currentLine++;
+                    _activePrinter = null;
                 }
                 else if (Input.GetKeyDown(KeyCode.E))
                 {
                     StopCoroutine(_activePrinter);
                     currentLine++;
-                    
+                    _activePrinter = null;
+                    if (currentLine == currentList.dialogueStrings.Count)
+                    {
+                        HideDialog();
+                        yield break;
+                    }
+                }
+
+                if (_activePrinter == null)
+                {
                     currentItem = currentList.dialogueStrings[currentLine];
                     currentSentence = currentItem.dialogueText.ToCharArray();
                     _activePrinter = PrintDialogue(currentSentence);
-                    yield return StartCoroutine(_activePrinter);
-                }
-                else if (currentLine == currentList.dialogueStrings.Count)
-                {
-                    HideDialog();
-                    _activePrinter = null;
-                    yield break;
-                }
-
+                    StartCoroutine(_activePrinter);
+                }       
                 yield return null;
             }
         }
@@ -110,39 +118,47 @@ namespace scr_UI.scr_DialogueSystem
         {
             _dialogueEnabled = false;
             _activeDialogue = null;
+            _activePrinter = null;
             CanvasController.HideCanvas(dialogueCanvas);
         }
 
         private IEnumerator ShowButtons(Dialogue.DialogueString currentItem)
         {
-            _selecting = true;
-            confirmButton.gameObject.SetActive(true); 
-            declineButton.gameObject.SetActive(true);
+            Button selectedButton = null;
+            buttons[0].gameObject.SetActive(true); 
+            buttons[1].gameObject.SetActive(true);
             confirmText.text = currentItem.confirmText;
             declineText.text = currentItem.declineText;
 
-            while (_selecting)
+            while (selectedButton == null)
             {
-                confirmButton.onClick.AddListener(() =>
+                foreach (var button in buttons)   
                 {
-                    Debug.Log("Confirm Pressed!");
-                    currentLine++;
-                    _selecting = false;
-                });
-                declineButton.onClick.AddListener(() =>
-                {
-                    Debug.Log("Decline Pressed");
-                    currentLine++;
-                    _selecting = false;
-                });
+                    button.onClick.AddListener(() =>
+                    {
+                        selectedButton = button;
+                        if (button == buttons[0])
+                        {
+                            Debug.Log("Confirm Pressed!");
+                        }
+                        else if (button == buttons[1])
+                        {
+                            Debug.Log("Decline Pressed");
+                        }
+                    });
+                }
+
                 yield return null;
             }
+            HideButtons();
         }
 
         private void HideButtons()
         {
-            confirmButton.gameObject.SetActive(false);
-            declineButton.gameObject.SetActive(false);
+            foreach (var button in buttons)
+            {
+                button.gameObject.SetActive(false);
+            }
         }
 
         
