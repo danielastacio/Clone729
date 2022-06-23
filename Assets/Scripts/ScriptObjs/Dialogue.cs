@@ -8,12 +8,6 @@ namespace ScriptObjs
     [CreateAssetMenu(menuName = "New Dialogue", fileName = "New Dialogue")]
     public class Dialogue : ScriptableObject
     {
-        private enum DialogueType
-        {
-            Bubble,
-            TextBox
-        }
-        
         [System.Serializable]
         public class DialogueString
         {
@@ -44,6 +38,13 @@ namespace ScriptObjs
             }
         }
 
+        public enum DialogueType
+        {
+            Bubble,
+            TextBox
+        }
+        
+        public DialogueType dialogueType;
         public List<DialogueString> dialogueStrings = new();
     }
 }

@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using scr_Management.Management_Events;
 using scr_NPCs.scr_NPCDialogue;
+using scr_Player;
 using scr_UI.scr_Utilities;
 using ScriptObjs;
 using TMPro;
@@ -39,10 +41,18 @@ namespace scr_UI.scr_DialogueSystem
         private void ActivateDialogueSystem(CharacterDialogue dialogue)
         {
             var currentList = dialogue.characterDialogueStrings[dialogue.timesInteracted];
-            _activeDialogue = CreateNewDialogue(currentList);
-            StartCoroutine(_activeDialogue);
+
+
+            if (currentList.dialogueType == Dialogue.DialogueType.TextBox)
+            {
+                // Figure out a better way to do these calls
+                PlayerController.Instance.GetComponent<Rigidbody2D>().Sleep();
+                PlayerController.Instance.enabled = false;
+                _activeDialogue = CreateNewDialogue(currentList);
+                StartCoroutine(_activeDialogue);
+            }
         }
-        
+
         private void SetTextSpeed(float speed)
         {
             _textSpeed = new WaitForSeconds(speed);
@@ -57,22 +67,19 @@ namespace scr_UI.scr_DialogueSystem
             var currentItem = currentList.dialogueStrings[currentLine];
             char[] currentSentence = currentItem.dialogueText.ToCharArray();
 
-            IEnumerator showButtons;
-
             CanvasController.ShowCanvas(dialogueCanvas);
             if (_activePrinter == null)
             {
                 _activePrinter = PrintDialogue(currentSentence);
                 StartCoroutine(_activePrinter);
             }
-            
+
             while (_dialogueEnabled)
             {
                 Debug.Log(currentLine);
                 if (currentItem.interactable)
                 {
-                    showButtons = ShowButtons(currentItem);
-                    yield return StartCoroutine(showButtons);
+                    yield return StartCoroutine(ShowButtons(currentItem));
                     currentLine++;
                     _activePrinter = null;
                 }
@@ -86,25 +93,27 @@ namespace scr_UI.scr_DialogueSystem
                 if (currentLine == currentList.dialogueStrings.Count)
                 {
                     HideDialog();
+                    PlayerController.Instance.enabled = true;
                     yield break;
                 }
-                
+
                 if (_activePrinter == null)
                 {
                     currentItem = currentList.dialogueStrings[currentLine];
                     currentSentence = currentItem.dialogueText.ToCharArray();
                     _activePrinter = PrintDialogue(currentSentence);
                     StartCoroutine(_activePrinter);
-                }       
+                }
                 yield return null;
             }
         }
 
         private IEnumerator CreateNewBubbleDialogue(Dialogue currentList)
         {
-            
+            // TODO: Set this up
+            yield break;
         }
-        
+
         private IEnumerator PrintDialogue(char[] currentSentence)
         {
             dialogueText.text = "";
@@ -114,7 +123,7 @@ namespace scr_UI.scr_DialogueSystem
                 yield return _textSpeed;
             }
         }
-        
+
         private void HideDialog()
         {
             _dialogueEnabled = false;
@@ -126,14 +135,14 @@ namespace scr_UI.scr_DialogueSystem
         private IEnumerator ShowButtons(Dialogue.DialogueString currentItem)
         {
             Button selectedButton = null;
-            buttons[0].gameObject.SetActive(true); 
+            buttons[0].gameObject.SetActive(true);
             buttons[1].gameObject.SetActive(true);
             confirmText.text = currentItem.confirmText;
             declineText.text = currentItem.declineText;
 
             while (selectedButton == null)
             {
-                foreach (var button in buttons)   
+                foreach (var button in buttons)
                 {
                     button.onClick.AddListener(() =>
                     {
