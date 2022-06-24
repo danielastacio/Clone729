@@ -38,11 +38,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Fade: 0.54
-    - _Scale: 2
-    - _Speed: 3.9
-    - _TwirlStrength: 0.05
+    - _Fade: 0.519
+    - _Scale: 5
+    - _Speed: 1.44
+    - _TwirlStrength: 0
     m_Colors:
-    - _Color: {r: 1367.1202, g: 1367.1202, b: 1367.1202, a: 0}
-    - _TwirlCenter: {r: 15.71, g: 37.41, b: 0, a: 0}
+    - _Color: {r: 0, g: 658.5726, b: 766.9961, a: 1}
+    - _TwirlCenter: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
