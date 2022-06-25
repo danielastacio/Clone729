@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace scr_Player
 {
+    // TODO: No deadline- Tidy this script up a little bit. Make it a bit easier to navigate through. 
     public class PlayerController : MonoBehaviour, IDamageable, IDataPersistence
     {
         public static PlayerController Instance { get; private set; }
@@ -28,15 +29,20 @@ namespace scr_Player
 
         [Header("Ground Check")] [SerializeField]
         protected internal float groundCheckRadius = 0.1f;
-
-        [SerializeField] protected float interactRange = 5f;
-
         [SerializeField] protected internal float offsetRadius = -1f;
         [SerializeField] private LayerMask whatIsGround;
         private Vector2 _groundCheckPos;
+        
+        // TODO: Set up ability to jump through certain platforms
+        // Search for JumpThrough()
+        [Header("Ceiling Check")] [SerializeField]
+        protected internal float ceilingCheckRadius = 0.1f;
+        [SerializeField] protected internal float ceilingOffsetRadius = 1f;
+        private Vector2 _ceilingCheckPos;
+        
+        [SerializeField] protected float interactRange = 5f;
 
-        [SerializeField] private LayerMask whatIsInteractable;
-
+        
         private float
             _playerHeight,
             _crouchHeight;
@@ -409,6 +415,14 @@ namespace scr_Player
             {
                 Rb.velocity += (fallMultiplier - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
             }
+        }
+
+        private void JumpThrough()
+        {
+            // Set up parameters for a ceiling check circle. Similar checks to the ground check circle
+            // When jumping through, disable player collider until the ground check circle passes through the platform,
+            // then turn collider back on
+            // Build a drop through method after this.
         }
 
         private void Crouch()
