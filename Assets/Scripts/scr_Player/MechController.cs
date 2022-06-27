@@ -15,8 +15,5 @@ namespace scr_Player
             offsetRadius = base.offsetRadius * 2;
             groundCheckRadius = base.groundCheckRadius * 2;
         }
-
-        protected override void CheckCrouchInput() { }
-        protected override void CheckRollInput() { }
     }
 }
