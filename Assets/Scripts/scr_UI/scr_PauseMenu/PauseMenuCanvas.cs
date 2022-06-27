@@ -8,7 +8,7 @@ namespace scr_UI.scr_PauseMenu
 {
     public class PauseMenuCanvas : MonoBehaviour
     {
-        private static PauseMenuCanvas Instance;
+        private static PauseMenuCanvas _instance;
         
         [SerializeField] private Canvas pauseMenu;
 
@@ -20,12 +20,12 @@ namespace scr_UI.scr_PauseMenu
 
         private void Awake()
         {
-            if (Instance != null)
+            if (_instance != null)
             {
                 Destroy(gameObject);
             }
 
-            Instance = this;
+            _instance = this;
         }
 
         private void PauseGame()

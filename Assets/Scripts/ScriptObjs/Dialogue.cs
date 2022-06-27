@@ -30,6 +30,10 @@ namespace ScriptObjs
                 {
                     Actions.OnDoorTriggered(confirmInteractableId);
                 }
+                else if (confirmInteraction == TriggerType.None)
+                {
+                    Debug.Log("Confirm pressed!");
+                }
             }
 
             public void OnDeclineInteraction()

@@ -1,3 +1,4 @@
+using System;
 using scr_Consumables;
 using scr_Interfaces;
 using scr_UI.scr_PauseMenu;
@@ -43,7 +44,6 @@ namespace scr_Player
         
         [SerializeField] protected float interactRange = 5f;
 
-        private Vector2 _rollDirection;
         private bool _canRoll;
 
         
@@ -88,6 +88,7 @@ namespace scr_Player
             Actions.OnJumpPressed += Jump;
             Actions.OnCrouchPressed += Crouch;
             Actions.OnRollPressed += StartRoll;
+            Actions.OnMeleePressed += StartMeleeAttack;
             Actions.OnInteractPressed += Interact;
         }
 
@@ -99,9 +100,15 @@ namespace scr_Player
             }
 
             Instance = this;
-            Actions.OnControllerChanged(ControllerType.Gameplay);
             SetRigidbodySettings();
             SetPlayerSettings();            
+        }
+
+        private void Start()
+        {
+            // LEAVE THIS FOR DEBUG/BUILDING PURPOSES.
+            // When starting game from Main Menu, controller type will be set to Gameplay
+            Actions.OnControllerChanged(ControllerType.Gameplay);
         }
 
         private void Update()
@@ -181,12 +188,16 @@ namespace scr_Player
             _animator.SetBool("isCrouching", isCrouching);
             _animator.SetBool("isRolling", isRolling);
 
-            if (Input.GetKeyDown(KeyCode.L) && !isMeleeing)
+        }
+
+        private void StartMeleeAttack(bool meleePressed)
+        {
+            if (meleePressed && !isMeleeing)
             {
                 StartCoroutine(MeleeAttack());
             }
-            
-        } 
+        }
+        
         protected IEnumerator MeleeAttack()
         {
             isMeleeing = true;
@@ -292,9 +303,9 @@ namespace scr_Player
             }
         }
 
-        private void Interact(bool pressed)
+        private void Interact(bool interactInput)
         {
-            if (pressed)
+            if (interactInput)
             {
                 var direction = _isFacingLeft ? Vector2.left : Vector2.right;
                 var interactRay =
@@ -400,13 +411,10 @@ namespace scr_Player
 
         private void StartRoll(bool rollInput)
         {
-            _rollDirection = _isFacingLeft ? Vector2.left : Vector2.right;
-            
-
             if (rollInput)
             {
-                isRolling = true;
                 _canRoll = isGrounded && !isCrouching;
+                isRolling = true;
             }
             
             else if (!isCrouching)
@@ -419,6 +427,7 @@ namespace scr_Player
         {
             if (_canRoll)
             {
+                Vector2 rollDirection = _isFacingLeft ? Vector2.left : Vector2.right;
                 if (isRolling)
                 {
                     rollTime -= Time.deltaTime;
@@ -428,7 +437,7 @@ namespace scr_Player
                         isRolling = false;
                     }
 
-                    Rb.AddForce(_rollDirection * rollForce, ForceMode2D.Impulse);
+                    Rb.AddForce(rollDirection * rollForce, ForceMode2D.Impulse);
                     transform.localScale = new Vector2(transform.localScale.x, _crouchHeight);
                 }
                 else

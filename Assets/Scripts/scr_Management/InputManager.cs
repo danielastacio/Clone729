@@ -1,7 +1,6 @@
 ﻿using System;
 using scr_Management.Controllers;
 using scr_Management.Management_Events;
-using UnityEditor;
 using UnityEngine;
 
 namespace scr_Management
@@ -16,7 +15,6 @@ namespace scr_Management
     public class InputManager : MonoBehaviour
     {
         private ControllerType _activeController;
-        private ControllerType _lastController;
 
         private void OnEnable()
         {
@@ -30,7 +28,6 @@ namespace scr_Management
 
         private void SetActiveController(ControllerType t)
         {
-            _lastController = _activeController;
             _activeController = t;
         }
 

@@ -1,6 +1,5 @@
 using System;
 using scr_NPCs.scr_NPCDialogue;
-using UnityEditor;
 
 namespace scr_Management.Management_Events
 {
@@ -26,6 +25,8 @@ namespace scr_Management.Management_Events
         public static Action<bool> OnJumpPressed;
         public static Action<bool> OnCrouchPressed;
         public static Action<bool> OnRollPressed;
+        public static Action<bool> OnShootPressed;
+        public static Action<bool> OnMeleePressed;
         public static Action<bool> OnInteractPressed;
         public static Action OnMenuOpen;
         
@@ -33,5 +34,6 @@ namespace scr_Management.Management_Events
         public static Action OnMenuClose;
         public static Action OnSubmenuOpen;
         public static Action OnSubmenuClose;
+        
     }
 }

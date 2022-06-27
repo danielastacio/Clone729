@@ -12,7 +12,12 @@ namespace scr_Management.Controllers
             ListenForEvent();
             CloseMenu();
         }
-
+        
+        private static void ListenForEvent()
+        {
+            Actions.OnSubmenuOpen += ToggleSubmenuControl;
+        }
+        
         private static void CloseMenu()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -27,11 +32,6 @@ namespace scr_Management.Controllers
                     Actions.OnSubmenuClose();
                 }
             }
-        }
-
-        private static void ListenForEvent()
-        {
-            Actions.OnSubmenuOpen += ToggleSubmenuControl;
         }
 
         private static void ToggleSubmenuControl()

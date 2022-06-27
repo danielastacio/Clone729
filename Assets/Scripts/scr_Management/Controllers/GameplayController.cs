@@ -8,12 +8,24 @@ namespace scr_Management.Controllers
     {
         public static void ActivateController()
         {
+            MovementMethods();
+            CombatMethods();
+            Interact();
+            Menu();
+        }
+
+        private static void MovementMethods()
+        {
             Move();
             Jump();
             Crouch();
             Roll();
-            Interact();
-            Menu();
+        }
+
+        private static void CombatMethods()
+        {
+            Shoot();
+            Melee();
         }
 
         private static void Move()
@@ -34,6 +46,16 @@ namespace scr_Management.Controllers
         private static void Roll()
         {
             Actions.OnRollPressed(Input.GetKeyDown(KeyCode.K));
+        }
+
+        private static void Shoot()
+        {
+            Actions.OnShootPressed(Input.GetMouseButtonUp(0));
+        }
+
+        private static void Melee()
+        {
+            Actions.OnMeleePressed(Input.GetKeyDown(KeyCode.L));
         }
 
         private static void Interact()

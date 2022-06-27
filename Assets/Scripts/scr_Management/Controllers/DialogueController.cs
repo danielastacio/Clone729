@@ -1,10 +1,13 @@
-﻿using scr_Management.Management_Events;
+﻿using System;
+using scr_Management.Management_Events;
 using UnityEngine;
 
 namespace scr_Management.Controllers
 {
     public static class DialogueController
     {
+        public static Action<bool> OnInteractPressed;
+
         public static void ActivateController()
         {
             Interact();
@@ -12,10 +15,7 @@ namespace scr_Management.Controllers
         
         private static void Interact()
         {
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                Actions.OnInteractPressed(true);
-            }
+            OnInteractPressed(Input.GetKeyDown(KeyCode.E));
         }
     }
 }

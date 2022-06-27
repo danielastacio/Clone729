@@ -12,10 +12,10 @@ namespace scr_NPCs.scr_NPCDialogue
         public List<Dialogue> characterDialogueStrings = new();
         public int timesInteracted = 0;
 
-        private void OnTriggerEnter2D(Collider2D other)
+        /*private void OnTriggerEnter2D(Collider2D other)
         {
             OnInteract();
-        }
+        }*/
 
         public void OnInteract()
         {
