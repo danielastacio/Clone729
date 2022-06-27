@@ -4,7 +4,6 @@ using scr_Management;
 using scr_Management.Controllers;
 using scr_Management.Management_Events;
 using scr_NPCs.scr_NPCDialogue;
-using scr_Player;
 using scr_UI.scr_Utilities;
 using ScriptObjs;
 using TMPro;
@@ -68,6 +67,7 @@ namespace scr_UI.scr_DialogueSystem
                 dialogueText.text = "";
                 Actions.OnControllerChanged(ControllerType.Dialogue);
                 SetNextSentence();
+                _dialogueEnabled = true;
                 CanvasController.ShowCanvas(dialogueCanvas);
             }
         }
@@ -81,7 +81,6 @@ namespace scr_UI.scr_DialogueSystem
             }
             _currentItem = _currentList.dialogueStrings[_currentLine];
             _currentSentence = _currentItem.dialogueText.ToCharArray();
-            _dialogueEnabled = true;
         }
 
         private IEnumerator PrintDialogue(char[] currentSentence)
