@@ -15,7 +15,8 @@ namespace scr_Management.Controllers
         
         private static void ListenForEvent()
         {
-            Actions.OnSubmenuOpen += ToggleSubmenuControl;
+            Actions.OnSubmenuOpen += SubmenuControlOn;
+            Actions.OnSubmenuClose += SubmenuControlOff;
         }
         
         private static void CloseMenu()
@@ -28,15 +29,19 @@ namespace scr_Management.Controllers
                 }
                 else if (_inSubmenu)
                 {
-                    _inSubmenu = false;
                     Actions.OnSubmenuClose();
                 }
             }
         }
 
-        private static void ToggleSubmenuControl()
+        private static void SubmenuControlOn()
         {
             _inSubmenu = true;
+        }
+
+        private static void SubmenuControlOff()
+        {
+            _inSubmenu = false;
         }
     }
 }

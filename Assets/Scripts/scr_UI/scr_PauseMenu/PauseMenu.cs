@@ -13,10 +13,11 @@ namespace scr_UI.scr_PauseMenu
     {
         public List<Button> buttons = new();
         public List<Canvas> canvases = new();
-        private readonly List<Vector2> _buttonStartingPositions = new List<Vector2>();
+        private readonly List<Vector2> _buttonStartingPositions = new();
         private Button _selectedButton;
+        private Canvas _selectedCanvas;
 
-        private readonly Vector2 _openMenuPos = new Vector2(394, 350);
+        private readonly Vector2 _openMenuPos = new(394, 350);
         private Vector2 _hiddenPos;
         
         [SerializeField] private Canvas statsCanvas;
@@ -65,7 +66,8 @@ namespace scr_UI.scr_PauseMenu
             Actions.OnSubmenuOpen();
             btn.image.color = Colors.HighlightedMenuButtonColor;
             _selectedButton.GetComponent<MenuButtonHover>().enabled = false;
-            CanvasController.ShowCanvas(canvases[buttons.IndexOf(btn)]);
+            _selectedCanvas = canvases[buttons.IndexOf(btn)];
+            CanvasController.ShowCanvas(_selectedCanvas);
             StartCoroutine(MoveButtons(btn, _openMenuPos));
         }
 
@@ -85,13 +87,17 @@ namespace scr_UI.scr_PauseMenu
         {
             StopAllCoroutines();
             CanvasController.ShowCanvas(statsCanvas);
-            CanvasController.HideCanvas(canvases[buttons.IndexOf(_selectedButton)]);
+            CanvasController.HideCanvas(_selectedCanvas);
             for (int i = 0; i < buttons.Count; i++)
             {
                 buttons[i].image.color = Colors.DefaultMenuButtonColor;
                 StartCoroutine(MoveButtons(buttons[i], _buttonStartingPositions[i]));
             }
-            _selectedButton.GetComponent<MenuButtonHover>().enabled = true;
+
+            if (_selectedButton != null)
+            {
+                _selectedButton.GetComponent<MenuButtonHover>().enabled = true;
+            }
             _selectedButton = null;
         }
 

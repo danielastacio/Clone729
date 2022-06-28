@@ -1,71 +1,74 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MainMenu : MonoBehaviour
+namespace scr_UI.Scr_MainMenu
 {
-    [Header("Menu Navigation")]
-    [SerializeField] private SaveSlotsMenu saveSlotsMenu;
-
-    [Header("Menu Buttons")]
-    [SerializeField] private Button newGameButton;
-    [SerializeField] private Button continueGameButton;
-    [SerializeField] private Button loadGameButton;
-
-    private void Start() 
+    public class MainMenu : MonoBehaviour
     {
-        if (!DataPersistenceManager.instance.HasGameData()) 
+        [Header("Menu Navigation")]
+        [SerializeField] private SaveSlotsMenu saveSlotsMenu;
+
+        [Header("Menu Buttons")]
+        [SerializeField] private Button newGameButton;
+        [SerializeField] private Button continueGameButton;
+        [SerializeField] private Button loadGameButton;
+
+        private void Start() 
         {
-            continueGameButton.interactable = false;
-            loadGameButton.interactable = false;
+            if (!DataPersistenceManager.instance.HasGameData()) 
+            {
+                continueGameButton.interactable = false;
+                loadGameButton.interactable = false;
+            }
         }
-    }
 
-    public void OnNewGameClicked() 
-    {
-        if (DataPersistenceManager.instance.HasGameData())
+        public void OnNewGameClicked() 
         {
-            saveSlotsMenu.ActivateMenu(false);
+            SceneManager.LoadSceneAsync(1);
+
+            /*if (DataPersistenceManager.instance.HasGameData())
+            {
+                saveSlotsMenu.ActivateMenu(false);
+                this.DeactivateMenu();
+            }
+
+            else
+            {
+                DataPersistenceManager.instance.ChangeSelectedProfileId("A");
+                DataPersistenceManager.instance.NewGame();
+                SceneManager.LoadSceneAsync(1);
+            }*/
+        }
+
+        public void OnLoadGameClicked() 
+        {
+            saveSlotsMenu.ActivateMenu(true);
             this.DeactivateMenu();
         }
 
-        else
+        public void OnContinueGameClicked() 
         {
-            DataPersistenceManager.instance.ChangeSelectedProfileId("A");
-            DataPersistenceManager.instance.NewGame();
+            DisableMenuButtons();
+            // load the next scene - which will in turn load the game because of 
+            // OnSceneLoaded() in the DataPersistenceManager
             SceneManager.LoadSceneAsync(1);
         }
-    }
 
-    public void OnLoadGameClicked() 
-    {
-        saveSlotsMenu.ActivateMenu(true);
-        this.DeactivateMenu();
-    }
+        private void DisableMenuButtons() 
+        {
+            newGameButton.interactable = false;
+            continueGameButton.interactable = false;
+        }
 
-    public void OnContinueGameClicked() 
-    {
-        DisableMenuButtons();
-        // load the next scene - which will in turn load the game because of 
-        // OnSceneLoaded() in the DataPersistenceManager
-        SceneManager.LoadSceneAsync(1);
-    }
+        public void ActivateMenu() 
+        {
+            this.gameObject.SetActive(true);
+        }
 
-    private void DisableMenuButtons() 
-    {
-        newGameButton.interactable = false;
-        continueGameButton.interactable = false;
-    }
-
-    public void ActivateMenu() 
-    {
-        this.gameObject.SetActive(true);
-    }
-
-    public void DeactivateMenu() 
-    {
-        this.gameObject.SetActive(false);
+        public void DeactivateMenu() 
+        {
+            this.gameObject.SetActive(false);
+        }
     }
 }

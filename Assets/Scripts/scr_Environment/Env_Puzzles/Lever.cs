@@ -17,7 +17,7 @@ namespace scr_Environment.Env_Puzzles
         {
             if (interaction == TriggerType.Mirror)
             {
-                FlipMirror();
+                //FlipMirror();
             }
             else if (interaction == TriggerType.Door)
             {
@@ -25,7 +25,7 @@ namespace scr_Environment.Env_Puzzles
             }
         }
     
-        private void FlipMirror()
+        /*private void FlipMirror()
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -39,7 +39,7 @@ namespace scr_Environment.Env_Puzzles
                     mirror.currentDirection = Mirror.BeamDirections.left;
                 }
             }
-        }
+        }*/
 
         private void ChangeDoorState()
         {

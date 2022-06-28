@@ -5,19 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/MainScene.unity
-    guid: f3b47e420aeb8304fb2030896d5bbc01
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/MainMenuScene.unity
     guid: 9bf7756b61a0da741907211fd5977e70
-  - enabled: 0
-    path: Assets/Scenes/TestScenes/dastacio_player_controller_scene.unity
-    guid: 5cce4eac063dc66428db486ad6e28a93
   - enabled: 1
-    path: Assets/Scenes/TestScenes/dastacio_mirror_room_test.unity
-    guid: cd4db6bf08af243459feb27e83406416
+    path: Assets/Scenes/_DEBUGLEVEL/DebugScene.unity
+    guid: bc932eb86c839c345aca904e77e3c10e
   m_configObjects: {}
