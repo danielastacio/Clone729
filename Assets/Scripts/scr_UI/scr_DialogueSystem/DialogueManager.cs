@@ -1,9 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using scr_Management;
+using scr_Management.Controllers;
 using scr_Management.Management_Events;
 using scr_NPCs.scr_NPCDialogue;
-using scr_Player;
 using scr_UI.scr_Utilities;
 using ScriptObjs;
 using TMPro;
@@ -22,96 +23,87 @@ namespace scr_UI.scr_DialogueSystem
 
         private WaitForSeconds _textSpeed = new(0.05f);
         private bool _dialogueEnabled;
-        private IEnumerator _activeDialogue;
         private IEnumerator _activePrinter;
         private bool _selecting;
+
+        private int _currentLine = 0;
+        private char[] _currentSentence;
+        private Dialogue _currentList;
+        private Dialogue.DialogueString _currentItem;
+        private Canvas _activeCanvas;
 
         private void OnEnable()
         {
             Actions.OnDialogueTriggered += ActivateDialogueSystem;
+            DialogueController.OnInteractPressed += CallNextLine;
             Actions.OnTextSpeedChanged += SetTextSpeed;
         }
 
         private void OnDisable()
         {
             Actions.OnDialogueTriggered -= ActivateDialogueSystem;
+            DialogueController.OnInteractPressed -= CallNextLine;
             Actions.OnTextSpeedChanged -= SetTextSpeed;
+        }
+
+        private void Update()
+        {
+            if (_activePrinter == null && _dialogueEnabled)
+            {
+                _activePrinter = PrintDialogue(_currentSentence);
+                StartCoroutine(_activePrinter);
+                
+                if (_currentItem.interactable)
+                {
+                    ShowButtons(_currentItem);
+                }
+            }
         }
 
         private void ActivateDialogueSystem(CharacterDialogue dialogue)
         {
-            var currentList = dialogue.characterDialogueStrings[dialogue.timesInteracted];
-
-
-            if (currentList.dialogueType == Dialogue.DialogueType.TextBox)
+            _currentList = dialogue.characterDialogueStrings[dialogue.timesInteracted];
+            
+            if (_currentList.dialogueType == Dialogue.DialogueType.TextBox)
             {
-                // Figure out a better way to do these calls
-                PlayerController.Instance.GetComponent<Rigidbody2D>().Sleep();
-                PlayerController.Instance.enabled = false;
-                _activeDialogue = CreateNewDialogue(currentList);
-                StartCoroutine(_activeDialogue);
+                _activeCanvas = dialogueCanvas;
+                StartDialogue();
+            }
+            else if (_currentList.dialogueType == Dialogue.DialogueType.TextBox)
+            {
+                // Set up bubble dialogue
+                Debug.Log("No bubble dialogue!");
+                HideDialog();
             }
         }
 
-        private void SetTextSpeed(float speed)
+        private void StartDialogue()
         {
-            _textSpeed = new WaitForSeconds(speed);
-        }
-
-        private IEnumerator CreateNewDialogue(Dialogue currentList)
-        {
-            // TODO: CLEAN THIS UP PLS FUTURE TYLER
-            var currentLine = 0;
+            dialogueText.text = "";
+            Actions.OnControllerChanged(ControllerType.Dialogue);
+            SetNextSentence();
             _dialogueEnabled = true;
-
-            var currentItem = currentList.dialogueStrings[currentLine];
-            char[] currentSentence = currentItem.dialogueText.ToCharArray();
-
-            CanvasController.ShowCanvas(dialogueCanvas);
-            if (_activePrinter == null)
-            {
-                _activePrinter = PrintDialogue(currentSentence);
-                StartCoroutine(_activePrinter);
-            }
-
-            while (_dialogueEnabled)
-            {
-                Debug.Log(currentLine);
-                if (currentItem.interactable)
-                {
-                    yield return StartCoroutine(ShowButtons(currentItem));
-                    currentLine++;
-                    _activePrinter = null;
-                }
-                else if (Input.GetKeyDown(KeyCode.E))
-                {
-                    StopCoroutine(_activePrinter);
-                    currentLine++;
-                    _activePrinter = null;
-                }
-
-                if (currentLine == currentList.dialogueStrings.Count)
-                {
-                    HideDialog();
-                    PlayerController.Instance.enabled = true;
-                    yield break;
-                }
-
-                if (_activePrinter == null)
-                {
-                    currentItem = currentList.dialogueStrings[currentLine];
-                    currentSentence = currentItem.dialogueText.ToCharArray();
-                    _activePrinter = PrintDialogue(currentSentence);
-                    StartCoroutine(_activePrinter);
-                }
-                yield return null;
-            }
+            CanvasController.ShowCanvas(_activeCanvas);
         }
 
-        private IEnumerator CreateNewBubbleDialogue(Dialogue currentList)
+        private void HideDialog()
         {
-            // TODO: Set this up
-            yield break;
+            _currentLine = 0;
+            _activePrinter = null;
+            _dialogueEnabled = false;
+            CanvasController.HideCanvas(_activeCanvas);
+            Actions.OnControllerChanged(ControllerType.Gameplay);
+        }
+
+        private void SetNextSentence()
+        {
+            if (_currentLine == _currentList.dialogueStrings.Count)
+            {
+                HideDialog();
+                return;
+            }
+            _currentItem = _currentList.dialogueStrings[_currentLine];
+            _currentSentence = _currentItem.dialogueText.ToCharArray();
         }
 
         private IEnumerator PrintDialogue(char[] currentSentence)
@@ -124,43 +116,58 @@ namespace scr_UI.scr_DialogueSystem
             }
         }
 
-        private void HideDialog()
+        private void CallNextLine(bool interactInput)
         {
-            _dialogueEnabled = false;
-            _activeDialogue = null;
-            _activePrinter = null;
-            CanvasController.HideCanvas(dialogueCanvas);
+            // This method is for calling the next line with E
+            if (interactInput && !_currentItem.interactable)
+            {
+                CallNextLine();
+            }
         }
 
-        private IEnumerator ShowButtons(Dialogue.DialogueString currentItem)
+        private void CallNextLine()
         {
-            Button selectedButton = null;
+            // This method is to be called directly from Confirm/Decline button presses
+            if (_activePrinter != null)
+            {
+                StopCoroutine(_activePrinter);
+            }
+            _currentLine++;
+            SetNextSentence();
+            _activePrinter = null;
+        }
+
+        private void SetTextSpeed(float speed)
+        {
+            _textSpeed = new WaitForSeconds(speed);
+        }
+
+        private void ShowButtons(Dialogue.DialogueString currentItem)
+        {
             buttons[0].gameObject.SetActive(true);
             buttons[1].gameObject.SetActive(true);
             confirmText.text = currentItem.confirmText;
             declineText.text = currentItem.declineText;
 
-            while (selectedButton == null)
+            foreach (var button in buttons)
             {
-                foreach (var button in buttons)
+                button.onClick.AddListener(() =>
                 {
-                    button.onClick.AddListener(() =>
+                    if (button == buttons[0])
                     {
-                        selectedButton = button;
-                        if (button == buttons[0])
-                        {
-                            currentItem.OnConfirmInteraction();
-                        }
-                        else if (button == buttons[1])
-                        {
-                            currentItem.OnDeclineInteraction();
-                        }
-                    });
-                }
+                        currentItem.OnConfirmInteraction();
+                        CallNextLine();
+                        HideButtons();
 
-                yield return null;
+                    }
+                    else if (button == buttons[1])
+                    {
+                        currentItem.OnDeclineInteraction();
+                        CallNextLine();
+                        HideButtons();
+                    }
+                });
             }
-            HideButtons();
         }
 
         private void HideButtons()

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using scr_Management;
 using scr_Management.Management_Events;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace ScriptObjs
@@ -30,6 +30,11 @@ namespace ScriptObjs
                 {
                     Actions.OnDoorTriggered(confirmInteractableId);
                 }
+                else if (confirmInteraction == TriggerType.None)
+                {
+                    Debug.Log("Confirm pressed!");
+                }
+                Actions.OnConfirmTriggered(confirmInteractableId);
             }
 
             public void OnDeclineInteraction()
@@ -44,7 +49,7 @@ namespace ScriptObjs
             TextBox
         }
         
-        public DialogueType dialogueType;
+        public DialogueType dialogueType = DialogueType.TextBox;
         public List<DialogueString> dialogueStrings = new();
     }
 }

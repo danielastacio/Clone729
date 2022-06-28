@@ -1,4 +1,7 @@
+using System;
 using System.Collections;
+using scr_Management.Management_Events;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace scr_Weapons
@@ -12,6 +15,7 @@ namespace scr_Weapons
         [Header("Stats")] [SerializeField] protected float damage = 1;
         [SerializeField] protected float speed = 5;
         [SerializeField] protected float fireRate = 0.5f;
+        private float _currentTime = 0f;
         [SerializeField] protected GameObject bullet;
 
         //Private Dudes/Variables
@@ -19,15 +23,21 @@ namespace scr_Weapons
         protected float angle;
         protected bool canShoot = true;
 
-        // Update is called once per frame
+        private void OnEnable()
+        {
+            Actions.OnShootPressed += Shoot;
+        }
+
+        private void Awake()
+        {
+            _currentTime = fireRate;
+        }
+
         protected virtual void Update()
         {
             LookAtCursor();
             RotateAroundMech();
-            if (Input.GetMouseButtonUp(0) && canShoot)
-            {
-                StartCoroutine(Shoot());
-            }
+            ShotTimer();
         }
 
         public void LookAtCursor()
@@ -47,14 +57,28 @@ namespace scr_Weapons
             transform.position = transform.parent.position + difference;
         }
 
-        protected IEnumerator Shoot()
+        private void Shoot(bool shootInput)
         {
-            canShoot = false;
-            InstantiateBullet();
-            yield return new WaitForSeconds(fireRate);
-            canShoot = true;
+            if (shootInput && canShoot)
+            {
+                canShoot = false;
+                _currentTime = 0f;
+                InstantiateBullet();
+            }
         }
 
+        private void ShotTimer()
+        {
+            if (_currentTime <= fireRate && !canShoot)
+            {
+                _currentTime += Time.deltaTime;
+            }
+            else
+            {
+                canShoot = true;
+            }
+        }
+        
         protected virtual void InstantiateBullet()
         {
             var newBullet = Instantiate(bullet, transform.position, Quaternion.Euler(0f, 0f, angle + offset));
