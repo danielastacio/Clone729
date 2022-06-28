@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Particles/Clickable Mirror.mat.meta
 guid: a95dfd084888c5748a7b491c7e0e6bb4
 NativeFormatImporter:
+========
+guid: cd8e5e09770dd6d4eb46f68a8101ece5
+DefaultImporter:
+>>>>>>>> dastacio-mirror-room:Assets/Scenes/TEMPLATE.unity.meta
   externalObjects: {}
   mainObjectFileID: 2100000
   userData: 

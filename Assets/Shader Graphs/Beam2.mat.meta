@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Shader Graphs/Beam2.mat.meta
 guid: 6232fbdf3ac070741bd85b544ff27fcb
 NativeFormatImporter:
+========
+guid: bc932eb86c839c345aca904e77e3c10e
+DefaultImporter:
+>>>>>>>> dastacio-mirror-room:Assets/Scenes/_DEBUGLEVEL/DebugScene.unity.meta
   externalObjects: {}
   mainObjectFileID: 2100000
   userData: 
