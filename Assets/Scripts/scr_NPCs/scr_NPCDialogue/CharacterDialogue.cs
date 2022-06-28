@@ -11,11 +11,18 @@ namespace scr_NPCs.scr_NPCDialogue
     {
         public List<Dialogue> characterDialogueStrings = new();
         public int timesInteracted = 0;
+        public List<string> triggerIds = new();
+
+        private void OnEnable()
+        {
+            Actions.OnConfirmTriggered += IncreaseInteractCount;
+        }
 
         /*private void OnTriggerEnter2D(Collider2D other)
         {
             OnInteract();
-        }*/
+        }
+        */
 
         public void OnInteract()
         {
@@ -23,9 +30,9 @@ namespace scr_NPCs.scr_NPCDialogue
             Actions.OnControllerChanged(ControllerType.Dialogue);
         }
 
-        public void IncreaseInteractCount()
+        public void IncreaseInteractCount(string s)
         {
-            if (timesInteracted < characterDialogueStrings.Count - 1)
+            if (triggerIds.Contains(s) && timesInteracted < characterDialogueStrings.Count - 1)
             {
                 timesInteracted++;
             }

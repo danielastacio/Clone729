@@ -17,6 +17,7 @@ namespace scr_Management.Management_Events
         
         // Trigger Actions
         public static Action<CharacterDialogue> OnDialogueTriggered;
+        public static Action<string> OnConfirmTriggered;
         public static Action<string> OnDoorTriggered;
         
         // Controller Actions

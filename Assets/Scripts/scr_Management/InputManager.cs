@@ -25,9 +25,11 @@ namespace scr_Management
             Actions.OnControllerChanged -= SetActiveController;
         }
 
-        private void SetActiveController(ControllerType t)
+        private void SetActiveController(ControllerType c)
         {
-            _activeController = t;
+            _activeController = c;
+            if (_activeController != ControllerType.Gameplay)
+                GameplayController.DeactivateController();
         }
 
         private void Update()
@@ -44,6 +46,7 @@ namespace scr_Management
                     MenuController.ActivateController();
                     break;
             }
+            Debug.Log(_activeController);
         }
     }
 }
