@@ -1,6 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Particles.meta
 guid: d4b733191727c394cb83e053c990e742
 folderAsset: yes
+========
+guid: cd8e5e09770dd6d4eb46f68a8101ece5
+>>>>>>>> dastacio-mirror-room:Assets/Scenes/TEMPLATE.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

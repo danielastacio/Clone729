@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/TilePalettes/_RuleTiles.meta
 guid: 4266884c75ec2574abacafa70453e29e
+========
+guid: d4b733191727c394cb83e053c990e742
+>>>>>>>> dastacio-mirror-room:Assets/Particles.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

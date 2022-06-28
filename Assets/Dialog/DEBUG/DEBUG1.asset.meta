@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Dialog/DEBUG/DEBUG1.asset.meta
 guid: 5c90ea36bf2aa8c46b72e81c1f5a2a23
 NativeFormatImporter:
+========
+guid: d4b733191727c394cb83e053c990e742
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> dastacio-mirror-room:Assets/Particles.meta
   externalObjects: {}
   mainObjectFileID: 11400000
   userData: 

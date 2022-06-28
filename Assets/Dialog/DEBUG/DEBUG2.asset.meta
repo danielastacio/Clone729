@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Dialog/DEBUG/DEBUG2.asset.meta
 guid: a1c4bb6d43cb8d7489ea9746e642297f
 NativeFormatImporter:
+========
+guid: b59ce3e706670d545a4a78934960d4a7
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> dastacio-mirror-room:Assets/Dialog/DEBUG.meta
   externalObjects: {}
   mainObjectFileID: 11400000
   userData: 

@@ -221,12 +221,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2854166003627775271}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 819825ef93560b34b9596ee2b0b7eb48, type: 3}
+  m_Script: {fileID: 11500000, guid: 73fcf9bd5dbf14447b90afa219c4000f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reflectRight: 1
-  whatIsMirror:
-    serializedVersion: 2
-    m_Bits: 0
-  beam: {fileID: 0}
-  beamDirection: {x: 0, y: 0}
+  hoverColor: {r: 0, g: 0, b: 0, a: 0}
+  defaultColor: {r: 0, g: 0, b: 0, a: 0}
+  mirrorCursor: []
+  frameCount: 0
+  frameRate: 0

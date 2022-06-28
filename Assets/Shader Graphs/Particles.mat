@@ -40,6 +40,16 @@ Material:
     m_Floats:
     - _Fade: 0
     - _Scale: 32.5
+    - _Speed: 0.34
+    - _Spherize_Speed: 0.34
+    - _Tiling_Speed: 0.34
+    - _TwirlStrength: 0
+    - _isSpherize: 1
+    - _isTiling: 1
     m_Colors:
     - _Color: {r: 1012.0572, g: 1012.0572, b: 1012.0572, a: 1}
+    - _Sphere_Center: {r: 0, g: 0, b: 0, a: 0}
+    - _Sphere_Strength: {r: 0, g: 0, b: 0, a: 0}
+    - _Tiling: {r: 0, g: 0, b: 0, a: 0}
+    - _TwirlCenter: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

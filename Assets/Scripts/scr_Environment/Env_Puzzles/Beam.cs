@@ -1,69 +1,54 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using scr_Environment;
-
-public class Beam : MonoBehaviour
+using UnityEngine.UI;
+[RequireComponent(typeof(LineRenderer))]
+public class Beam: MonoBehaviour
 {
-    [SerializeField] private int distance;
-    [SerializeField] private LayerMask whatIsMirror;
-    [SerializeField] private LineRenderer beam;
-    private Mirror mirror;
-    
-    // Update is called once per frame
-    void Update()
-    {
-        ShootBeam();
-    }
+	public int reflections;
+	public float maxLength;
 
-    private void ShootBeam()
-    {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, distance,whatIsMirror);
-        if (hit)
-        {
-            DrawBeam(true);
-            DrawBeam(transform.position, hit.point);
-            Debug.DrawRay(transform.position,hit.transform.position - transform.position);
+	public GameObject circuitBoard;
+	[SerializeField] private LayerMask whatIsMirror;
 
-            if (hit.collider.CompareTag("Mirror"))
-            {
-                mirror = hit.collider.GetComponent<Mirror>();
-                mirror.whatIsMirror = whatIsMirror;
-                mirror.isReflecting = true;
-                mirror.ShootBeam(mirror.beamDirection);
+	private LineRenderer lineRenderer;
+	private Ray2D ray;
+	private RaycastHit2D hit;
 
-            }
+	private void Awake()
+	{
+		lineRenderer = GetComponent<LineRenderer>();
+	}
 
-            else if (hit.collider.CompareTag("DoorTrigger"))
-            {
-                if (!DoorTrigger.isDoorTriggered)
-                {
-                    hit.collider.GetComponent<DoorTrigger>().OnTriggeredDoor();
+	private void Update()
+	{
+		ray = new Ray2D(transform.position, Vector2.right);
 
-                    DoorTrigger.isDoorTriggered = true;
-                }
-            }
-        }
-        else
-        {
+		lineRenderer.positionCount = 1;
+		lineRenderer.SetPosition(0, transform.position);
+		float remainingLength = maxLength;
 
-            DrawBeam(false);
-        }
+		for (int i = 0; i < reflections; i++)
+		{
+			hit = Physics2D.Raycast(ray.origin, ray.direction, remainingLength, whatIsMirror);
+			if (hit)
+			{
+				lineRenderer.positionCount += 1;
+				lineRenderer.SetPosition(lineRenderer.positionCount - 1, hit.point);
+				remainingLength -= Vector2.Distance(ray.origin, hit.point);
+				ray = new Ray2D(hit.point - ray.direction * 0.01f, Vector2.Reflect(ray.direction, hit.normal));
 
-    }
+				if (hit.collider.GetComponent<DoorTrigger>())
+				{
+					hit.collider.GetComponent<DoorTrigger>().OnTriggeredDoor();
+					circuitBoard.GetComponent<Animator>().enabled = true;
 
-    private void DrawBeam(Vector2 startPos, Vector2 endPos)
-    {
-        beam.SetPosition(0, startPos);
-        beam.SetPosition(1, endPos);
-    }
-
-    private void DrawBeam(bool isDrawing)
-    {
-        if (isDrawing)
-            beam.enabled = true;
-        else
-            beam.enabled = false;
-    }
+				}
+			}
+			else
+			{
+				lineRenderer.positionCount += 1;
+				lineRenderer.SetPosition(lineRenderer.positionCount - 1, ray.origin + ray.direction * remainingLength);
+			}
+		}
+	}
 
 }
