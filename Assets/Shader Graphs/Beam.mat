@@ -38,11 +38,18 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Fade: 0.54
-    - _Scale: 2
-    - _Speed: 3.9
-    - _TwirlStrength: 0.05
+    - _Fade: 0.21
+    - _Scale: 29
+    - _Speed: 0.51
+    - _Spherize_Speed: 5.68
+    - _Tiling_Speed: 0.94
+    - _TwirlStrength: 0
+    - _isSpherize: 0
+    - _isTiling: 1
     m_Colors:
-    - _Color: {r: 1367.1202, g: 1367.1202, b: 1367.1202, a: 0}
-    - _TwirlCenter: {r: 15.71, g: 37.41, b: 0, a: 0}
+    - _Color: {r: 0, g: 1225.2493, b: 92.49231, a: 1}
+    - _Sphere_Center: {r: 6.9, g: 1.01, b: 0, a: 0}
+    - _Sphere_Strength: {r: 0.03, g: 0.24, b: 0, a: 0}
+    - _Tiling: {r: -1.9, g: -0.5, b: 0, a: 0}
+    - _TwirlCenter: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

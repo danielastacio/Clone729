@@ -94,11 +94,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4235993000756870458}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04b895fc9d5244740bbc987fd4f3078c, type: 3}
+  m_Script: {fileID: 11500000, guid: 911cc81e9ec1b1e46bce767f4e00a017, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distance: 100
+  reflections: 1
+  maxLength: 1
+  circuitBoard: {fileID: 3014752591914975857, guid: 2e673445e5ace174db02607b02e5d217, type: 3}
   whatIsMirror:
     serializedVersion: 2
-    m_Bits: 0
-  beam: {fileID: 0}
+    m_Bits: 2048
