@@ -1,6 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/_DEBUGLEVEL.meta
 guid: a9483489f3ffeb841a85a1cf49c49d23
 folderAsset: yes
+========
+guid: bc932eb86c839c345aca904e77e3c10e
+>>>>>>>> dastacio-mirror-room:Assets/Scenes/_DEBUGLEVEL/DebugScene.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

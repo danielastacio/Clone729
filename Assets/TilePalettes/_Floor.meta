@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/TilePalettes/_Floor.meta
 guid: 7f5d6096d5ad0584498b5e2bcc4de6ad
+========
+guid: b59ce3e706670d545a4a78934960d4a7
+>>>>>>>> dastacio-mirror-room:Assets/Dialog/DEBUG.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
