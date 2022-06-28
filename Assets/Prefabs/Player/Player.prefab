@@ -61,14 +61,13 @@ MonoBehaviour:
   rollTime: 0.5
   defaultRollTime: 0.4
   groundCheckRadius: 0.1
-  interactRange: 2.5
   offsetRadius: -1.4
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
-  whatIsInteractable:
-    serializedVersion: 2
-    m_Bits: 4096
+  ceilingCheckRadius: 0.1
+  ceilingOffsetRadius: 1
+  interactRange: 5
   meleeDuration: 0.3
 --- !u!212 &258669944946299381
 SpriteRenderer:
@@ -141,7 +140,7 @@ Rigidbody2D:
   m_Material: {fileID: 6200000, guid: 437c2e3d853429a4ab339a888b527094, type: 2}
   m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!95 &7679430979406031352
 Animator:
