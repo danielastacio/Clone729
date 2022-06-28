@@ -12,5 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20634c00bc71de949b01821975b20752, type: 3}
   m_Name: DEBUG1
   m_EditorClassIdentifier: 
-  dialogueType: 0
-  dialogueStrings: []
+  dialogueType: 1
+  dialogueStrings:
+  - dialogueText: Welcome to the combat and platforming portion of the DEBUG level.
+    interactable: 0
+    confirmText: 
+    confirmInteraction: 0
+    confirmInteractableId: 
+    declineText: 
+    declineInteraction: 0
+    declineInteractableId: 
+  - dialogueText: Please enjoy your stay.
+    interactable: 0
+    confirmText: 
+    confirmInteraction: 0
+    confirmInteractableId: 
+    declineText: 
+    declineInteraction: 0
+    declineInteractableId: 

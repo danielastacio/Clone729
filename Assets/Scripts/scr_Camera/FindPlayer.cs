@@ -2,7 +2,7 @@ using Cinemachine;
 using scr_Player;
 using UnityEngine;
 
-namespace scr_Management
+namespace scr_Camera
 {
     public class FindPlayer : MonoBehaviour
     {

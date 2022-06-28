@@ -8,7 +8,8 @@ namespace scr_Management
     {
         Menu,
         Gameplay,
-        Dialogue
+        Dialogue,
+        Cutscene
     }
     
     public class InputManager : MonoBehaviour
@@ -44,6 +45,8 @@ namespace scr_Management
                     break;
                 case ControllerType.Menu:
                     MenuController.ActivateController();
+                    break;
+                case ControllerType.Cutscene:
                     break;
             }
             Debug.Log(_activeController);
