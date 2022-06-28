@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using scr_Interfaces;
+using scr_Management.Management_Events;
 using scr_NPCs.scr_Enemies;
 using UnityEngine;
 
@@ -8,17 +8,50 @@ namespace scr_Environment
 {
     public class RoomController : MonoBehaviour
     {
-        public List<Enemy> enemies = new List<Enemy>();
-        public List<Door> doors = new List<Door>();
+        public List<Enemy> enemies = new();
+        public bool roomEntered;
+        public bool roomCleared;
+        [SerializeField] private List<string> interactableIds = new();
+        private BoxCollider2D _bc2D;
+
+        private void Awake()
+        {
+            _bc2D = GetComponent<BoxCollider2D>();
+        }
 
         private void Update()
         {
-            if (enemies[0] == null)
+            CheckRemainingEnemies();
+        }
+
+        private void CheckRemainingEnemies()
+        {
+            for (int i = 0; i < enemies.Count; i++)
             {
-                foreach (var door in doors)
+                if (enemies[i] == null)
                 {
-                    door.GetComponent<IUnlockable>().UnlockDoor();
+                    enemies.Remove(enemies[i]);
                 }
+            }
+
+            if (enemies.Count == 0 && !roomCleared)
+            {
+                foreach (var interactableID in interactableIds)
+                {
+                    Actions.OnDoorTriggered(interactableID);
+                }
+                roomCleared = true;
+            }
+        }
+
+        private void OnTriggerEnter2D(Collider2D col)
+        {
+            if (col.gameObject.CompareTag("Player") && !roomEntered)
+            {
+                Debug.Log("Player has entered room");
+                Actions.OnDoorTriggered(interactableIds[0]);
+                roomEntered = true;
+                _bc2D.enabled = false;
             }
         }
     }

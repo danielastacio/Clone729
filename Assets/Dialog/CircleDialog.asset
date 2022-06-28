@@ -16,3 +16,5 @@ MonoBehaviour:
   - Hello, Clone 729.
   - It is good to see you awake.
   dialogueType: 1
+  confirm: 
+  decline: 

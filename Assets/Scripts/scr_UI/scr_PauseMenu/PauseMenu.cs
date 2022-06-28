@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using scr_Management.Management_Events;
 using scr_UI.scr_Utilities;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,8 +11,8 @@ namespace scr_UI.scr_PauseMenu
 {
     public class PauseMenu : MonoBehaviour
     {
-        public List<Button> buttons = new List<Button>();
-        public List<Canvas> canvases = new List<Canvas>();
+        public List<Button> buttons = new();
+        public List<Canvas> canvases = new();
         private readonly List<Vector2> _buttonStartingPositions = new List<Vector2>();
         private Button _selectedButton;
 
@@ -18,8 +20,12 @@ namespace scr_UI.scr_PauseMenu
         private Vector2 _hiddenPos;
         
         [SerializeField] private Canvas statsCanvas;
-
         [SerializeField] private float buttonMoveTime;
+
+        private void OnEnable()
+        {
+            Actions.OnSubmenuClose += CloseSubMenu;
+        }
 
         public void Start()
         {
@@ -40,7 +46,7 @@ namespace scr_UI.scr_PauseMenu
                         _selectedButton = button;
                         if (_selectedButton.name.Equals("ExitButton"))
                         {
-                            CloseMenu();
+                            Actions.OnMenuClose();
                         }
                         else if (_selectedButton != null)
                         {
@@ -52,25 +58,11 @@ namespace scr_UI.scr_PauseMenu
                     }
                 );
             }
-
-            if (Input.GetKeyDown(KeyCode.Escape) && _selectedButton != null)
-            {
-                ResetButtonPositions();
-            }
-            else if (Input.GetKeyDown(KeyCode.Escape) && _selectedButton == null)
-            {
-                CloseMenu();
-            }
-        }
-
-        private void CloseMenu()
-        {
-            Time.timeScale = 1;
-            gameObject.SetActive(false);
         }
 
         private void ActivateSelectedMenu(Button btn)
         {
+            Actions.OnSubmenuOpen();
             btn.image.color = Colors.HighlightedMenuButtonColor;
             _selectedButton.GetComponent<MenuButtonHover>().enabled = false;
             CanvasController.ShowCanvas(canvases[buttons.IndexOf(btn)]);
@@ -89,7 +81,7 @@ namespace scr_UI.scr_PauseMenu
             }
         }
 
-        private void ResetButtonPositions()
+        private void CloseSubMenu()
         {
             StopAllCoroutines();
             CanvasController.ShowCanvas(statsCanvas);

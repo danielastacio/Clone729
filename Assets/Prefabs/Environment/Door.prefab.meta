@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/Environment/Door.prefab.meta
 guid: bd5f02167f832904982f46b8ea1b1df9
+========
+guid: 0bae3ccd84840c84f88433c274158046
+>>>>>>>> origin/dev:Assets/Prefabs/Environment/Floor.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

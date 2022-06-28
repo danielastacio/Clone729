@@ -1,12 +1,13 @@
-using System;
 using scr_Consumables;
 using scr_Interfaces;
-using scr_UI.scr_PauseMenu;
 using System.Collections;
+using scr_Management;
+using scr_Management.Management_Events;
 using UnityEngine;
 
 namespace scr_Player
 {
+    // TODO: No deadline- Tidy this script up a little bit. Make it a bit easier to navigate through. 
     public class PlayerController : MonoBehaviour, IDamageable, IDataPersistence
     {
         public static PlayerController Instance { get; private set; }
@@ -28,13 +29,22 @@ namespace scr_Player
 
         [Header("Ground Check")] [SerializeField]
         protected internal float groundCheckRadius = 0.1f;
-
-        protected float InteractRadius = 1f;
-
         [SerializeField] protected internal float offsetRadius = -1f;
         [SerializeField] private LayerMask whatIsGround;
         private Vector2 _groundCheckPos;
+        
+        // TODO: Set up ability to jump through certain platforms
+        // Search for JumpThrough()
+        [Header("Ceiling Check")] [SerializeField]
+        protected internal float ceilingCheckRadius = 0.1f;
+        [SerializeField] protected internal float ceilingOffsetRadius = 1f;
+        private Vector2 _ceilingCheckPos;
+        
+        [SerializeField] protected float interactRange = 5f;
 
+        private bool _canRoll;
+
+        
         private float
             _playerHeight,
             _crouchHeight;
@@ -48,9 +58,6 @@ namespace scr_Player
             isMeleeing;
 
         private bool
-            _isInputJump,
-            _isInputCrouch,
-            _isInputRoll,
             _isInputMoveLeft,
             _isInputMoveRight;
 
@@ -73,6 +80,16 @@ namespace scr_Player
 
         #region MonoBehavior Cycles
 
+        private void OnEnable()
+        {
+            Actions.OnMoveInput += Move;
+            Actions.OnJumpPressed += Jump;
+            Actions.OnCrouchPressed += Crouch;
+            Actions.OnRollPressed += StartRoll;
+            Actions.OnMeleePressed += StartMeleeAttack;
+            Actions.OnInteractPressed += Interact;
+        }
+
         private void Awake()
         {
             if (Instance != null)
@@ -85,24 +102,24 @@ namespace scr_Player
             SetPlayerSettings();            
         }
 
+        private void Start()
+        {
+            // LEAVE THIS FOR DEBUG/BUILDING PURPOSES.
+            // When starting game from Main Menu, controller type will be set to Gameplay
+            Actions.OnControllerChanged(ControllerType.Gameplay);
+        }
+
         private void Update()
         {
-            CheckRollInput();
-            CheckCrouchInput();
-            CheckJumpInput();
-            CheckMoveInput();
             CheckMechInput();
-            CheckPauseInput();
             CheckAnimationState();
         }
 
         private void FixedUpdate()
         {
             CheckIfGrounded();
-            Move();
-            Jump();
-            Crouch();
             Roll();
+            // Instead of UpdatePlayerPosition, set player to child of mech
             UpdatePlayerPosition();
             LaunchPlayer();
         }
@@ -169,12 +186,16 @@ namespace scr_Player
             _animator.SetBool("isCrouching", isCrouching);
             _animator.SetBool("isRolling", isRolling);
 
-            if (Input.GetKeyDown(KeyCode.L) && !isMeleeing)
+        }
+
+        private void StartMeleeAttack(bool meleePressed)
+        {
+            if (meleePressed && !isMeleeing)
             {
                 StartCoroutine(MeleeAttack());
             }
-            
-        } 
+        }
+        
         protected IEnumerator MeleeAttack()
         {
             isMeleeing = true;
@@ -264,6 +285,7 @@ namespace scr_Player
 
         protected virtual void CheckMechInput()
         {
+            // TODO: Give mech IInteractable interface, entering mech will happen on "E", exit on "LEFT SHIFT"
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 if (_isReadyForMech)
@@ -279,57 +301,18 @@ namespace scr_Player
             }
         }
 
-        protected virtual void CheckCrouchInput()
+        private void Interact(bool interactInput)
         {
-            _isInputCrouch = Input.GetKey(KeyCode.S);
-        }
-
-        protected virtual void CheckRollInput()
-        {
-            if (!isCrouching)
+            if (interactInput)
             {
-                if (Input.GetKeyDown(KeyCode.K))
+                var direction = _isFacingLeft ? Vector2.left : Vector2.right;
+                var interactRay =
+                    Physics2D.Raycast(transform.position, direction, interactRange);
+
+                if (interactRay)
                 {
-                    _isInputRoll = true;
+                    interactRay.transform.gameObject.GetComponent<IInteractable>().OnInteract();
                 }
-            }
-
-            if (isRolling)
-            {
-                rollTime -= Time.deltaTime;
-                if (rollTime <= 0)
-                {
-                    rollTime = 0;
-                    isRolling = false;
-                    _isInputRoll = false;
-                }
-            }
-
-            else
-            {
-                rollTime = defaultRollTime;
-            }
-        }
-
-        private void CheckMoveInput()
-        {
-            if (!isRolling)
-            {
-                _isInputMoveLeft = Input.GetKey(KeyCode.A);
-                _isInputMoveRight = Input.GetKey(KeyCode.D);
-            }
-        }
-
-        private void CheckJumpInput()
-        {
-            _isInputJump = Input.GetKey(KeyCode.Space);
-        }
-
-        private void CheckPauseInput()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                PauseMenuCanvas.Instance.PauseGame();
             }
         }
 
@@ -353,26 +336,24 @@ namespace scr_Player
 
         #region Movement Methods
 
-        protected virtual void Move()
+        protected virtual void Move(float moveInput)
         {
-            if (_isInputMoveLeft)
-            {
-                _sprite.flipX = true;
-                _isFacingLeft = true;
-                isRunning = true;
-
-                Rb.velocity = new Vector2(-speed, Rb.velocity.y);
-            }
-
-            else if (_isInputMoveRight)
+            if (moveInput > 0 && !isRolling)
             {
                 _sprite.flipX = false;
                 _isFacingLeft = false;
                 isRunning = true;
 
-                Rb.velocity = new Vector2(speed, Rb.velocity.y);
+                Rb.velocity = new Vector2(speed * moveInput, Rb.velocity.y);
             }
+            else if (moveInput < 0 && !isRolling)
+            {
+                _sprite.flipX = true;
+                _isFacingLeft = true;
+                isRunning = true;
 
+                Rb.velocity = new Vector2(speed * moveInput, Rb.velocity.y);
+            }
             else
             {
                 isRunning = false;
@@ -380,23 +361,31 @@ namespace scr_Player
             }
         }
 
-        private void Jump()
+        private void Jump(bool jumpInput)
         {
-            if (_isInputJump && isGrounded && !isRolling)
+            if (jumpInput && isGrounded && !isRolling)
             {
                 isGrounded = false;
                 isJumping = true;
                 Rb.velocity = Vector2.up * jumpForce;
             }
-            else if (Rb.velocity.y < 0 && !_isInputJump)
+            else if (Rb.velocity.y < 0 && !jumpInput)
             {
                 Rb.velocity += (fallMultiplier - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
             }
         }
 
-        private void Crouch()
+        private void JumpThrough()
         {
-            bool canCrouch = _isInputCrouch && isGrounded && !isRolling;
+            // Set up parameters for a ceiling check circle. Similar checks to the ground check circle
+            // When jumping through, disable player collider until the ground check circle passes through the platform,
+            // then turn collider back on
+            // Build a drop through method after this.
+        }
+
+        private void Crouch(bool crouchInput)
+        {
+            bool canCrouch = crouchInput && isGrounded && !isRolling;
 
             if (canCrouch)
             {
@@ -418,25 +407,41 @@ namespace scr_Player
             }
         }
 
-        private void Roll()
+        private void StartRoll(bool rollInput)
         {
-            Vector2 rollDirection = _isFacingLeft ? Vector2.left : Vector2.right;
-            bool canRoll = _isInputRoll && isGrounded && !isCrouching;
-
-            if (canRoll)
+            if (rollInput)
             {
+                _canRoll = isGrounded && !isCrouching;
                 isRolling = true;
-
-                if (isRolling)
-                {
-                    Rb.AddForce(rollDirection * rollForce, ForceMode2D.Impulse);
-                    transform.localScale = new Vector2(transform.localScale.x, _crouchHeight);
-                }
             }
-
+            
             else if (!isCrouching)
             {
                 transform.localScale = new Vector2(transform.localScale.x, _playerHeight);
+            }
+        }
+
+        private void Roll()
+        {
+            if (_canRoll)
+            {
+                Vector2 rollDirection = _isFacingLeft ? Vector2.left : Vector2.right;
+                if (isRolling)
+                {
+                    rollTime -= Time.deltaTime;
+                    if (rollTime <= 0)
+                    {
+                        rollTime = 0;
+                        isRolling = false;
+                    }
+
+                    Rb.AddForce(rollDirection * rollForce, ForceMode2D.Impulse);
+                    transform.localScale = new Vector2(transform.localScale.x, _crouchHeight);
+                }
+                else
+                {
+                    rollTime = defaultRollTime;
+                }
             }
         }
 
