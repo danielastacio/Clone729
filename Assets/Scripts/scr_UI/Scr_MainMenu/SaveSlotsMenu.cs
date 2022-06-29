@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using scr_DataPersistence;
 using scr_UI.Scr_MainMenu;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -28,12 +29,12 @@ public class SaveSlotsMenu : MonoBehaviour
         DisableMenuButtons();
 
         // update the selected profile id to be used for data persistence
-        DataPersistenceManager.instance.ChangeSelectedProfileId(saveSlot.GetProfileId());
+        DataPersistenceManager.Instance.ChangeSelectedProfileId(saveSlot.GetProfileId());
 
         if (!isLoadingGame) 
         {
             // create a new game - which will initialize our data to a clean slate
-            DataPersistenceManager.instance.NewGame();
+            DataPersistenceManager.Instance.NewGame();
         }
 
         // load the scene - which will in turn save the game because of OnSceneUnloaded() in the DataPersistenceManager
@@ -55,7 +56,7 @@ public class SaveSlotsMenu : MonoBehaviour
         this.isLoadingGame = isLoadingGame;
 
         // load all of the profiles that exist
-        Dictionary<string, GameData> profilesGameData = DataPersistenceManager.instance.GetAllProfilesGameData();
+        Dictionary<string, GameData> profilesGameData = DataPersistenceManager.Instance.GetAllProfilesGameData();
 
         // loop through each save slot in the UI and set the content appropriately
 

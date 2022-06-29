@@ -1,3 +1,4 @@
+using scr_DataPersistence;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -16,7 +17,7 @@ namespace scr_UI.Scr_MainMenu
 
         private void Start() 
         {
-            if (!DataPersistenceManager.instance.HasGameData()) 
+            if (!DataPersistenceManager.Instance.HasGameData()) 
             {
                 continueGameButton.interactable = false;
                 loadGameButton.interactable = false;

@@ -1,158 +1,159 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 
-public class FileDataHandler
+namespace scr_DataPersistence
 {
-    private string dataDirPath = Application.persistentDataPath;
-    public GameData Load(string profileId)
+    public class FileDataHandler
     {
-        // base case - if the profileId is null, return right away
-        if (profileId == null)
+        private readonly string _dataDirPath = Application.persistentDataPath;
+        
+        public GameData Load(string profileId)
         {
-            return null;
+            // base case - if the profileId is null, return right away
+            if (profileId == null)
+            {
+                return null;
+            }
+
+            // use Path.Combine to account for different OS's having different path separators
+            var fullPath = Path.Combine(_dataDirPath, profileId, profileId);
+            GameData loadedData = null;
+            
+            if (File.Exists(fullPath))
+            {
+                try
+                {
+                    // load the serialized data from the file
+                    string dataToLoad = "";
+                    using (FileStream stream = new FileStream(fullPath, FileMode.Open))
+                    {
+                        using (StreamReader reader = new StreamReader(stream))
+                        {
+                            dataToLoad = reader.ReadToEnd();
+                        }
+                    }
+
+                    // deserialize the data from Json back into the C# object
+                    loadedData = JsonUtility.FromJson<GameData>(dataToLoad);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError("Error occured when trying to load data from file: " + fullPath + "\n" + e);
+                }
+            }
+            return loadedData;
         }
 
-        // use Path.Combine to account for different OS's having different path separators
-        string fileName = profileId;
-        string fullPath = Path.Combine(dataDirPath, profileId, fileName);
-        GameData loadedData = null;
-        if (File.Exists(fullPath))
+        public void Save(GameData data, string profileId)
         {
+            // base case - if the profileId is null, return right away
+            if (profileId == null)
+            {
+                return;
+            }
+
+            // use Path.Combine to account for different OS's having different path separators
+            string fileName = profileId;
+            string fullPath = Path.Combine(_dataDirPath, profileId, fileName);
             try
             {
-                // load the serialized data from the file
-                string dataToLoad = "";
-                using (FileStream stream = new FileStream(fullPath, FileMode.Open))
+                // create the directory the file will be written to if it doesn't already exist
+                Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+
+                // serialize the C# game data object into Json
+                string dataToStore = JsonUtility.ToJson(data, true);
+
+
+                // write the serialized data to the file
+                using (FileStream stream = new FileStream(fullPath, FileMode.Create))
                 {
-                    using (StreamReader reader = new StreamReader(stream))
+                    using (StreamWriter writer = new StreamWriter(stream))
                     {
-                        dataToLoad = reader.ReadToEnd();
+                        writer.Write(dataToStore);
                     }
                 }
-
-
-
-                // deserialize the data from Json back into the C# object
-                loadedData = JsonUtility.FromJson<GameData>(dataToLoad);
             }
             catch (Exception e)
             {
-                Debug.LogError("Error occured when trying to load data from file: " + fullPath + "\n" + e);
+                Debug.LogError("Error occured when trying to save data to file: " + fullPath + "\n" + e);
             }
         }
-        return loadedData;
-    }
 
-    public void Save(GameData data, string profileId)
-    {
-        // base case - if the profileId is null, return right away
-        if (profileId == null)
+        public Dictionary<string, GameData> LoadAllProfiles()
         {
-            return;
-        }
+            Dictionary<string, GameData> profileDictionary = new Dictionary<string, GameData>();
 
-        // use Path.Combine to account for different OS's having different path separators
-        string fileName = profileId;
-        string fullPath = Path.Combine(dataDirPath, profileId, fileName);
-        try
-        {
-            // create the directory the file will be written to if it doesn't already exist
-            Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
-
-            // serialize the C# game data object into Json
-            string dataToStore = JsonUtility.ToJson(data, true);
-
-
-            // write the serialized data to the file
-            using (FileStream stream = new FileStream(fullPath, FileMode.Create))
+            // loop over all directory names in the data directory path
+            IEnumerable<DirectoryInfo> dirInfos = new DirectoryInfo(_dataDirPath).EnumerateDirectories();
+            foreach (DirectoryInfo dirInfo in dirInfos)
             {
-                using (StreamWriter writer = new StreamWriter(stream))
+                string profileId = dirInfo.Name;
+
+                // defensive programming - check if the data file exists
+                // if it doesn't, then this folder isn't a profile and should be skipped
+                string fullPath = Path.Combine(_dataDirPath, profileId, profileId);
+                if (!File.Exists(fullPath))
                 {
-                    writer.Write(dataToStore);
+                    Debug.LogWarning("Skipping directory when loading all profiles because it does not contain data: "
+                                     + profileId);
+                    continue;
+                }
+
+                // load the game data for this profile and put it in the dictionary
+                GameData profileData = Load(profileId);
+                // defensive programming - ensure the profile data isn't null,
+                // because if it is then something went wrong and we should let ourselves know
+                if (profileData != null)
+                {
+                    profileDictionary.Add(profileId, profileData);
+                }
+                else
+                {
+                    Debug.LogError("Tried to load profile but something went wrong. ProfileId: " + profileId);
                 }
             }
-        }
-        catch (Exception e)
-        {
-            Debug.LogError("Error occured when trying to save data to file: " + fullPath + "\n" + e);
-        }
-    }
 
-    public Dictionary<string, GameData> LoadAllProfiles()
-    {
-        Dictionary<string, GameData> profileDictionary = new Dictionary<string, GameData>();
-
-        // loop over all directory names in the data directory path
-        IEnumerable<DirectoryInfo> dirInfos = new DirectoryInfo(dataDirPath).EnumerateDirectories();
-        foreach (DirectoryInfo dirInfo in dirInfos)
-        {
-            string profileId = dirInfo.Name;
-
-            // defensive programming - check if the data file exists
-            // if it doesn't, then this folder isn't a profile and should be skipped
-            string fullPath = Path.Combine(dataDirPath, profileId, profileId);
-            if (!File.Exists(fullPath))
-            {
-                Debug.LogWarning("Skipping directory when loading all profiles because it does not contain data: "
-                    + profileId);
-                continue;
-            }
-
-            // load the game data for this profile and put it in the dictionary
-            GameData profileData = Load(profileId);
-            // defensive programming - ensure the profile data isn't null,
-            // because if it is then something went wrong and we should let ourselves know
-            if (profileData != null)
-            {
-                profileDictionary.Add(profileId, profileData);
-            }
-            else
-            {
-                Debug.LogError("Tried to load profile but something went wrong. ProfileId: " + profileId);
-            }
+            return profileDictionary;
         }
 
-        return profileDictionary;
-    }
-
-    public string GetMostRecentlyUpdatedProfileId()
-    {
-        string mostRecentProfileId = null;
-
-        Dictionary<string, GameData> profilesGameData = LoadAllProfiles();
-        foreach (KeyValuePair<string, GameData> pair in profilesGameData)
+        public string GetMostRecentlyUpdatedProfileId()
         {
-            string profileId = pair.Key;
-            GameData gameData = pair.Value;
+            string mostRecentProfileId = null;
 
-            // skip this entry if the gamedata is null
-            if (gameData == null)
+            Dictionary<string, GameData> profilesGameData = LoadAllProfiles();
+            foreach (KeyValuePair<string, GameData> pair in profilesGameData)
             {
-                continue;
-            }
+                string profileId = pair.Key;
+                GameData gameData = pair.Value;
 
-            // if this is the first data we've come across that exists, it's the most recent so far
-            if (mostRecentProfileId == null)
-            {
-                mostRecentProfileId = profileId;
-            }
-            // otherwise, compare to see which date is the most recent
-            else
-            {
-                DateTime mostRecentDateTime = DateTime.FromBinary(profilesGameData[mostRecentProfileId].lastUpdated);
-                DateTime newDateTime = DateTime.FromBinary(gameData.lastUpdated);
-                // the greatest DateTime value is the most recent
-                if (newDateTime > mostRecentDateTime)
+                // skip this entry if the gamedata is null
+                if (gameData == null)
+                {
+                    continue;
+                }
+
+                // if this is the first data we've come across that exists, it's the most recent so far
+                if (mostRecentProfileId == null)
                 {
                     mostRecentProfileId = profileId;
                 }
+                // otherwise, compare to see which date is the most recent
+                else
+                {
+                    DateTime mostRecentDateTime = DateTime.FromBinary(profilesGameData[mostRecentProfileId].lastUpdated);
+                    DateTime newDateTime = DateTime.FromBinary(gameData.lastUpdated);
+                    // the greatest DateTime value is the most recent
+                    if (newDateTime > mostRecentDateTime)
+                    {
+                        mostRecentProfileId = profileId;
+                    }
+                }
             }
+            return mostRecentProfileId;
         }
-        return mostRecentProfileId;
-    }
 
-    // the below is a simple implementation of XOR encryption
+        // the below is a simple implementation of XOR encryption
+    }
 }

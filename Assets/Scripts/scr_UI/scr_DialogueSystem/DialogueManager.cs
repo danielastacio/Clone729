@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using scr_Management;
 using scr_Management.Controllers;
 using scr_Management.Management_Events;
@@ -35,15 +34,15 @@ namespace scr_UI.scr_DialogueSystem
         private void OnEnable()
         {
             Actions.OnDialogueTriggered += ActivateDialogueSystem;
-            DialogueController.OnInteractPressed += CallNextLine;
             Actions.OnTextSpeedChanged += SetTextSpeed;
+            DialogueController.OnInteractPressed += CallNextLine;
         }
 
         private void OnDisable()
         {
             Actions.OnDialogueTriggered -= ActivateDialogueSystem;
-            DialogueController.OnInteractPressed -= CallNextLine;
             Actions.OnTextSpeedChanged -= SetTextSpeed;
+            DialogueController.OnInteractPressed -= CallNextLine;
         }
 
         private void Update()

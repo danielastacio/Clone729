@@ -1,146 +1,149 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.SceneManagement;
 using scr_Interfaces;
-public class DataPersistenceManager : MonoBehaviour
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+namespace scr_DataPersistence
 {
-
-    [Header("File Storage Config")]
-    private readonly string fileName = "gamedata.json";
-    [SerializeField] private bool useEncryption;
-
-    private GameData gameData;
-    private List<IDataPersistence> dataPersistenceObjects;
-    private FileDataHandler dataHandler;
-
-    private string selectedProfileId = "";
-
-    public static DataPersistenceManager instance { get; private set; }
-
-    private void Awake()
+    public class DataPersistenceManager : MonoBehaviour
     {
-        if (instance != null)
+
+        [Header("File Storage Config")]
+        private readonly string fileName = "gamedata.json";
+        [SerializeField] private bool useEncryption;
+
+        private GameData _gameData;
+        private List<IDataPersistence> _dataPersistenceObjects;
+        private FileDataHandler _dataHandler;
+
+        private string _selectedProfileId = "";
+
+        public static DataPersistenceManager Instance { get; private set; }
+
+        private void Awake()
         {
-            Debug.Log("Found more than one Data Persistence Manager in the scene. Destroying the newest one.");
-            Destroy(this.gameObject);
-            return;
-        }
-        instance = this;
-        DontDestroyOnLoad(this.gameObject);
+            if (Instance != null)
+            {
+                Debug.Log("Found more than one Data Persistence Manager in the scene. Destroying the newest one.");
+                Destroy(this.gameObject);
+                return;
+            }
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
 
 
 
-        this.dataHandler = new FileDataHandler();
+            this._dataHandler = new FileDataHandler();
 
-        this.selectedProfileId = dataHandler.GetMostRecentlyUpdatedProfileId();
+            this._selectedProfileId = _dataHandler.GetMostRecentlyUpdatedProfileId();
 
-    }
-
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        SceneManager.sceneUnloaded += OnSceneUnloaded;
-    }
-
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-        SceneManager.sceneUnloaded -= OnSceneUnloaded;
-    }
-
-    public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        this.dataPersistenceObjects = FindAllDataPersistenceObjects();
-        LoadGame();
-    }
-
-    public void OnSceneUnloaded(Scene scene)
-    {
-        SaveGame();
-    }
-
-    public void ChangeSelectedProfileId(string newProfileId)
-    {
-        // update the profile to use for saving and loading
-        this.selectedProfileId = newProfileId;
-        // load the game, which will use that profile, updating our game data accordingly
-        LoadGame();
-    }
-
-    public string GetProfileId()
-    {
-        return selectedProfileId;
-    }
-
-    public void NewGame()
-    {
-        this.gameData = new GameData();
-    }
-
-    public void LoadGame()
-    {
-        // load any saved data from a file using the data handler
-        this.gameData = dataHandler.Load(selectedProfileId);
-
-        // if no data can be loaded, don't continue
-        if (this.gameData == null)
-        {
-            Debug.Log("No data was found. A New Game needs to be started before data can be loaded.");
-            return;
         }
 
-        // push the loaded data to all other scripts that need it
-        foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
+        private void OnEnable()
         {
-            dataPersistenceObj.LoadData(gameData);
-        }
-    }
-
-    public void SaveGame()
-    {
-        // if we don't have any data to save, log a warning here
-        if (this.gameData == null)
-        {
-            Debug.LogWarning("No data was found. A New Game needs to be started before data can be saved.");
-            return;
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            SceneManager.sceneUnloaded += OnSceneUnloaded;
         }
 
-        // pass the data to other scripts so they can update it
-        foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
+        private void OnDisable()
         {
-            dataPersistenceObj.SaveData(gameData);
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            SceneManager.sceneUnloaded -= OnSceneUnloaded;
         }
 
-        // timestamp the data so we know when it was last saved
-        gameData.lastUpdated = System.DateTime.Now.ToBinary();
-        gameData.lastUpdatedString = System.DateTime.Now.ToString();
+        public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            _dataPersistenceObjects = FindAllDataPersistenceObjects();
+            LoadGame();
+        }
 
-        // save that data to a file using the data handler
-        dataHandler.Save(gameData, selectedProfileId);
-    }
+        public void OnSceneUnloaded(Scene scene)
+        {
+            SaveGame();
+        }
 
-    private void OnApplicationQuit()
-    {
-        SaveGame();
-    }
+        public void ChangeSelectedProfileId(string newProfileId)
+        {
+            // update the profile to use for saving and loading
+            this._selectedProfileId = newProfileId;
+            // load the game, which will use that profile, updating our game data accordingly
+            LoadGame();
+        }
 
-    private List<IDataPersistence> FindAllDataPersistenceObjects()
-    {
-        IEnumerable<IDataPersistence> dataPersistenceObjects = FindObjectsOfType<MonoBehaviour>()
-            .OfType<IDataPersistence>();
+        public string GetProfileId()
+        {
+            return _selectedProfileId;
+        }
 
-        return new List<IDataPersistence>(dataPersistenceObjects);
-    }
+        public void NewGame()
+        {
+            this._gameData = new GameData();
+        }
 
-    public bool HasGameData()
-    {
-        return gameData != null;
-    }
+        public void LoadGame()
+        {
+            // load any saved data from a file using the data handler
+            this._gameData = _dataHandler.Load(_selectedProfileId);
 
-    public Dictionary<string, GameData> GetAllProfilesGameData()
-    {
-        return dataHandler.LoadAllProfiles();
+            // if no data can be loaded, don't continue
+            if (this._gameData == null)
+            {
+                Debug.Log("No data was found. A New Game needs to be started before data can be loaded.");
+                return;
+            }
+
+            // push the loaded data to all other scripts that need it
+            foreach (IDataPersistence dataPersistenceObj in _dataPersistenceObjects)
+            {
+                dataPersistenceObj.LoadData(_gameData);
+            }
+        }
+
+        public void SaveGame()
+        {
+            // if we don't have any data to save, log a warning here
+            if (this._gameData == null)
+            {
+                Debug.LogWarning("No data was found. A New Game needs to be started before data can be saved.");
+                return;
+            }
+
+            // pass the data to other scripts so they can update it
+            foreach (IDataPersistence dataPersistenceObj in _dataPersistenceObjects)
+            {
+                dataPersistenceObj.SaveData(_gameData);
+            }
+
+            // timestamp the data so we know when it was last saved
+            _gameData.lastUpdated = System.DateTime.Now.ToBinary();
+            _gameData.lastUpdatedString = System.DateTime.Now.ToString();
+
+            // save that data to a file using the data handler
+            _dataHandler.Save(_gameData, _selectedProfileId);
+        }
+
+        private void OnApplicationQuit()
+        {
+            SaveGame();
+        }
+
+        private List<IDataPersistence> FindAllDataPersistenceObjects()
+        {
+            IEnumerable<IDataPersistence> dataPersistenceObjects = FindObjectsOfType<MonoBehaviour>()
+                .OfType<IDataPersistence>();
+
+            return new List<IDataPersistence>(dataPersistenceObjects);
+        }
+
+        public bool HasGameData()
+        {
+            return _gameData != null;
+        }
+
+        public Dictionary<string, GameData> GetAllProfilesGameData()
+        {
+            return _dataHandler.LoadAllProfiles();
+        }
     }
 }

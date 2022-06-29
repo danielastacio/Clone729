@@ -31,7 +31,6 @@ namespace scr_Player
         protected internal float groundCheckRadius = 0.1f;
         [SerializeField] protected internal float offsetRadius = -1f;
         [SerializeField] private LayerMask whatIsGround;
-        private Vector2 _groundCheckPos;
         
         // TODO: Set up ability to jump through certain platforms
         // Search for JumpThrough()
@@ -119,15 +118,10 @@ namespace scr_Player
         {
             CheckIfGrounded();
             Roll();
+            Fall();
             // Instead of UpdatePlayerPosition, set player to child of mech
             UpdatePlayerPosition();
             LaunchPlayer();
-        }
-
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.DrawSphere(_groundCheckPos, groundCheckRadius);
         }
 
         #endregion
@@ -143,6 +137,7 @@ namespace scr_Player
             data.playerCurrentHp = currentHp;
             data.playerSpawnPoint = transform.position;
         }
+
         protected virtual void SetRigidbodySettings()
         {
             Rb = GetComponent<Rigidbody2D>();
@@ -168,15 +163,11 @@ namespace scr_Player
 
         private void CheckIfGrounded()
         {
-            _groundCheckPos = new Vector2(transform.position.x, transform.position.y + offsetRadius);
-            var groundCheck =
-                Physics2D.OverlapCircle(_groundCheckPos, groundCheckRadius, whatIsGround);
+            var groundCheckPos = new Vector2(transform.position.x, transform.position.y + offsetRadius);
+            isGrounded =
+                Physics2D.OverlapCircle(groundCheckPos, groundCheckRadius, whatIsGround);
 
-            if (groundCheck)
-            {
-                isGrounded = true;
-                isJumping = false;
-            }
+            isJumping = !isGrounded;
         }
 
         private void CheckAnimationState()
@@ -303,6 +294,7 @@ namespace scr_Player
 
         private void Interact(bool interactInput)
         {
+            // Change interact with NPC's to use the NPC circle
             if (interactInput)
             {
                 var direction = _isFacingLeft ? Vector2.left : Vector2.right;
@@ -363,13 +355,17 @@ namespace scr_Player
 
         private void Jump(bool jumpInput)
         {
+            // Figure out why we can double jump
             if (jumpInput && isGrounded && !isRolling)
             {
-                isGrounded = false;
                 isJumping = true;
                 Rb.velocity = Vector2.up * jumpForce;
             }
-            else if (Rb.velocity.y < 0 && !jumpInput)
+        }
+
+        private void Fall()
+        {
+            if (Rb.velocity.y < 0 && !isGrounded)
             {
                 Rb.velocity += (fallMultiplier - 1) * Physics2D.gravity.y * Time.deltaTime * Vector2.up;
             }

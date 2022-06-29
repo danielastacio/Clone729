@@ -6,15 +6,24 @@ namespace scr_UI.scr_Utilities
 {
     public class MenuButtonHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        public void OnPointerEnter(PointerEventData eventData)
+        public void SetHighlighted()
         {
             gameObject.GetComponent<Button>().image.color = Colors.HighlightedMenuButtonColor;
         }
-        
+
+        public void SetDefault()
+        {
+            gameObject.GetComponent<Button>().image.color = Colors.DefaultMenuButtonColor;
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            SetHighlighted();
+        }
         
         public void OnPointerExit(PointerEventData eventData)
         {
-            gameObject.GetComponent<Button>().image.color = Colors.DefaultMenuButtonColor;
+            SetDefault();
         }
     }
 }

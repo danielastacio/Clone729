@@ -60,7 +60,7 @@ namespace scr_Management.Controllers
             _crouch = Input.GetKeyDown(KeyCode.S);
             _roll = Input.GetKeyDown(KeyCode.K);
             _shoot = Input.GetMouseButtonUp(0);
-            _melee = Input.GetKeyDown(KeyCode.L);
+            _melee = Input.GetMouseButtonUp(1);
             _interact = Input.GetKeyDown(KeyCode.E);
             _menu = Input.GetKeyDown(KeyCode.Escape);
         }
