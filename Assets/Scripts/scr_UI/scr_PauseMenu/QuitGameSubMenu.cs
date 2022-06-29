@@ -8,8 +8,7 @@ namespace scr_UI.scr_PauseMenu
     {
         public Button yes;
         public Button no;
-        private bool _clicked = false;
-
+        
         private void Update()
         {
             yes.onClick.AddListener(QuitGame);

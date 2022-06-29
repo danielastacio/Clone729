@@ -20,7 +20,6 @@ namespace scr_Weapons
         private void Update()
         {
             _rb.AddRelativeForce(Vector3.right * bulletSpeed,ForceMode2D.Impulse);
-            StartCoroutine(BulletDestroy());
         }
         
         public virtual void CreateBullet(string targetTag, float damage, float speed)
@@ -28,6 +27,7 @@ namespace scr_Weapons
             _target = targetTag;
             bulletDamage = damage;
             bulletSpeed = speed;
+            Destroy(gameObject, 2f);
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -41,12 +41,6 @@ namespace scr_Weapons
             {
                 Destroy(gameObject);
             }
-        }
-        
-        private IEnumerator BulletDestroy()
-        {
-            yield return new WaitForSeconds(2);
-            Destroy(gameObject);
         }
     }
 }

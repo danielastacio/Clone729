@@ -8,6 +8,8 @@ namespace scr_Weapons
 {
     public class Weapon : MonoBehaviour
     {
+        [SerializeField] private GameObject barrel;
+
         //Inspector Dudes/Variables
         [Header("Debug")] [SerializeField] [Tooltip("if gun isn't looking at cursor keep increasing offset")]
         protected int offset;
@@ -81,7 +83,7 @@ namespace scr_Weapons
         
         protected virtual void InstantiateBullet()
         {
-            var newBullet = Instantiate(bullet, transform.position, Quaternion.Euler(0f, 0f, angle + offset));
+            var newBullet = Instantiate(bullet, barrel.transform.position, Quaternion.Euler(0f, 0f, angle + offset));
             newBullet.GetComponent<BulletScript>().CreateBullet("Enemy", damage, speed);
         }
     }

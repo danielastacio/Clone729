@@ -460,7 +460,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.5655254, y: 1}
+    m_SensorSize: {x: 1.7777778, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -532,7 +532,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.5655254, y: 1}
+    m_SensorSize: {x: 1.7777778, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -1040,7 +1040,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 60233084329608352, guid: c77bb601197eecd41ba241eabc0e34d7, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 60233084329608352, guid: c77bb601197eecd41ba241eabc0e34d7, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2318,7 +2318,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1061406404
 GameObject:
@@ -2759,7 +2759,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 258669944946299380, guid: 89a23ae0e2c9db448a197fb8c3c25598, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 258669944946299380, guid: 89a23ae0e2c9db448a197fb8c3c25598, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2805,6 +2805,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4847956278573145666, guid: 89a23ae0e2c9db448a197fb8c3c25598, type: 3}
+      propertyPath: barrel
+      value: 
+      objectReference: {fileID: 1425105183}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89a23ae0e2c9db448a197fb8c3c25598, type: 3}
 --- !u!1 &1154750463
@@ -3439,6 +3443,11 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!1 &1425105183 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4847956279583705822, guid: 89a23ae0e2c9db448a197fb8c3c25598, type: 3}
+  m_PrefabInstance: {fileID: 1139941298}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1472776524
 GameObject:
   m_ObjectHideFlags: 0
@@ -29570,7 +29579,7 @@ Transform:
   - {fileID: 1962318069213871908}
   - {fileID: 1962318068930260286}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!156049354 &1962318070124320946
 Grid:
